@@ -53,6 +53,12 @@ public class Content {
         this.value = value;
     }
 
+
+    /**
+     * Calculates average value rating of user by
+     * value div 5
+     * @return average value after calculate
+     */
     public double getAvg(){
         return Double.valueOf(value)/5;
     }
