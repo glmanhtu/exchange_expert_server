@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Convert;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -16,7 +17,10 @@ import java.util.Set;
  * Created by greenlucky on 1/24/17.
  */
 @Document(collection = "users")
-public class User {
+public class User implements Serializable{
+
+    /** The Serial Version UID for Serializable classes */
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Email
@@ -134,10 +138,6 @@ public class User {
 
     public void setRating(Rating rating) {
         this.rating = rating;
-    }
-
-    public void updateRating(Content content){
-        this.rating.update(content);
     }
 
     @Override

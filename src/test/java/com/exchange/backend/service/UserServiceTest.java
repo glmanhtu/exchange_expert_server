@@ -1,9 +1,6 @@
 package com.exchange.backend.service;
 
 import com.exchange.ExchangeApplication;
-import com.exchange.backend.persistence.domain.By;
-import com.exchange.backend.persistence.domain.Content;
-import com.exchange.backend.persistence.domain.Rating;
 import com.exchange.backend.persistence.domain.User;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,6 +29,9 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RatingService ratingService;
+
     @Rule
     public TestName testName = new TestName();
 
@@ -59,27 +59,6 @@ public class UserServiceTest {
         user = userService.create(user);
         System.out.println(user);
 
-        By by = new By();
-        by.setEmail(user.getId());
-        by.setFirstName(user.getFirstName());
-        by.setLastName(user.getLastName());
-
-        Content content = new Content();
-        content.setBy(by);
-        content.setOn(LocalDateTime.now(Clock.systemDefaultZone()));
-        content.setValue(2);
-
-        Set<Content> contents = new HashSet<>();
-        contents.add(content);
-        Rating rating = new Rating();
-        rating.setContent(contents);
-
-
-        User actualUser = userService.getOne(user.getId());
-        actualUser.setRating(rating);
-        actualUser = userService.update(actualUser);
-        System.out.println(actualUser);
-
         //create new user
         User user1 = new User();
         user1.setId(testName.getMethodName()+"@gmail.com");
@@ -92,16 +71,22 @@ public class UserServiceTest {
 
         user1 = userService.create(user);
 
-        //update rating user
-        Content content1 = new Content();
-        By by1 = new By(user1.getId(), user1.getFirstName(), user1.getLastName());
-        content1.setBy(by1);
-        content1.setValue(5);
-        content1.setOn(LocalDateTime.now(Clock.systemDefaultZone()));
-        actualUser.updateRating(content1);
-        userService.update(actualUser);
+        ratingService.add(user.getId(), user1.getId(),4);
 
-        actualUser = userService.getOne(actualUser.getId());
+
+        //create new user
+        User user2 = new User();
+        user2.setId(testName.getMethodName()+"A@gmail.com");
+        user2.setFirstName(testName.getMethodName()+"B");
+        user2.setLastName(testName.getMethodName());
+        user2.setBirthday(LocalDate.of(1986,05,22));
+        user2.setGender(1);
+        user2.setCreateDate(LocalDateTime.now(Clock.systemDefaultZone()));
+        user2.setRoles(roles);
+
+        ratingService.add(user.getId(), user2.getId(),3);
+
+        User actualUser = userService.getOne(user.getId());
         System.out.println(actualUser);
     }
 
@@ -120,5 +105,4 @@ public class UserServiceTest {
         List<User> users = userService.getAll();
         System.out.println(users);
     }
-
 }

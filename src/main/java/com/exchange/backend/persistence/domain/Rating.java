@@ -1,7 +1,7 @@
 package com.exchange.backend.persistence.domain;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by greenlucky on 1/24/17.
@@ -10,7 +10,7 @@ public class Rating {
 
     private double avg=0.0;
 
-    private Set<Content> contents = new HashSet<>();
+    private List<Content> contents = new ArrayList<>();
 
     public Rating() {
 
@@ -21,27 +21,15 @@ public class Rating {
     }
 
     public void setAvg(double avg) {
-        this.avg += avg;
+        this.avg = avg;
     }
 
-    public Set<Content> getContent() {
+    public List<Content> getContent() {
         return contents;
     }
 
-    public void setContent(Set<Content> contents) {
+    public void setContent(List<Content> contents) {
         this.contents = contents;
-        for (Content content : contents)
-            setAvg(content.getAvg());
-    }
-
-    public void update(Content content){
-        Set<Content> contents = this.getContent();
-        contents.add(content);
-
-        //update avg of rating
-        this.setAvg(content.getAvg());
-        //set new contents to rating
-        this.setContent(contents);
     }
 
     @Override

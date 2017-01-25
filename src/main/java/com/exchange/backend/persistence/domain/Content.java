@@ -11,29 +11,30 @@ import java.time.LocalDateTime;
  * Created by greenlucky on 1/24/17.
  */
 public class Content {
-    private By by;
+
+    private String by;
 
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime on;
 
     @Min(value = 1)
     @Max(value = 5)
-    private int value = 1;
+    private double value = 1.0;
 
     public Content() {
     }
 
-    public Content(By by, LocalDateTime on, int value) {
+    public Content(String by, LocalDateTime on, double value) {
         this.by = by;
         this.on = on;
         this.value = value;
     }
 
-    public By getBy() {
+    public String getBy() {
         return by;
     }
 
-    public void setBy(By by) {
+    public void setBy(String by) {
         this.by = by;
     }
 
@@ -45,22 +46,12 @@ public class Content {
         this.on = on;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
-    }
-
-
-    /**
-     * Calculates average value rating of user by
-     * value div 5
-     * @return average value after calculate
-     */
-    public double getAvg(){
-        return Double.valueOf(value)/5;
     }
 
     @Override
@@ -70,5 +61,20 @@ public class Content {
                 ", on=" + on +
                 ", value=" + value +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Content content = (Content) o;
+
+        return by != null ? by.equals(content.by) : content.by == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return by != null ? by.hashCode() : 0;
     }
 }
