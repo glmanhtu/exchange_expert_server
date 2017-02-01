@@ -1,14 +1,10 @@
 package com.exchange.backend.persistence.domain;
 
-import javax.persistence.Id;
 
 /**
  * Created by greenlucky on 1/31/17.
  */
 public class Status {
-
-    @Id
-    private int id;
 
     private String name;
 
@@ -17,18 +13,9 @@ public class Status {
     public Status() {
     }
 
-    public Status(int id, String name, String description) {
-        this.id = id;
+    public Status(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -48,25 +35,9 @@ public class Status {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Status status = (Status) o;
-
-        return id == status.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
-    }
-
-    @Override
     public String toString() {
         return "Status{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

@@ -4,12 +4,15 @@ import com.exchange.backend.persistence.converter.LocalDateTimeAttributeConverte
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Convert;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +20,7 @@ import java.util.Set;
  * Created by greenlucky on 1/24/17.
  */
 @Document(collection = "users")
-public class User implements Serializable{
+public class User implements Serializable, UserDetails {
 
     /** The Serial Version UID for Serializable classes */
     private static final long serialVersionUID = 1L;
@@ -138,6 +141,33 @@ public class User implements Serializable{
 
     public void setRating(Rating rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public String getUsername() {
+        return id;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        roles.forEach(ur->authorities.add(new Authority(ur)));
+        return authorities;
     }
 
     @Override

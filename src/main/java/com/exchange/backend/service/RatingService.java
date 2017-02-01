@@ -30,6 +30,7 @@ public class RatingService {
      * @return A Rating of user after rating
      */
     public Rating add(String forEmailUser, String byEmailUser, float star){
+
         User forUser = userRepository.findOne(forEmailUser);
 
         //repairs content

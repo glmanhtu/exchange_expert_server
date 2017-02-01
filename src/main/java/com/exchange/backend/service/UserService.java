@@ -5,6 +5,7 @@ import com.exchange.backend.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     /**
      * Creates new user given by user.
      * Id of user is email, if will checking email before create,
@@ -31,6 +35,8 @@ public class UserService {
      * @see User
      */
     public User create(User user){
+        String enscryptPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(enscryptPassword);
         return userRepository.save(user);
     }
 

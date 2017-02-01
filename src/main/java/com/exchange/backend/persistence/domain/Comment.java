@@ -3,17 +3,12 @@ package com.exchange.backend.persistence.domain;
 import com.exchange.backend.persistence.converter.LocalDateTimeAttributeConverter;
 
 import javax.persistence.Convert;
-import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
  * Created by greenlucky on 1/31/17.
  */
 public class Comment {
-
-    @Id
-    private long id;
 
     private String message;
 
@@ -22,17 +17,7 @@ public class Comment {
 
     private String by;
 
-    private Set<Comment> relies;
-
     public Comment() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getMessage() {
@@ -59,26 +44,12 @@ public class Comment {
         this.by = by;
     }
 
-    public Set<Comment> getRelies() {
-        return relies;
-    }
-
-    public void setRelies(Set<Comment> relies) {
-        this.relies = relies;
-    }
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Comment comment = (Comment) o;
-
-        return id == comment.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+    public String toString() {
+        return "Comment{" +
+                "message='" + message + '\'' +
+                ", commentDate=" + commentDate +
+                ", by='" + by + '\'' +
+                '}';
     }
 }

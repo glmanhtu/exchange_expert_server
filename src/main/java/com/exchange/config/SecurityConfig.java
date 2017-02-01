@@ -1,9 +1,11 @@
 package com.exchange.config;
 
+import com.exchange.backend.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,7 +20,7 @@ import java.util.List;
  */
 @Configurable
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * They key enscryption password
@@ -26,15 +28,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private static final String SALT = "kaj398498(*(&$&#&*&*#";
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12, new SecureRandom(SALT.getBytes()));
     }
 
     @Autowired
     private Environment env;
 
-    /** PUBLIC URLS */
-    private static final String[] PUBLIC_MATCHES={
+    @Autowired
+    private UserSecurityService userSecurityService;
+
+    /**
+     * PUBLIC URLS
+     */
+    private static final String[] PUBLIC_MATCHES = {
             "/webjars/**",
             "/css/**",
             "/js/**",
@@ -67,7 +74,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .logout().permitAll()
                 .and()
                 .rememberMe()
-                .rememberMeCookieName("REMEMBER_ME_SMARTLOTT")
-                .tokenValiditySeconds(31536000);;
+                .rememberMeCookieName("REMEMBER_ME_EXCHANGE_EXPERT")
+                .tokenValiditySeconds(31536000);
+        ;
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userSecurityService)
+                .passwordEncoder(passwordEncoder());
     }
 }
