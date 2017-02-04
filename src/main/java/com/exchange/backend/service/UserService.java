@@ -35,8 +35,8 @@ public class UserService {
      * @see User
      */
     public User create(User user){
-        String enscryptPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(enscryptPassword);
+        String encryptPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptPassword);
         return userRepository.save(user);
     }
 
