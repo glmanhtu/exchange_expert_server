@@ -1,0 +1,6 @@
+source "https://supermarket.getchef.com"
+
+cookbook 'apt'
+cookbook 'java'
+cookbook 'mongodb'
+cookbook 'elasticsearch'
