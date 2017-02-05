@@ -14,6 +14,10 @@ default_attributes({
   			"version"	=>	"5.1.2",
         "download_checksum" =>  "411091695ff9188b9394816f88f3328f478c4d21e2a80ce194660ee14b868475"
   		},
+      "user"  =>  {
+        "username"  =>  "vagrant",
+        "groupname" =>  "vagrant"
+      },
   		"configure"	=>	{
   			"allocated_memory"	=>	"256m",
   			"configuration"	=>	{
