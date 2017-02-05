@@ -35,9 +35,9 @@ public class Counter {
 
     @Override
     public String toString() {
-        return "Counter{" +
-                "id='" + id + '\'' +
-                ", seq=" + seq +
-                '}';
+        return "Counter{"
+                + "id='" + id + '\''
+                + ", seq=" + seq
+                + '}';
     }
 }

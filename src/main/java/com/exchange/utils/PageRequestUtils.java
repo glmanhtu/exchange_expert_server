@@ -10,15 +10,15 @@ import org.springframework.data.domain.Sort;
 public class PageRequestUtils {
 
     private PageRequestUtils() {
-        throw  new AssertionError("Not instantiable");
+        throw new AssertionError("Not instantiable");
     }
 
-    public static PageRequest createPageRequest(Pageable pageable){
+    public static PageRequest createPageRequest(Pageable pageable) {
         Sort localSort = new Sort(Sort.Direction.DESC);
         return new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), localSort);
     }
 
-    public static PageRequest createPageRequest(Pageable pageable, Sort sort){
+    public static PageRequest createPageRequest(Pageable pageable, Sort sort) {
         return new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sort);
     }
 

@@ -29,11 +29,11 @@ public class RatingService {
      * @param star
      * @return A Rating of user after rating
      */
-    public Rating add(String forEmailUser, String byEmailUser, float star){
+    public Rating add(String forEmailUser, String byEmailUser, float star) {
 
         User forUser = userRepository.findOne(forEmailUser);
 
-        //repairs content
+        // repairs content
         Content content = new Content();
         content.setBy(byEmailUser);
         content.setOn(LocalDateTime.now(Clock.systemDefaultZone()));
@@ -42,9 +42,9 @@ public class RatingService {
         Rating rating = new Rating();
         List<Content> contents = new ArrayList<>();
 
-        //checking rating have been existed in user
+        // checking rating have been existed in user
         // if exist rating then assign rating and contents
-        if(forUser.getRating()!= null) {
+        if (forUser.getRating() != null) {
             rating = forUser.getRating();
             contents = rating.getContent();
         }
@@ -52,11 +52,12 @@ public class RatingService {
         // checking whether user has been existed (rated) in list content of rating or not.
         // If user exist which will be update value of rating
         // otherwise add to contents of rating
-        if(contents.contains(content)) {
+        if (contents.contains(content)) {
             int index = contents.indexOf(content);
             contents.set(index, content);
-        }else
+        } else {
             contents.add(content);
+        }
 
         rating.setAvg(average(contents));
         rating.setContent(contents);
@@ -75,8 +76,9 @@ public class RatingService {
      */
     private double average(List<Content> contents) {
         double sum = 0.0;
-        for (Content content : contents)
-            sum+=content.getValue();
-        return sum/contents.size();
+        for (Content content : contents) {
+            sum += content.getValue();
+        }
+        return sum / contents.size();
     }
 }

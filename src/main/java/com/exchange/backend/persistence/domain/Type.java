@@ -5,39 +5,74 @@ package com.exchange.backend.persistence.domain;
  */
 public class Type {
 
+    /**
+     * The name of type class.
+     */
     private String name;
 
+    /**
+     * The description of class type.
+     */
     private String description;
 
+    /**
+     * Declares constructor with empty param.
+     */
     public Type() {
     }
 
-    public Type(String name, String description) {
+    /**
+     * Declares constructor of type given by name and description.
+     *
+     * @param name with style of String
+     * @param description with style of String
+     */
+    public Type(final String name, final String description) {
         this.name = name;
         this.description = description;
     }
 
-    public String getName() {
+    /**
+     * Gets The name of type class.
+     *
+     * @return name with style string
+     */
+    public final String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    /**
+     * Sets name given by name.
+     *
+     * @param name with style is string
+     */
+    public final void setName(final String name) {
         this.name = name;
     }
 
-    public String getDescription() {
+    /**
+     * Gets description.
+     *
+     * @return A description
+     */
+    public final String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    /**
+     * Sets description.
+     *
+     * @param description with style is string
+     */
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
     @Override
-    public String toString() {
-        return "Type{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public final String toString() {
+        return "Type{"
+                + ", name='" + name + '\''
+                + ", description='" + description + '\''
+                + '}';
     }
 }

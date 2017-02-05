@@ -1,6 +1,6 @@
 package com.exchange.backend.persistence.domain;
 
-import com.exchange.backend.persistence.converter.LocalDateTimeAttributeConverter;
+import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,10 +25,16 @@ public class User implements Serializable, UserDetails {
     /** The Serial Version UID for Serializable classes */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Id or email of user
+     */
     @Id
     @Email
     private String id;
 
+    /**
+     * Password
+     */
     private String password;
 
     private String firstName;
@@ -40,11 +46,11 @@ public class User implements Serializable, UserDetails {
 
     private String avatar;
 
-    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime createDate;
 
     //default 1: male; 0: female
-    private int gender=1;
+    private int gender = 1;
 
     private boolean enabled = true;
 
@@ -55,6 +61,10 @@ public class User implements Serializable, UserDetails {
     public User() {
     }
 
+    /**
+     *
+     * @return
+     */
     public String getId() {
         return id;
     }
@@ -172,25 +182,29 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthday=" + birthday +
-                ", avatar='" + avatar + '\'' +
-                ", createDate=" + createDate +
-                ", gender=" + gender +
-                ", enabled=" + enabled +
-                ", roles=" + roles +
-                ", rating=" + rating +
-                '}';
+        return "User{"
+                + "id='" + id + '\''
+                + ", password='" + password + '\''
+                + ", firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", birthday=" + birthday
+                + ", avatar='" + avatar + '\''
+                + ", createDate=" + createDate
+                + ", gender=" + gender
+                + ", enabled=" + enabled
+                + ", roles=" + roles
+                + ", rating=" + rating
+                + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         User user = (User) o;
 

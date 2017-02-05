@@ -29,7 +29,7 @@ public class GoodService {
      * @return A good after created
      * @see Good
      */
-    public Good create(Good good){
+    public Good create(Good good) {
        /* if(good != null)
             good.setId(counterService.getNextSequence("goods"));*/
         return goodRepository.save(good);
@@ -41,7 +41,7 @@ public class GoodService {
      * @return A good after updated
      * @see Good
      */
-    public Good update(Good good){
+    public Good update(Good good) {
         return goodRepository.save(good);
     }
 
@@ -50,7 +50,7 @@ public class GoodService {
      * @param goodId
      * @see Good
      */
-    public void delete(long goodId){
+    public void delete(long goodId) {
         goodRepository.delete(goodId);
     }
 
@@ -60,7 +60,7 @@ public class GoodService {
      * @return A good or null if not found
      * @see Good
      */
-    public Good getOne(long goodId){
+    public Good getOne(long goodId) {
         return goodRepository.findOne(goodId);
     }
 
@@ -68,7 +68,7 @@ public class GoodService {
      * Retrieves a list goods or null if not exist
      * @return A list of good or null if not exist
      */
-    public List<Good> getAll(){
+    public List<Good> getAll() {
         return goodRepository.findAll();
     }
 
@@ -77,7 +77,7 @@ public class GoodService {
      * @param pageable
      * @return A page of good or a page with null content if not exist
      */
-    public Page<Good> getAll(Pageable pageable){
+    public Page<Good> getAll(Pageable pageable) {
         return goodRepository.findAll(pageable);
     }
 
