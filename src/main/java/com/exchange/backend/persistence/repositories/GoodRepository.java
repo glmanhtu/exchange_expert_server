@@ -12,9 +12,9 @@ import java.util.List;
  * Created by greenlucky on 1/31/17.
  */
 @Repository
-public interface GoodRepository  extends PagingAndSortingRepository<Good, Long>{
+public interface GoodRepository  extends PagingAndSortingRepository<Good, Long> {
 
-    public List<Good> findAll();
+    List<Good> findAll();
 
-    public Page<Good> findAll(Pageable pageable);
+    Page<Good> findAll(Pageable pageable);
 }

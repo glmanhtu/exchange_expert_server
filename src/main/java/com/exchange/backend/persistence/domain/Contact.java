@@ -35,9 +35,9 @@ public class Contact {
 
     @Override
     public String toString() {
-        return "Contact{" +
-                "phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                '}';
+        return "Contact{"
+                + "phoneNumber='" + phoneNumber + '\''
+                + ", address='" + address + '\''
+                + '}';
     }
 }

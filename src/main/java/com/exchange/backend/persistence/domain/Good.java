@@ -1,6 +1,6 @@
 package com.exchange.backend.persistence.domain;
 
-import com.exchange.backend.persistence.converter.LocalDateTimeAttributeConverter;
+import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,216 +16,427 @@ import java.util.List;
  * Created by greenlucky on 1/24/17.
  */
 @Document(collection = "goods")
-public class Good implements Serializable{
+public class Good implements Serializable {
 
     /** The Serial Version UID for Serializable classes */
     private static final long serialVersionUID = 1L;
+    private static final short NUMBER_HASH = 32;
 
+    /**
+     * The Id of this Good.
+     */
     @Id
     private long id;
 
+    /**
+     * The title of this Good.
+     */
     private String title;
 
+    /**
+     * The slug to replace for id to get this good.
+     * Which has a style is abc-def-kcl, typicaly which will
+     * create from title.
+     */
     private String slug;
 
+    /**
+     * The content of this good.
+     */
     private String content;
 
+    /**
+     * The brief of this good.
+     */
     private String description;
 
+    /**
+     * The type of this good.
+     */
     private Type type;
 
-    private double price=0.0;
+    /**
+     * The price of this good.
+     */
+    private double price = 0.0;
 
+    /**
+     * The featured image of this good.
+     * Which is stored url of image.
+     */
     private String featuredImage;
 
-    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    /**
+     * The time to create this good.
+     * This method using LocalDateTimeConverter to
+     * convert from LocalDateTimeConverter to Timestamp
+     */
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime postDate;
 
-    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    /**
+     * The time to publish this good.
+     */
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime publishDate;
 
+    /**
+     * The status of this good.
+     */
     private Status status;
 
-    private boolean featured=false;
+    /**
+     * The variable whether the good shows in the home page.
+     */
+    private boolean featured = false;
 
+    /**
+     * The user who post this good.
+     */
     @DBRef
     @Column(name = "post_by")
     private User postBy;
 
+    /**
+     * List of image of this good.
+     */
     private List<Image> images = new ArrayList<>();
 
+    /**
+     * The locations can be trading this goods.
+     */
     private List<Location> locations = new ArrayList<>();
 
+    /**
+     * The comments of this goods.
+     */
     private List<Comment> comments = new ArrayList<>();
 
+    /**
+     * The contacts of this goods.
+     */
     private List<Contact> contacts = new ArrayList<>();
 
+    /**
+     * Declares constructor of this good.
+     */
     public Good() {
     }
 
-    public long getId() {
+    /**
+     * Gets id of this goods.
+     * @return Id of this goods.
+     */
+    public final long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    /**
+     * Sets id given by id.
+     * @param id of this goods with style is long.
+     */
+    public final void setId(long id) {
         this.id = id;
     }
 
-    public String getTitle() {
+    /**
+     * Gets title of this good.
+     * @return The title
+     */
+    public final String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    /**
+     * Sets title.
+     * @param title of this good.
+     */
+    public final void setTitle(final String title) {
         this.title = title;
     }
 
-    public String getSlug() {
+    /**
+     * @return The slug of this good.
+     */
+    public final String getSlug() {
         return slug;
     }
 
-    public void setSlug(String slug) {
+    /**
+     * Sets slug.
+     * @param slug the variable input to slug
+     */
+    public final void setSlug(final String slug) {
         this.slug = slug;
     }
 
-    public String getContent() {
+    /**
+     * Gets content of this goods.
+     * @return content with html format
+     */
+    public final String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    /**
+     * Sets content this goods.
+     * @param content the variable input with html format
+     */
+    public final void setContent(final String content) {
         this.content = content;
     }
 
-    public String getDescription() {
+    /**
+     * Gets description.
+     * @return The description.
+     */
+    public final String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    /**
+     * Sets description.
+     * @param description the variable input
+     */
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
-    public Type getType() {
+    /**
+     * Gets type.
+     * @return the type.
+     * @see Type
+     */
+    public final Type getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    /**
+     * Sets type.
+     * @param type the variable input
+     * @see Type
+     */
+    public final void setType(final Type type) {
         this.type = type;
     }
 
-    public double getPrice() {
+    /**
+     * Gets price of this goods.
+     * @return the price
+     */
+    public final double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    /**
+     * Sets price to this goods.
+     * @param price the variable input
+     */
+    public final void setPrice(final double price) {
         this.price = price;
     }
 
-    public LocalDateTime getPostDate() {
+    /**
+     * Gets postDate of this goods.
+     * @return The postDate with format LocalDateTime
+     * @see LocalDateTime
+     */
+    public final LocalDateTime getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(LocalDateTime postDate) {
+    /**
+     * Sets postDate given by postDate.
+     * @param postDate The variable input with LocalDateTime format
+     * @see LocalDateTime
+     */
+    public final void setPostDate(final LocalDateTime postDate) {
         this.postDate = postDate;
     }
 
-    public LocalDateTime getPublishDate() {
+    /**
+     * Gets publishDate.
+     * @return The publishDate with LocalDateTime format.
+     * @see LocalDateTime
+     */
+    public final LocalDateTime getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(LocalDateTime publishDate) {
+    /**
+     * Sets publishDate.
+     * @param publishDate The variable input
+     */
+    public final void setPublishDate(final LocalDateTime publishDate) {
         this.publishDate = publishDate;
     }
 
-    public Status getStatus() {
+    /**
+     * Gets status.
+     * @return The status with format is Status
+     * @see Status
+     */
+    public final Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    /**
+     * Sets status given by status
+     * @param status The variable input with status formation
+     * @see Status
+     */
+    public final void setStatus(final Status status) {
         this.status = status;
     }
 
-    public boolean isFeatured() {
+    /**
+     * Gets featured of this goods.
+     * @return boolean value.
+     */
+    public final boolean isFeatured() {
         return featured;
     }
 
-    public void setFeatured(boolean featured) {
+    /**
+     * Sets featured given by featured.
+     * @param featured The variable input with boolean value
+     */
+    public final void setFeatured(final boolean featured) {
         this.featured = featured;
     }
 
-    public User getPostBy() {
+    /**
+     * Gets PostBy who posted this goods.
+     * @return postBy with type is User
+     * @see User
+     */
+    public final User getPostBy() {
         return postBy;
     }
 
-    public void setPostBy(User postBy) {
+    /**
+     * Sets postBy given by postBy.
+     * @param postBy The variable input
+     */
+    public final void setPostBy(final User postBy) {
         this.postBy = postBy;
     }
 
-    public List<Image> getImages() {
+    /**
+     * Gets list of images of this goods.
+     * @return A list of image or null if not exist.
+     */
+    public final List<Image> getImages() {
         return images;
     }
 
-    public void setImages(List<Image> images) {
+    /**
+     * Sets image given by list image.
+     * @param images The variable input
+     */
+    public final void setImages(final List<Image> images) {
         this.images = images;
     }
 
-    public List<Location> getLocations() {
+    /**
+     * Gets locations of this goods.
+     * @return A list of location
+     * @see Location
+     */
+    public final List<Location> getLocations() {
         return locations;
     }
 
-    public void setLocations(List<Location> locations) {
+    /**
+     * Sets locations given by list of location.
+     * @param locations The variable input
+     */
+    public final void setLocations(final List<Location> locations) {
         this.locations = locations;
     }
 
-    public List<Comment> getComments() {
+    /**
+     * Gets comments of this goods.
+     * @return A list of comment
+     * @see Comment
+     */
+    public final List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    /**
+     * Sets comments given by list comments.
+     * @param comments the variable input
+     *                 @see Comment
+     */
+    public final void setComments(final List<Comment> comments) {
         this.comments = comments;
     }
 
-    public List<Contact> getContacts() {
+    /**
+     * Gets contacts of this goods.
+     * @return A list of contact
+     */
+    public final List<Contact> getContacts() {
         return contacts;
     }
 
-    public void setContacts(List<Contact> contacts) {
+    /**
+     * Sets contacts given by List of contacts
+     * @param contacts The variable input
+     * @see Contact
+     */
+    public final void setContacts(final List<Contact> contacts) {
         this.contacts = contacts;
     }
 
-    public String getFeaturedImage() {
+    /**
+     * Gets featured image of this goods.
+     * @return Featured image store url image of this good.
+     */
+    public final String getFeaturedImage() {
         return featuredImage;
     }
 
-    public void setFeaturedImage(String featuredImage) {
+    /**
+     * Sets featured image given by featured image.
+     * @param featuredImage The variable input
+     */
+    public final void setFeaturedImage(final String featuredImage) {
         this.featuredImage = featuredImage;
     }
 
     @Override
-    public String toString() {
-        return "Good{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", slug='" + slug + '\'' +
-                ", content='" + content + '\'' +
-                ", description='" + description + '\'' +
-                ", type=" + type +
-                ", price=" + price +
-                ", featuredImage='" + featuredImage + '\'' +
-                ", postDate=" + postDate +
-                ", publishDate=" + publishDate +
-                ", status=" + status +
-                ", featured=" + featured +
-                ", postBy=" + postBy +
-                ", images=" + images +
-                ", locations=" + locations +
-                ", comments=" + comments +
-                ", contacts=" + contacts +
-                '}';
+    public final String toString() {
+        return "Good{"
+                + "id=" + id
+                + ", title='" + title + '\''
+                + ", slug='" + slug + '\''
+                + ", content='" + content + '\''
+                + ", description='" + description + '\''
+                + ", type=" + type
+                + ", price=" + price
+                + ", featuredImage='" + featuredImage + '\''
+                + ", postDate=" + postDate
+                + ", publishDate=" + publishDate
+                + ", status=" + status
+                + ", featured=" + featured
+                + ", postBy=" + postBy
+                + ", images=" + images
+                + ", locations=" + locations
+                + ", comments=" + comments
+                + ", contacts=" + contacts
+                + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Good good = (Good) o;
 
@@ -234,6 +445,6 @@ public class Good implements Serializable{
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (id ^ (id >>> NUMBER_HASH));
     }
 }

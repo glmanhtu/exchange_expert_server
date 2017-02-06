@@ -1,6 +1,6 @@
 package com.exchange.backend.persistence.domain;
 
-import com.exchange.backend.persistence.converter.LocalDateTimeAttributeConverter;
+import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
 
 import javax.persistence.Convert;
 import javax.validation.constraints.Max;
@@ -14,7 +14,7 @@ public class Content {
 
     private String by;
 
-    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime on;
 
     @Min(value = 1)
@@ -56,25 +56,11 @@ public class Content {
 
     @Override
     public String toString() {
-        return "Content{" +
-                "by=" + by +
-                ", on=" + on +
-                ", value=" + value +
-                '}';
+        return "Content{"
+                + "by='" + by + '\''
+                + ", on=" + on
+                + ", value=" + value
+                + '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Content content = (Content) o;
-
-        return by != null ? by.equals(content.by) : content.by == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return by != null ? by.hashCode() : 0;
-    }
 }

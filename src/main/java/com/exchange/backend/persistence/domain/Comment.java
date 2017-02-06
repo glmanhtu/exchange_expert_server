@@ -1,6 +1,6 @@
 package com.exchange.backend.persistence.domain;
 
-import com.exchange.backend.persistence.converter.LocalDateTimeAttributeConverter;
+import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
 
 import javax.persistence.Convert;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ public class Comment {
 
     private String message;
 
-    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime commentDate;
 
     private String by;
@@ -46,10 +46,10 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment{" +
-                "message='" + message + '\'' +
-                ", commentDate=" + commentDate +
-                ", by='" + by + '\'' +
-                '}';
+        return "Comment{"
+                + "message='" + message + '\''
+                + ", commentDate=" + commentDate
+                + ", by='" + by + '\''
+                + '}';
     }
 }

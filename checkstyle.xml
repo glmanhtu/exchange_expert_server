@@ -40,7 +40,6 @@
     <module name="JavadocPackage">
         <property name="severity" value="ignore"/>
     </module>
-
     <!-- Checks whether files end with a new line.                        -->
     <!-- See http://checkstyle.sf.net/config_misc.html#NewlineAtEndOfFile -->
     <module name="NewlineAtEndOfFile"/>
@@ -159,7 +158,5 @@
         <module name="ArrayTypeStyle"/>
         <module name="TodoComment"/>
         <module name="UpperEll"/>
-
     </module>
-
 </module>

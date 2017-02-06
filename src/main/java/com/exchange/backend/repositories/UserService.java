@@ -1,4 +1,4 @@
-package com.exchange.backend.service;
+package com.exchange.backend.repositories;
 
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.repositories.UserRepository;
@@ -34,7 +34,7 @@ public class UserService {
      * @return A user after created
      * @see User
      */
-    public User create(User user){
+    public User create(User user) {
         String encryptPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptPassword);
         return userRepository.save(user);
@@ -49,7 +49,7 @@ public class UserService {
      * @return A user after updated
      * @see User
      */
-    public User update(User user){
+    public User update(User user) {
         return userRepository.save(user);
     }
 
@@ -59,7 +59,7 @@ public class UserService {
      * @return A list of user or null if not exist
      * @see User
      */
-    public List<User> getAll(){
+    public List<User> getAll() {
         return userRepository.findAll();
     }
 
@@ -72,7 +72,7 @@ public class UserService {
      * @see Pageable
      * @see User
      */
-    public Page<User> getAll(Pageable pageable){
+    public Page<User> getAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
@@ -82,7 +82,7 @@ public class UserService {
      * @param id
      * @return A user or null if not exist
      */
-    public User getOne(String id){
+    public User getOne(String id) {
         return userRepository.findOne(id);
     }
 }

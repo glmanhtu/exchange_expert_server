@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Rating {
 
-    private double avg=0.0;
+    private double avg = 0.0;
 
     private List<Content> contents = new ArrayList<>();
 
@@ -34,9 +34,9 @@ public class Rating {
 
     @Override
     public String toString() {
-        return "Rating{" +
-                "avg=" + avg +
-                ", contents=" + contents +
-                '}';
+        return "Rating{"
+                + "avg=" + avg
+                + ", contents=" + contents
+                + '}';
     }
 }

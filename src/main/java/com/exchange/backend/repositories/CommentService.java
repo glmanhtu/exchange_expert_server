@@ -1,4 +1,4 @@
-package com.exchange.backend.service;
+package com.exchange.backend.repositories;
 
 import com.exchange.backend.persistence.domain.Comment;
 import com.exchange.backend.persistence.domain.Good;
@@ -25,7 +25,7 @@ public class CommentService {
      * @see Good
      * @see Comment
      */
-    public void addComment(long goodId, String byUser, String message){
+    public void addComment(long goodId, String byUser, String message) {
 
         //create new comment given by goodId, byUser and message
         Comment comment = new Comment();
@@ -49,7 +49,7 @@ public class CommentService {
      * @see Good
      * @see Comment
      */
-    public void updateComment(long goodId, int index,String newMessage){
+    public void updateComment(long goodId, int index, String newMessage) {
 
         Good good = goodService.getOne(goodId);
         good.getComments().get(index).setMessage(newMessage);
@@ -64,7 +64,7 @@ public class CommentService {
      * @param index
      * @see Good
      */
-    public void deleteComment(long goodId, int index){
+    public void deleteComment(long goodId, int index) {
         Good good = goodService.getOne(goodId);
         good.getComments().remove(index);
 

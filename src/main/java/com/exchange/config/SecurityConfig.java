@@ -1,6 +1,6 @@
 package com.exchange.config;
 
-import com.exchange.backend.service.UserSecurityService;
+import com.exchange.backend.repositories.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
@@ -26,10 +26,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * They key enscryption password
      */
     private static final String SALT = "kaj398498(*(&$&#&*&*#";
+    private static final int TOKEN_VALIDITY_SECONDS = 31536000;
+    private static final int NUMBER_STRENGTH = 12;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12, new SecureRandom(SALT.getBytes()));
+        return new BCryptPasswordEncoder(NUMBER_STRENGTH, new SecureRandom(SALT.getBytes()));
     }
 
     @Autowired
@@ -75,8 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe()
                 .rememberMeCookieName("REMEMBER_ME_EXCHANGE_EXPERT")
-                .tokenValiditySeconds(31536000);
-        ;
+                .tokenValiditySeconds(TOKEN_VALIDITY_SECONDS);
     }
 
     @Autowired
