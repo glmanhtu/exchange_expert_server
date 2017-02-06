@@ -1,10 +1,5 @@
 package com.exchange.utils;
 
-import com.exchange.backend.persistence.domain.User;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-
 /**
  * Created by greenlucky on 1/31/17.
  */
