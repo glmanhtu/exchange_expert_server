@@ -12,9 +12,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by greenlucky on 1/24/17.
@@ -54,7 +52,7 @@ public class User implements Serializable, UserDetails {
 
     private boolean enabled = true;
 
-    private Set<String> roles = new HashSet<>();
+    private List<String> roles = new ArrayList<>();
 
     private Rating rating;
 
@@ -129,11 +127,11 @@ public class User implements Serializable, UserDetails {
         this.gender = gender;
     }
 
-    public Set<String> getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
 

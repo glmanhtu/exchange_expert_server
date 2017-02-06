@@ -3,6 +3,7 @@ package com.exchange.utils;
 import com.exchange.backend.persistence.domain.User;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +21,7 @@ public class UserUtils {
     }
 
     public static User createUser(String name) {
-        Set<String> roles = new HashSet<>();
-        roles.add("ROLE_ADMIN");
+
         User user = new User();
         user.setId(name + "@gmail.com");
         user.setFirstName(name);
@@ -29,7 +29,7 @@ public class UserUtils {
         user.setBirthday(LocalDate.of(YEAR, MONTH, DAY));
         user.setGender(1);
         user.setPassword("123456");
-        user.setRoles(roles);
+        user.setRoles(Arrays.asList("ROLE_ADMIN"));
         return user;
     }
 }

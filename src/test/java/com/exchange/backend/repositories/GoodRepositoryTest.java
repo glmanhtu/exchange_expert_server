@@ -1,7 +1,8 @@
-package com.exchange.backend.service;
+package com.exchange.backend.repositories;
 
 import com.exchange.ExchangeApplication;
 import com.exchange.backend.persistence.domain.*;
+import com.exchange.backend.persistence.repositories.GoodRepository;
 import com.exchange.utils.UserUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,70 +25,56 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(ExchangeApplication.class)
-public class GoodServiceTest {
+public class GoodRepositoryTest {
 
     @Autowired
-    private GoodService goodService;
+    private GoodRepository goodRepository;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CommentService commentService;
 
     @Rule
     public TestName testName = new TestName();
 
     @Before
     public void before() throws Exception{
-        Assert.assertNotNull(goodService);
-        Assert.assertNotNull(userService);
+        Assert.assertNotNull(goodRepository);
         createGood();
     }
 
     @Test
     public void create() throws Exception {
 
-        Good aspectGood = goodService.getOne(1);
+        Good aspectGood = goodRepository.findOne(Long.valueOf(1));
 
         Assert.assertNotNull(aspectGood);
     }
 
     @Test
     public void update() throws Exception{
-        Good aspectGood = goodService.getOne(1);
+        Good aspectGood = goodRepository.findOne(Long.valueOf(1));
         aspectGood.setFeatured(false);
-        goodService.update(aspectGood);
+        goodRepository.save(aspectGood);
         Assert.assertEquals("The featured of good must be false", false, aspectGood.isFeatured());
     }
 
     @Test
-    public void addComment() throws Exception{
-        commentService.addComment(1, "admin@gmail.com", "This is the first comment to good");
-        Good aspectGood = goodService.getOne(1);
-
-        Assert.assertEquals("Number of comment must be equals 1",aspectGood.getComments().size(),1);
-
-        //update comment
-        String msg = "This is updated comment to good";
-        commentService.updateComment(1,0,msg);
-        Good actualGood = goodService.getOne(1);
-        Assert.assertEquals("Number of comment must be equals: "+msg,actualGood.getComments().get(0).getMessage(),msg);
-
-        //delete comment
-        commentService.deleteComment(1,0);
-        Good deleteGood = goodService.getOne(1);
-        Assert.assertEquals("The size of comment must be equals 0",0,deleteGood.getComments().size());
+    public void delete() throws Exception{
+        goodRepository.delete(Long.valueOf(1));
+        Good aspectGood = goodRepository.findOne(Long.valueOf(1));
+        Assert.assertNull(aspectGood);
     }
 
     @Test
-    public void delete() throws Exception{
+    public void addComment() throws Exception{
+        Comment comment = createComment(testName.getMethodName(), null);
+        Good good = goodRepository.findOne(Long.valueOf(1));
+        good.setComments(Arrays.asList(comment));
+        goodRepository.save(good);
 
+        Good actualGood = goodRepository.findOne(Long.valueOf(1));
+        Assert.assertEquals("The comment of good must be Arrays of comment", actualGood.getComments().size(), 1);
     }
 
     private void createGood(){
-        User user = UserUtils.createUser(testName.getMethodName());
-        user = userService.create(user);
 
         Good good = new Good();
         good.setId(Long.valueOf(1));
@@ -95,7 +83,6 @@ public class GoodServiceTest {
         good.setPostDate(LocalDateTime.now(Clock.systemDefaultZone()));
         good.setDescription("This is a test of good.");
         good.setContent("This is test content of the good, I just write sample text...");
-        good.setPostBy(user);
 
         //Add location
         List<Location> locations = new ArrayList<>();
@@ -113,7 +100,7 @@ public class GoodServiceTest {
 
         good.setContacts(contacts);
 
-        good = goodService.create(good);
+        good = goodRepository.save(good);
     }
 
     private Comment createComment(String str, String commentBy){
