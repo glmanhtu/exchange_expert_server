@@ -1,7 +1,6 @@
 package com.exchange.backend.persistence.domain;
 
 import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
@@ -19,8 +18,6 @@ public class Good extends ElasticGood implements Serializable {
 
     /** The Serial Version UID for Serializable classes */
     private static final long serialVersionUID = 1L;
-
-    private static final short NUMBER_HASH = 32;
 
     /**
      * The featured image of this good.
@@ -164,8 +161,5 @@ public class Good extends ElasticGood implements Serializable {
         this.featuredImage = featuredImage;
     }
 
-    @Override
-    public int hashCode() {
-        return (int) (getId() ^ (getId() >>> NUMBER_HASH));
-    }
+
 }

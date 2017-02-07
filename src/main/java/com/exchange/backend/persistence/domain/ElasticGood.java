@@ -15,6 +15,9 @@ import java.util.List;
  * Created by optimize on 2/7/17.
  */
 public class ElasticGood implements Serializable {
+
+    private static final short NUMBER_HASH = 32;
+
     /**
      * The Id of this Good.
      */
@@ -230,5 +233,10 @@ public class ElasticGood implements Serializable {
         Good good = (Good) o;
 
         return getId() == good.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (getId() ^ (getId() >>> NUMBER_HASH));
     }
 }
