@@ -1,7 +1,9 @@
 package com.exchange.config;
 
+import com.mongodb.Mongo;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
@@ -11,4 +13,5 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories("com.exchange.backend.persistence.repositories")
 @PropertySource("config/application-common.properties")
 public class ApplicationConfig {
+
 }

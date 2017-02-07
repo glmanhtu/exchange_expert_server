@@ -31,13 +31,7 @@ default_attributes({
   		}
   	},
   	"mongodb" => {
-  		"config"	=>	{
-  			"auth"	=>	true
-  		},
-  		"admin"	=>	{
-  			"username"	=>	"admin",
-  			"password"	=>	"admin123"
-  		}
+  		"bind_ip"   =>  "0.0.0.0"
   	}
 })
 
