@@ -1,6 +1,6 @@
 package com.exchange.config;
 
-import com.exchange.backend.repositories.UserSecurityService;
+import com.exchange.backend.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
