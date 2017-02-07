@@ -41,11 +41,6 @@ public class Good implements Serializable {
     private String slug;
 
     /**
-     * The content of this good.
-     */
-    private String content;
-
-    /**
      * The brief of this good.
      */
     private String description;
@@ -168,22 +163,6 @@ public class Good implements Serializable {
      */
     public final void setSlug(final String slug) {
         this.slug = slug;
-    }
-
-    /**
-     * Gets content of this goods.
-     * @return content with html format
-     */
-    public final String getContent() {
-        return content;
-    }
-
-    /**
-     * Sets content this goods.
-     * @param content the variable input with html format
-     */
-    public final void setContent(final String content) {
-        this.content = content;
     }
 
     /**
@@ -412,7 +391,6 @@ public class Good implements Serializable {
                 + "id=" + id
                 + ", title='" + title + '\''
                 + ", slug='" + slug + '\''
-                + ", content='" + content + '\''
                 + ", description='" + description + '\''
                 + ", type=" + type
                 + ", price=" + price

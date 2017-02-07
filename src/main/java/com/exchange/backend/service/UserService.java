@@ -1,4 +1,4 @@
-package com.exchange.backend.repositories;
+package com.exchange.backend.service;
 
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.repositories.UserRepository;
@@ -41,7 +41,7 @@ public class UserService {
     }
 
     /**
-     * Updates user given by user. If user does not
+     * Updates user given by user. If user does not.
      * exist User will be create. So before using this method
      * you should check user whether exist or not
      *
@@ -54,7 +54,7 @@ public class UserService {
     }
 
     /**
-     * Retrieves all user exist all database or null if not exist
+     * Retrieves all user exist all database or null if not exist.
      *
      * @return A list of user or null if not exist
      * @see User
@@ -77,12 +77,51 @@ public class UserService {
     }
 
     /**
-     * Retrieves a user given by id of user (email) or null if not exist
+     * Retrieves a user given by id of user (email) or null if not exist.
      *
      * @param id
      * @return A user or null if not exist
      */
-    public User getOne(String id) {
+    public User getUser(String id) {
         return userRepository.findOne(id);
+    }
+
+    /**
+     * Gets users giveny by list user ids.
+     *
+     * @param ids
+     * @return A page of user contents a list of user or a list of user is null if not found
+     */
+    public Page<User> getUsers(List<String> ids) {
+        return userRepository.findByIdIn(ids);
+    }
+
+    /**
+     * Enables user
+     * @param user
+     * @return A user after enabled
+     */
+    public User enabledUser(User user) {
+        return changeStatus(user, true);
+    }
+
+    /**
+     * Disable user
+     * @param user
+     * @return A user after disable
+     */
+    public User disabledUser(User user) {
+        return changeStatus(user, false);
+    }
+
+    /**
+     * Changes status user given by user and status
+     * @param user
+     * @param status is true or false
+     * @return A user after changed status
+     */
+    private User changeStatus(User user, boolean status) {
+        user.setEnabled(true);
+        return userRepository.save(user);
     }
 }

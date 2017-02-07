@@ -18,4 +18,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
 
     Page<User> findAll(Pageable pageable);
 
+    Page<User> findById(String id);
+
+    Page<User> findByIdIn(List<String> ids);
 }
