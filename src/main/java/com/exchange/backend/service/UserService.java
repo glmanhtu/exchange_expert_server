@@ -1,4 +1,4 @@
-package com.exchange.backend.repositories;
+package com.exchange.backend.service;
 
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.repositories.UserRepository;
