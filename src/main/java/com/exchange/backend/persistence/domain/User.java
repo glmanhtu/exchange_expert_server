@@ -34,14 +34,18 @@ public class User implements Serializable, UserDetails {
     @Email
     private String id;
 
+    private String firstName;
+
+    private String lastName;
+
+    //default 1: male; 0: female
+    private int gender = 1;
+
+    private boolean enabled = true;
     /**
      * Password
      */
     private String password;
-
-    private String firstName;
-
-    private String lastName;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthday;
@@ -51,36 +55,20 @@ public class User implements Serializable, UserDetails {
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime createDate;
 
-    //default 1: male; 0: female
-    private int gender = 1;
-
-    private boolean enabled = true;
-
     private List<String> roles = new ArrayList<>();
 
     private Rating rating;
 
     public User() {
+
     }
 
-    /**
-     *
-     * @return
-     */
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -98,6 +86,32 @@ public class User implements Serializable, UserDetails {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     public LocalDate getBirthday() {
         return birthday;
@@ -123,13 +137,7 @@ public class User implements Serializable, UserDetails {
         this.createDate = createDate;
     }
 
-    public int getGender() {
-        return gender;
-    }
 
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
 
     public List<String> getRoles() {
         return roles;
@@ -139,13 +147,7 @@ public class User implements Serializable, UserDetails {
         this.roles = roles;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 
     public Rating getRating() {
         return rating;
@@ -157,7 +159,7 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        return id;
+        return this.id;
     }
 
     @Override

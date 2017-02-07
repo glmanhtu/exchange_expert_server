@@ -1,7 +1,6 @@
 package com.exchange.backend.persistence.domain;
 
 import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
@@ -14,46 +13,14 @@ import java.util.List;
 /**
  * Created by greenlucky on 1/24/17.
  */
+
 @Document(collection = "goods")
 public class Good extends ElasticGood implements Serializable {
 
-    /** The Serial Version UID for Serializable classes */
+    /**
+     * The Serial Version UID for Serializable classes
+     */
     private static final long serialVersionUID = 1L;
-
-    private static final short NUMBER_HASH = 32;
-
-    /**
-     * The Id of this Good.
-     */
-    @Id
-    private long id;
-
-    /**
-     * The title of this Good.
-     */
-    private String title;
-
-    /**
-     * The slug to replace for id to get this good.
-     * Which has a style is abc-def-kcl, typicaly which will
-     * create from title.
-     */
-    private String slug;
-
-    /**
-     * The brief of this good.
-     */
-    private String description;
-
-    /**
-     * The type of this good.
-     */
-    private Type type;
-
-    /**
-     * The price of this good.
-     */
-    private double price = 0.0;
 
     /**
      * The featured image of this good.
@@ -89,5 +56,123 @@ public class Good extends ElasticGood implements Serializable {
      */
     private List<Contact> contacts = new ArrayList<>();
 
+    /**
+     * Declares constructor of this good.
+     */
+    public Good() {
+    }
 
+    /**
+     * Gets publishDate.
+     *
+     * @return The publishDate with LocalDateTime format.
+     * @see LocalDateTime
+     */
+    public final LocalDateTime getPublishDate() {
+        return publishDate;
+    }
+
+    /**
+     * Sets publishDate.
+     *
+     * @param publishDate The variable input
+     */
+    public final void setPublishDate(final LocalDateTime publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    /**
+     * Gets status.
+     *
+     * @return The status with format is Status
+     * @see Status
+     */
+    public final Status getStatus() {
+        return status;
+    }
+
+    /**
+     * Sets status given by status
+     *
+     * @param status The variable input with status formation
+     * @see Status
+     */
+    public final void setStatus(final Status status) {
+        this.status = status;
+    }
+
+    /**
+     * Gets list of images of this goods.
+     *
+     * @return A list of image or null if not exist.
+     */
+    public final List<Image> getImages() {
+        return images;
+    }
+
+    /**
+     * Sets image given by list image.
+     *
+     * @param images The variable input
+     */
+    public final void setImages(final List<Image> images) {
+        this.images = images;
+    }
+
+    /**
+     * Gets comments of this goods.
+     *
+     * @return A list of comment
+     * @see Comment
+     */
+    public final List<Comment> getComments() {
+        return comments;
+    }
+
+    /**
+     * Sets comments given by list comments.
+     *
+     * @param comments the variable input
+     * @see Comment
+     */
+    public final void setComments(final List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    /**
+     * Gets contacts of this goods.
+     *
+     * @return A list of contact
+     */
+    public final List<Contact> getContacts() {
+        return contacts;
+    }
+
+    /**
+     * Sets contacts given by List of contacts
+     *
+     * @param contacts The variable input
+     * @see Contact
+     */
+    public final void setContacts(final List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    /**
+     * Gets featured image of this goods.
+     *
+     * @return Featured image store url image of this good.
+     */
+    public final String getFeaturedImage() {
+        return featuredImage;
+    }
+
+    /**
+     * Sets featured image given by featured image.
+     *
+     * @param featuredImage The variable input
+     */
+    public final void setFeaturedImage(final String featuredImage) {
+        this.featuredImage = featuredImage;
+    }
 }

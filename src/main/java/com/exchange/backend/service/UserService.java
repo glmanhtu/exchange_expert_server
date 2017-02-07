@@ -92,8 +92,8 @@ public class UserService {
      * @param ids
      * @return A page of user contents a list of user or a list of user is null if not found
      */
-    public Page<User> getUsers(List<String> ids) {
-        return userRepository.findByIdIn(ids);
+    public Page<User> getUsers(List<String> ids, Pageable pageable) {
+        return userRepository.findByIdIn(ids, pageable);
     }
 
     /**

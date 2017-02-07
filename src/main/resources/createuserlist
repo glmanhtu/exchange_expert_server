@@ -1,0 +1,55 @@
+ public void createListUser() {
+        System.out.println("Creating user list");
+        for (int i = 0; i < 20; i++) {
+
+            String name = "member_" + (i + 1);
+            String email = name + "@gmail.com";
+
+
+            User user = UserUtils.createUser(email,name);
+
+            user = userService.create(user);
+            System.out.println("Created user" + user);
+            //add rating
+            Random random = new Random();
+            int ratingValue = random.nextInt(5);
+            String ratingBy = UUID.randomUUID().toString().substring(0,8) + "@gmail.com";
+            ratingService.add(email, ratingBy, ratingValue);
+
+            ratingValue = random.nextInt(4);
+            ratingBy = UUID.randomUUID().toString().substring(0,8) + "@gmail.com";
+            ratingService.add(email, ratingBy, ratingValue);
+        }
+    }
+
+    public void createGoods() {
+        System.out.println("creating goods");
+        for (int i = 0; i < 20; i++) {
+
+            String name = "member_" + (i+1);
+            String email = name + "@gmail.com";
+
+
+            User user = UserUtils.createUser(email,name);
+
+            String title = "This is title of good "+ (i+1);
+            long goodId = (i+1);
+            Good good = GoodUtils.createGood(goodId,title,user);
+
+            goodService.create(good);
+
+            Random generation = new Random();
+
+            String commentBy =  "member_" + generation.nextInt(20);
+            commentService.addComment(goodId, commentBy,"This is comment for good");
+
+            commentBy =  "member_" + generation.nextInt(20);
+            commentService.addComment(goodId, commentBy,"This is comment for good");
+
+            commentBy =  "member_" + generation.nextInt(20);
+            commentService.addComment(goodId, commentBy,"This is comment for good");
+
+            commentBy =  "member_" + generation.nextInt(20);
+            commentService.addComment(goodId, commentBy,"This is comment for good");
+        }
+    }
