@@ -25,7 +25,7 @@ public class CommentService {
      * @see Good
      * @see Comment
      */
-    public void addComment(long goodId, String byUser, String message) {
+    public void addComment(String goodId, String byUser, String message) {
 
         //create new comment given by goodId, byUser and message
         Comment comment = new Comment();
@@ -49,7 +49,7 @@ public class CommentService {
      * @see Good
      * @see Comment
      */
-    public void updateComment(long goodId, int index, String newMessage) {
+    public void updateComment(String goodId, int index, String newMessage) {
 
         Good good = goodService.getOne(goodId);
         good.getComments().get(index).setMessage(newMessage);
@@ -64,7 +64,7 @@ public class CommentService {
      * @param index
      * @see Good
      */
-    public void deleteComment(long goodId, int index) {
+    public void deleteComment(String goodId, int index) {
         Good good = goodService.getOne(goodId);
         good.getComments().remove(index);
 
