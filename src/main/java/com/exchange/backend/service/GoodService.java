@@ -1,13 +1,19 @@
 package com.exchange.backend.service;
 
+import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
+import com.exchange.backend.persistence.repositories.ElasticGoodRepository;
 import com.exchange.backend.persistence.repositories.GoodRepository;
+import org.apache.lucene.search.Collector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by greenlucky on 1/31/17.
@@ -15,13 +21,16 @@ import java.util.List;
  * @version %I%D%
  */
 @Service
-public class GoodService {
+public class GoodService implements SearchEverything<Good> {
 
     @Autowired
     private GoodRepository goodRepository;
 
     @Autowired
     private CounterService counterService;
+
+    @Autowired
+    private ElasticGoodRepository elasticGoodRepository;
 
     /**
      * Creates a new good given by good
@@ -79,4 +88,13 @@ public class GoodService {
         return goodRepository.findAll(pageable);
     }
 
+    @Override
+    public List<Good> findAll(Predicate predicate) {
+        List<ElasticGood> elasticGoods = elasticGoodRepository.findAll(predicate);
+        List<String> goodIds = new ArrayList<>(elasticGoods.size());
+        for (ElasticGood elasticGood : elasticGoods) {
+            goodIds.add(elasticGood.getId());
+        }
+        return goodRepository.findByIdsIn(goodIds);
+    }
 }

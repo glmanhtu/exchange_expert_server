@@ -1,6 +1,7 @@
 package com.exchange.backend.persistence.domain;
 
 import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.persistence.Column;
@@ -14,15 +15,14 @@ import java.util.List;
 /**
  * Created by optimize on 2/7/17.
  */
+@Document(indexName = "good")
 public class ElasticGood implements Serializable {
-
-    private static final int HASH_CODE = 32;
 
     /**
      * The Id of this Good.
      */
     @Id
-    private long id;
+    private String id;
 
     /**
      * The title of this Good.
@@ -76,7 +76,7 @@ public class ElasticGood implements Serializable {
      * Gets id of this goods.
      * @return Id of this goods.
      */
-    public final long getId() {
+    public final String getId() {
         return id;
     }
 
@@ -84,7 +84,7 @@ public class ElasticGood implements Serializable {
      * Sets id given by id.
      * @param id of this goods with style is long.
      */
-    public final void setId(long id) {
+    public final void setId(String id) {
         this.id = id;
     }
 
@@ -232,11 +232,11 @@ public class ElasticGood implements Serializable {
 
         ElasticGood that = (ElasticGood) o;
 
-        return getId() == that.getId();
+        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
     }
 
     @Override
     public int hashCode() {
-        return (int) (getId() ^ (getId() >>> HASH_CODE));
+        return getId() != null ? getId().hashCode() : 0;
     }
 }
