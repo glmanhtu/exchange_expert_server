@@ -1,7 +1,5 @@
 package com.exchange.backend.service;
 
-import com.exchange.backend.persistence.domain.Good;
-
 import javax.persistence.criteria.Predicate;
 import java.util.List;
 
