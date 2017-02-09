@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  * @version %I%D%
  */
 @Service
-public class UserService {
+public class UserService implements SearchEverything<User> {
 
     @Autowired
     private UserRepository userRepository;
@@ -84,5 +85,10 @@ public class UserService {
      */
     public User getOne(String id) {
         return userRepository.findOne(id);
+    }
+
+    @Override
+    public List<User> findAll(Predicate predicate) {
+        return null;
     }
 }
