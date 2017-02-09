@@ -26,6 +26,8 @@ default_attributes({
   				"http.port"	=>	9201,
   				"network.bind_host"	=>	'0',
   				"network.host"	=>	"0.0.0.0",
+  				"http.cors.enabled" =>  true,
+  				"http.cors.allow-origin"    =>  "*",
           "path.repo" =>  ["/exchange_expert/elasticsearch_data"]
   			}
   		}

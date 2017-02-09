@@ -48,7 +48,7 @@ public class GoodService {
      * @param goodId
      * @see Good
      */
-    public void delete(long goodId) {
+    public void delete(String goodId) {
         goodRepository.delete(goodId);
     }
 
@@ -58,7 +58,7 @@ public class GoodService {
      * @return A good or null if not found
      * @see Good
      */
-    public Good getOne(long goodId) {
+    public Good getOne(String goodId) {
         return goodRepository.findOne(goodId);
     }
 
