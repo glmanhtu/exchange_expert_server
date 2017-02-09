@@ -25,9 +25,6 @@ public class GoodService implements SearchEverything<Good> {
     private GoodRepository goodRepository;
 
     @Autowired
-    private CounterService counterService;
-
-    @Autowired
     private ElasticGoodRepository elasticGoodRepository;
 
     /**
@@ -93,6 +90,6 @@ public class GoodService implements SearchEverything<Good> {
         for (ElasticGood elasticGood : elasticGoods) {
             goodIds.add(elasticGood.getId());
         }
-        return goodRepository.findByIdsIn(goodIds);
+        return goodRepository.findByIdIn(goodIds);
     }
 }

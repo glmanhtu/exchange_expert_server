@@ -10,5 +10,6 @@ import java.util.List;
  * Created by optimize on 2/8/17.
  */
 public interface ElasticGoodRepository extends ElasticsearchRepository<ElasticGood, String> {
+
     List<ElasticGood> findAll(Predicate predicate);
 }
