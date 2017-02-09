@@ -14,7 +14,7 @@ import java.util.List;
  * Created by greenlucky on 1/24/17.
  */
 @Document(collection = "goods")
-public class Good extends ElasticGood implements Serializable {
+public class Good extends GoodAbstract implements Serializable {
 
     /** The Serial Version UID for Serializable classes */
     private static final long serialVersionUID = 1L;
@@ -160,6 +160,7 @@ public class Good extends ElasticGood implements Serializable {
     public final void setFeaturedImage(final String featuredImage) {
         this.featuredImage = featuredImage;
     }
+
 
 
 }

@@ -87,8 +87,50 @@ public class UserService implements SearchEverything<User> {
         return userRepository.findOne(id);
     }
 
+    /**
+     * Gets users given by ids
+     * @param ids a list of id of user
+     * @return A page content lis of User or list null if not found
+     */
+    public Page<User> getByIds(List<String> ids, Pageable pageable) {
+        return userRepository.findByIdIn(ids, pageable);
+    }
+
+
+    /**
+     * Enables user given by userId
+     * @param userId
+     * @return A user after enabled
+     */
+    public User enableUser(String userId) {
+       return changeStatus(userId, true);
+    }
+
+    /**
+     * Disabled user
+     * @param userId
+     * @return A user after disabled
+     */
+    public User disableUser(String userId) {
+       return changeStatus(userId, false);
+    }
+
     @Override
     public List<User> findAll(Predicate predicate) {
         return null;
     }
+
+    /**
+     * Changes status user given by userId and st
+     * @param userId
+     * @param st true and false
+     * @return A user after changed
+     */
+    private User changeStatus(String userId, boolean st) {
+        User user = userRepository.findOne(userId);
+        user.setEnabled(st);
+        return userRepository.save(user);
+    }
+
+
 }
