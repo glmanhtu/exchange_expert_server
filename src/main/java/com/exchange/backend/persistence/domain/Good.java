@@ -13,10 +13,13 @@ import java.util.List;
 /**
  * Created by greenlucky on 1/24/17.
  */
+
 @Document(collection = "goods")
 public class Good extends ElasticGood implements Serializable {
 
-    /** The Serial Version UID for Serializable classes */
+    /**
+     * The Serial Version UID for Serializable classes
+     */
     private static final long serialVersionUID = 1L;
 
     /**
@@ -61,6 +64,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Gets publishDate.
+     *
      * @return The publishDate with LocalDateTime format.
      * @see LocalDateTime
      */
@@ -70,6 +74,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Sets publishDate.
+     *
      * @param publishDate The variable input
      */
     public final void setPublishDate(final LocalDateTime publishDate) {
@@ -78,6 +83,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Gets status.
+     *
      * @return The status with format is Status
      * @see Status
      */
@@ -87,6 +93,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Sets status given by status
+     *
      * @param status The variable input with status formation
      * @see Status
      */
@@ -96,6 +103,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Gets list of images of this goods.
+     *
      * @return A list of image or null if not exist.
      */
     public final List<Image> getImages() {
@@ -104,6 +112,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Sets image given by list image.
+     *
      * @param images The variable input
      */
     public final void setImages(final List<Image> images) {
@@ -112,6 +121,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Gets comments of this goods.
+     *
      * @return A list of comment
      * @see Comment
      */
@@ -121,8 +131,9 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Sets comments given by list comments.
+     *
      * @param comments the variable input
-     *                 @see Comment
+     * @see Comment
      */
     public final void setComments(final List<Comment> comments) {
         this.comments = comments;
@@ -130,6 +141,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Gets contacts of this goods.
+     *
      * @return A list of contact
      */
     public final List<Contact> getContacts() {
@@ -138,6 +150,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Sets contacts given by List of contacts
+     *
      * @param contacts The variable input
      * @see Contact
      */
@@ -147,6 +160,7 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Gets featured image of this goods.
+     *
      * @return Featured image store url image of this good.
      */
     public final String getFeaturedImage() {
@@ -155,11 +169,10 @@ public class Good extends ElasticGood implements Serializable {
 
     /**
      * Sets featured image given by featured image.
+     *
      * @param featuredImage The variable input
      */
     public final void setFeaturedImage(final String featuredImage) {
         this.featuredImage = featuredImage;
     }
-
-
 }
