@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ElasticGood implements Serializable {
 
-    private static final short NUMBER_HASH = 32;
+    private static final int HASH_CODE = 32;
 
     /**
      * The Id of this Good.
@@ -226,17 +226,17 @@ public class ElasticGood implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof ElasticGood)) {
             return false;
         }
 
-        Good good = (Good) o;
+        ElasticGood that = (ElasticGood) o;
 
-        return getId() == good.getId();
+        return getId() == that.getId();
     }
 
     @Override
     public int hashCode() {
-        return (int) (getId() ^ (getId() >>> NUMBER_HASH));
+        return (int) (getId() ^ (getId() >>> HASH_CODE));
     }
 }

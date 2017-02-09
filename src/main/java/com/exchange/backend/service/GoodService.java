@@ -30,8 +30,6 @@ public class GoodService {
      * @see Good
      */
     public Good create(Good good) {
-       /* if(good != null)
-            good.setId(counterService.getNextSequence("goods"));*/
         return goodRepository.save(good);
     }
 
