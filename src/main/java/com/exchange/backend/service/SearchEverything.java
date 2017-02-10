@@ -1,11 +1,12 @@
 package com.exchange.backend.service;
 
-import javax.persistence.criteria.Predicate;
+import com.exchange.utils.search.Specification;
+
 import java.util.List;
 
 /**
  * Created by optimize on 2/9/17.
  */
 public interface SearchEverything<T> {
-    List<T> findAll(Predicate predicate);
+    List<T> findAll(Specification<T> spec);
 }
