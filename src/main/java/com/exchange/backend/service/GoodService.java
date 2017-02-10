@@ -4,12 +4,12 @@ import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.repositories.ElasticGoodRepository;
 import com.exchange.backend.persistence.repositories.GoodRepository;
+import com.exchange.utils.search.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,8 +87,8 @@ public class GoodService implements SearchEverything<Good> {
     }
 
     @Override
-    public List<Good> findAll(Predicate predicate) {
-        List<ElasticGood> elasticGoods = elasticGoodRepository.findAll(predicate);
+    public List<Good> findAll(Specification<Good> spec) {
+        List<ElasticGood> elasticGoods = elasticGoodRepository.findAll(spec);
         List<String> goodIds = new ArrayList<>(elasticGoods.size());
         for (ElasticGood elasticGood : elasticGoods) {
             goodIds.add(elasticGood.getId());
