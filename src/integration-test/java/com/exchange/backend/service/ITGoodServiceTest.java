@@ -11,7 +11,7 @@ public class ITGoodServiceTest {
 
     @Test
     public void create() throws Exception {
-        assertTrue(false);
+        
     }
 
     @Test
