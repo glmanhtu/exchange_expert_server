@@ -3,7 +3,7 @@ package com.exchange.backend.service;
 import com.exchange.backend.persistence.domain.Content;
 import com.exchange.backend.persistence.domain.Rating;
 import com.exchange.backend.persistence.domain.User;
-import com.exchange.backend.persistence.repositories.UserRepository;
+import com.exchange.backend.persistence.repositories.mongodb.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

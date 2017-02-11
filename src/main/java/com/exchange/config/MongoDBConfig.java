@@ -5,12 +5,14 @@ import com.mongodb.MongoClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
  * Created by optimize on 2/7/17.
  */
 
 @Configuration
+@EnableMongoRepositories(basePackages = "com.exchange.backend.persistence.repositories.mongodb")
 public class MongoDBConfig extends AbstractMongoConfiguration {
 
     @Value("${spring.data.mongodb.host}")

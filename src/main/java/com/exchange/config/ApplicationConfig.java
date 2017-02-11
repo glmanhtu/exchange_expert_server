@@ -9,7 +9,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  */
 @Configuration
 @EnableMongoRepositories("com.exchange.backend.persistence.repositories")
-@PropertySource("config/application-common.properties")
+@PropertySource("classpath:config/application-common.properties")
 public class ApplicationConfig {
 
+    @Override
+    public String toString() {
+        return "{ApplicationConfig}";
+    }
 }

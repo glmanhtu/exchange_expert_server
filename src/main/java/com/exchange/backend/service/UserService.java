@@ -1,7 +1,7 @@
 package com.exchange.backend.service;
 
 import com.exchange.backend.persistence.domain.User;
-import com.exchange.backend.persistence.repositories.UserRepository;
+import com.exchange.backend.persistence.repositories.mongodb.UserRepository;
 import com.exchange.utils.search.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

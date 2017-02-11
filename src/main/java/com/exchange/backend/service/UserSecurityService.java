@@ -1,7 +1,7 @@
 package com.exchange.backend.service;
 
 import com.exchange.backend.persistence.domain.User;
-import com.exchange.backend.persistence.repositories.UserRepository;
+import com.exchange.backend.persistence.repositories.mongodb.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
