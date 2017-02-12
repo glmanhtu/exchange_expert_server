@@ -21,7 +21,7 @@ public class I18NService {
      * @param messageId
      * @return A message corresponding to messageId and default locale
      */
-    public String getMessage(String messageId){
+    public String getMessage(String messageId) {
         Locale locale = LocaleContextHolder.getLocale();
         return getMessage(messageId, locale);
     }
@@ -36,7 +36,7 @@ public class I18NService {
         return messageSource.getMessage(messageId, null, locale);
     }
 
-    public String getMessage(String messageId, String variable,Locale locale) {
+    public String getMessage(String messageId, String variable, Locale locale) {
         return messageSource.getMessage(messageId, new Object[]{variable}, locale);
     }
 }

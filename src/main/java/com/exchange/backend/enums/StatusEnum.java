@@ -5,8 +5,8 @@ package com.exchange.backend.enums;
  */
 public enum StatusEnum {
 
-    PENDING("Pending",""),
-    TRADING("Trading","");
+    PENDING("Pending", ""),
+    TRADING("Trading", "");
 
     private String name;
 

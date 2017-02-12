@@ -26,7 +26,10 @@ public class RestApiUser {
 
     /** The application logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(RestApiUser.class);
-    
+
+    /**
+     * URL THIS REST API OF USER
+     */
     public static final String REST_API_USER_INFO = "/user";
 
     @Autowired
@@ -38,7 +41,7 @@ public class RestApiUser {
     private List<MessageDTO> messageDTOS;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Object getUser(@PathVariable String id, Locale locale){
+    public Object getUser(@PathVariable String id, Locale locale) {
 
         //construct messageDTOs
         messageDTOS = new ArrayList<>();
@@ -46,8 +49,9 @@ public class RestApiUser {
         User user = userService.getOne(id);
 
         //if user is null return message not found
-        if(user == null){
-            messageDTOS.add(new MessageDTO(MessageType.ERROR, i18NService.getMessage("user.id.not.found.text", id, locale)));
+        if (user == null) {
+            messageDTOS.add(new MessageDTO(MessageType.ERROR,
+                    i18NService.getMessage("user.id.not.found.text", id, locale)));
             return messageDTOS;
         }
         return user;

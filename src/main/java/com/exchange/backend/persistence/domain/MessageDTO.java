@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by greenlucky on 12/21/16.
  */
-public class MessageDTO implements Serializable{
+public class MessageDTO implements Serializable {
 
     /** The Serial Version UID for Serializable classes */
     private static final long serialVersionUID = 1L;

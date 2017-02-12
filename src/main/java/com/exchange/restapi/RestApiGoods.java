@@ -40,14 +40,15 @@ public class RestApiGoods {
     private List<MessageDTO> messageDTOS;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Object createGoods(@RequestBody Good good, Locale locale){
+    public Object createGoods(@RequestBody Good good, Locale locale) {
 
         //construct messageDTOs
         messageDTOS = new ArrayList<>();
 
         good.setStatus(new Status(StatusEnum.PENDING));
 
-        messageDTOS.add(new MessageDTO(MessageType.SUCCESS, i18NService.getMessage("goods.create.success.text", locale)));
+        messageDTOS.add(new MessageDTO(MessageType.SUCCESS,
+                i18NService.getMessage("goods.create.success.text", locale)));
 
         return messageDTOS;
     }
