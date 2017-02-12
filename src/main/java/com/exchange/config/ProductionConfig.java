@@ -9,6 +9,6 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration
 @Profile("prod")
-@PropertySource("config/application-prod.properties")
+@PropertySource("classpath:config/application-prod.properties")
 public class ProductionConfig {
 }

@@ -1,16 +1,14 @@
 package com.exchange.backend.service;
 
-import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
-import com.exchange.backend.persistence.repositories.ElasticGoodRepository;
-import com.exchange.backend.persistence.repositories.GoodRepository;
+import com.exchange.backend.persistence.repositories.elasticsearch.ElasticGoodRepository;
+import com.exchange.backend.persistence.repositories.mongodb.GoodRepository;
 import com.exchange.utils.search.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -88,11 +86,12 @@ public class GoodService implements SearchEverything<Good> {
 
     @Override
     public List<Good> findAll(Specification<Good> spec) {
-        List<ElasticGood> elasticGoods = elasticGoodRepository.findAll(spec);
-        List<String> goodIds = new ArrayList<>(elasticGoods.size());
-        for (ElasticGood elasticGood : elasticGoods) {
-            goodIds.add(elasticGood.getId());
-        }
-        return goodRepository.findByIdsIn(goodIds);
+//        List<ElasticGood> elasticGoods = elasticGoodRepository.findAll(spec);
+//        List<String> goodIds = new ArrayList<>(elasticGoods.size());
+//        for (ElasticGood elasticGood : elasticGoods) {
+//            goodIds.add(elasticGood.getId());
+//        }
+//        return goodRepository.findByIdIn(goodIds);
+        return null;
     }
 }

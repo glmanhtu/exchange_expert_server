@@ -1,4 +1,4 @@
-package com.exchange.backend.persistence.repositories;
+package com.exchange.backend.persistence.repositories.mongodb;
 
 import com.exchange.backend.persistence.domain.Good;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -11,5 +11,5 @@ import java.util.List;
  */
 @Repository
 public interface GoodRepository extends MongoRepository<Good, String> {
-    List<Good> findByIdsIn(List<String> ids);
+    List<Good> findByIdIn(List<String> ids);
 }

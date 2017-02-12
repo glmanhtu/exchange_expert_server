@@ -11,8 +11,8 @@ default_attributes({
   	"elasticsearch"	=>	{
   		"install"	=>	{
   			"type"	=>	"package",
-  			"version"	=>	"5.1.2",
-        "download_checksum" =>  "411091695ff9188b9394816f88f3328f478c4d21e2a80ce194660ee14b868475"
+  			"version"	=>	"5.2.0",
+        "download_checksum" =>  "6f446164010bbfccd734484e2805e6c20b4d66d9b6125c0b157a47be22d8fe09"
   		},
       "user"  =>  {
         "username"  =>  "vagrant",
@@ -26,6 +26,9 @@ default_attributes({
   				"http.port"	=>	9201,
   				"network.bind_host"	=>	'0',
   				"network.host"	=>	"0.0.0.0",
+  				"transport.tcp.port"    => 9300,
+  				"transport.host"    =>  "0.0.0.0",
+  				"discovery.zen.ping.unicast.hosts"  =>  "0.0.0.0",
   				"http.cors.enabled" =>  true,
   				"http.cors.allow-origin"    =>  "*",
           "path.repo" =>  ["/exchange_expert/elasticsearch_data"]
