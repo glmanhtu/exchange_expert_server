@@ -1,7 +1,8 @@
 package com.exchange.backend.service;
 
+import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
-import com.exchange.backend.persistence.domain.Status;
+import com.exchange.backend.persistence.repositories.elasticsearch.ElasticGoodRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,15 +21,16 @@ public class ITGoodServiceTest {
     @Autowired
     private GoodService goodService;
 
+    @Autowired
+    private ElasticGoodRepository elasticGoodRepository;
+
     @Test
     public void testGoodService() throws Exception {
         String goodId = "glmanhtu@gmail.com";
         String goodDescription = "Here is test good";
         Good good = new Good();
         good.setDescription(goodDescription);
-        good.setStatus(new Status("Pending", ""));
         good.setId(goodId);
-        good.setFeaturedImage("asd");
         try {
             good = goodService.create(good);
         } catch (Exception e) {
@@ -52,6 +54,41 @@ public class ITGoodServiceTest {
         try {
             goodService.delete(goodId);
             Assert.assertNotNull("Delete good success", good);
+        } catch (Exception e) {
+            Assert.assertTrue("Delete good failed" + e.getMessage(), false);
+        }
+    }
+
+    @Test
+    public void testElasticSearch() throws Exception {
+        String goodId = "glmanhtu@gmail.com";
+        String goodDescription = "Here is test good";
+        ElasticGood elasticGood = new ElasticGood();
+        elasticGood.setId(goodId);
+        elasticGood.setDescription(goodDescription);
+        try {
+            elasticGood = elasticGoodRepository.save(elasticGood);
+        } catch (Exception e) {
+            Assert.assertTrue("Save good failed, message: " + e.getMessage(), false);
+        }
+
+        try {
+            elasticGood = elasticGoodRepository.findOne(goodId);
+            Assert.assertNotNull("Get good success", elasticGood);
+            Assert.assertEquals("Verify content of good", elasticGood.getDescription(), goodDescription);
+        } catch (Exception e) {
+            Assert.assertTrue("Get good failed" + e.getMessage(), false);
+        }
+
+        String updatedValue = "abc";
+        elasticGood.setDescription(updatedValue);
+        elasticGoodRepository.save(elasticGood);
+        elasticGood = elasticGoodRepository.findOne(goodId);
+        Assert.assertEquals("Test update", elasticGood.getDescription(), updatedValue);
+
+        try {
+            elasticGoodRepository.delete(goodId);
+            Assert.assertNotNull("Delete good success", elasticGood);
         } catch (Exception e) {
             Assert.assertTrue("Delete good failed" + e.getMessage(), false);
         }

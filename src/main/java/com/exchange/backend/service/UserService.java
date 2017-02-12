@@ -2,9 +2,10 @@ package com.exchange.backend.service;
 
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.repositories.mongodb.UserRepository;
-import com.exchange.utils.search.Specification;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -89,7 +90,7 @@ public class UserService implements SearchEverything<User> {
 
 
     @Override
-    public List<User> findAll(Specification<User> spec) {
+    public List<User> findAll(QueryBuilder queryBuilder, PageRequest pageRequest) {
         return null;
     }
 }
