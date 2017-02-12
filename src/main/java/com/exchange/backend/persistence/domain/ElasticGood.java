@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by optimize on 2/7/17.
  */
-@Document(indexName = "good")
+@Document(indexName = "good", type = "good", shards = 1)
 public class ElasticGood implements Serializable {
 
     /**
