@@ -25,11 +25,11 @@ import java.util.Locale;
  * Created by Mrs Hoang on 12/02/2017.
  */
 @RestController
-@RequestMapping(GoodHandle.REST_API_GOODS)
-public class GoodHandle {
+@RequestMapping(GoodHandler.REST_API_GOODS)
+public class GoodHandler {
 
     /** The application logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(GoodHandle.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GoodHandler.class);
 
     public static final String REST_API_GOODS = "/goods";
 

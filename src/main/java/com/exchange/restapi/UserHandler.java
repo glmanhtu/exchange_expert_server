@@ -23,11 +23,11 @@ import java.util.Locale;
  * Created by Mrs Hoang on 12/02/2017.
  */
 @RestController
-@RequestMapping(UserHandle.REST_API_USER_INFO)
-public class UserHandle {
+@RequestMapping(UserHandler.REST_API_USER_INFO)
+public class UserHandler {
 
     /** The application logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserHandle.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserHandler.class);
 
     /**
      * URL THIS REST API OF USER
