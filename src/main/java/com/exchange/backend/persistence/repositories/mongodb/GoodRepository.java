@@ -11,5 +11,8 @@ import java.util.List;
  */
 @Repository
 public interface GoodRepository extends MongoRepository<Good, String> {
+
     List<Good> findByIdIn(List<String> ids);
+
+    Good findBySlug(String slug);
 }

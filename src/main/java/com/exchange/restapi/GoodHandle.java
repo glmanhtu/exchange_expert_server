@@ -61,13 +61,14 @@ public class GoodHandle {
         //create good id given by user id and good slug
         String goodId = good.getPostBy().getId() + good.getSlug();
 
-        //checking goodid is existed
-        if (goodService.inValidId(goodId)) {
+        //checking good slug is existed
+        if (goodService.inValidSlug(good.getSlug())) {
 
             LOGGER.error("The slug {} is invalid", good.getSlug());
 
             messageDTOS.add(new MessageDTO(MessageType.ERROR,
                     i18NService.getMessage("goods.error.slug.invalid.text", good.getSlug(), locale)));
+
             return new ResponseEntity<Object>(messageDTOS, HttpStatus.BAD_REQUEST);
         }
 
@@ -76,7 +77,7 @@ public class GoodHandle {
         //create new good
         good = goodService.create(good);
 
-        LOGGER.info("Created gooods {}", good);
+        LOGGER.info("Created goods {}", good);
 
         messageDTOS.add(new MessageDTO(MessageType.SUCCESS,
                 i18NService.getMessage("goods.create.success.text", good.getTitle(), locale)));
