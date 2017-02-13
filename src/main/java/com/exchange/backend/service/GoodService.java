@@ -112,8 +112,9 @@ public class GoodService implements SearchEverything<Good> {
 
     public boolean inValidSlug(String slug) {
         Good good = goodRepository.findBySlug(slug);
-        if(good != null)
+        if (good != null) {
             return true;
+        }
         return false;
     }
 }
