@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +28,6 @@ public class GoodService implements SearchEverything<Good> {
     private GoodRepository goodRepository;
 
     @Autowired
-    private CounterService counterService;
-
-    @Autowired
     private ElasticGoodRepository elasticGoodRepository;
 
     /**
@@ -38,6 +37,9 @@ public class GoodService implements SearchEverything<Good> {
      * @see Good
      */
     public Good create(Good good) {
+
+        good.setPostDate(LocalDateTime.now(Clock.systemDefaultZone()));
+
         return goodRepository.save(good);
     }
 
@@ -95,5 +97,24 @@ public class GoodService implements SearchEverything<Good> {
             goodIds.add(elasticGood.getId());
         }
         return goodRepository.findByIdIn(goodIds);
+    }
+
+
+    /**
+     * Checking goodid is existed.
+     *
+     * @param goodId
+     * @return True if good id is existed, otherwise false
+     */
+    public boolean inValidId(String goodId) {
+        return goodRepository.exists(goodId);
+    }
+
+    public boolean inValidSlug(String slug) {
+        Good good = goodRepository.findBySlug(slug);
+        if (good != null) {
+            return true;
+        }
+        return false;
     }
 }

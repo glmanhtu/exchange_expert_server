@@ -1,6 +1,8 @@
 package com.exchange.backend.persistence.domain;
 
 
+import com.exchange.backend.enums.StatusEnum;
+
 /**
  * Created by greenlucky on 1/31/17.
  */
@@ -21,6 +23,12 @@ public class Status {
      */
     public Status() {
     }
+
+    public Status(StatusEnum statusEnum) {
+        this.name = statusEnum.getName();
+        this.description = statusEnum.getDescription();
+    }
+
 
     /**
      * Declares constructor given by name and decsription.
