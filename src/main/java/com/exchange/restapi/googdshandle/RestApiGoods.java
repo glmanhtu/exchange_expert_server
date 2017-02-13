@@ -1,4 +1,4 @@
-package com.exchange.restapi;
+package com.exchange.restapi.googdshandle;
 
 import com.exchange.backend.enums.MessageType;
 import com.exchange.backend.enums.StatusEnum;
@@ -45,10 +45,17 @@ public class RestApiGoods {
         //construct messageDTOs
         messageDTOS = new ArrayList<>();
 
+        LOGGER.info("Creating gooods {}", good);
+        System.out.println(good);
+
         good.setStatus(new Status(StatusEnum.PENDING));
 
+        good = goodService.create(good);
+
+        LOGGER.info("Created gooods {}", good);
+
         messageDTOS.add(new MessageDTO(MessageType.SUCCESS,
-                i18NService.getMessage("goods.create.success.text", locale)));
+                i18NService.getMessage("goods.create.success.text", good.getTitle(), locale)));
 
         return messageDTOS;
     }

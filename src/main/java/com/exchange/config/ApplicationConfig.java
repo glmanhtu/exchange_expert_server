@@ -18,4 +18,5 @@ public class ApplicationConfig {
     public String toString() {
         return "{ApplicationConfig}";
     }
+
 }

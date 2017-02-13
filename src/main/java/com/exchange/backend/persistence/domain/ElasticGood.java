@@ -4,9 +4,11 @@ import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class ElasticGood implements Serializable {
      * The Id of this Good.
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
     /**
@@ -238,5 +241,20 @@ public class ElasticGood implements Serializable {
     @Override
     public int hashCode() {
         return getId() != null ? getId().hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "ElasticGood{"
+                + "id='" + id + '\''
+                + ", title='" + title + '\''
+                + ", slug='" + slug + '\''
+                + ", description='" + description + '\''
+                + ", type=" + type
+                + ", price=" + price
+                + ", postBy=" + postBy
+                + ", postDate=" + postDate
+                + ", locations=" + locations
+                + '}';
     }
 }

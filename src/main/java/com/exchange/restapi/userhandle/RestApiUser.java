@@ -1,4 +1,4 @@
-package com.exchange.restapi;
+package com.exchange.restapi.userhandle;
 
 import com.exchange.backend.enums.MessageType;
 import com.exchange.backend.persistence.domain.MessageDTO;
@@ -8,10 +8,10 @@ import com.exchange.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +40,18 @@ public class RestApiUser {
 
     private List<MessageDTO> messageDTOS;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Object getUser(@PathVariable String id, Locale locale) {
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public Object getUser(@RequestParam("email") String email, Locale locale) {
 
         //construct messageDTOs
         messageDTOS = new ArrayList<>();
 
-        User user = userService.getOne(id);
+        User user = userService.getOne(email);
 
         //if user is null return message not found
         if (user == null) {
             messageDTOS.add(new MessageDTO(MessageType.ERROR,
-                    i18NService.getMessage("user.id.not.found.text", id, locale)));
+                    i18NService.getMessage("user.id.not.found.text", email, locale)));
             return messageDTOS;
         }
         return user;

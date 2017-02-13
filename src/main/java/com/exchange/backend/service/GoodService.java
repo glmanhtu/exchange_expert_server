@@ -28,9 +28,6 @@ public class GoodService implements SearchEverything<Good> {
     private GoodRepository goodRepository;
 
     @Autowired
-    private CounterService counterService;
-
-    @Autowired
     private ElasticGoodRepository elasticGoodRepository;
 
     /**

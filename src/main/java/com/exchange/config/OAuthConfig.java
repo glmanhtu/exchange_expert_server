@@ -3,6 +3,7 @@ package com.exchange.config;
 import com.exchange.backend.service.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -13,6 +14,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by optimize on 2/12/17.
@@ -26,15 +30,28 @@ public class OAuthConfig {
     @EnableResourceServer
     protected static class ResourceServer extends WebSecurityConfigurerAdapter {
 
+        @Autowired
+        private Environment env;
+
         @Override
         public void configure(WebSecurity web) throws Exception {
             web.ignoring()
-                    .antMatchers("/resource/**");
+                    .antMatchers("/resource/**")
+                    .antMatchers("/user/info**")
+                    .antMatchers("/goods/create");
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().anyRequest().authenticated();
+
+            //disable csrf header for dev env
+            List<String> activeProflies = Arrays.asList(env.getActiveProfiles());
+            if (activeProflies.contains("dev")) {
+                http.csrf().disable();
+                http.headers().frameOptions().disable();
+            }
+            http.authorizeRequests()
+                    .anyRequest().authenticated();
         }
     }
 
@@ -57,6 +74,7 @@ public class OAuthConfig {
         public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
             security.checkTokenAccess("isAuthenticated()");
         }
+
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {

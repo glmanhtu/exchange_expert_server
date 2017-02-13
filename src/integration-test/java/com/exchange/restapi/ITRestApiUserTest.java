@@ -2,6 +2,7 @@ package com.exchange.restapi;
 
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.service.UserService;
+import com.exchange.restapi.userhandle.RestApiUser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
