@@ -1,4 +1,4 @@
-package com.exchange.restapi.userhandle;
+package com.exchange.restapi;
 
 import com.exchange.backend.enums.MessageType;
 import com.exchange.backend.persistence.domain.MessageDTO;
@@ -8,6 +8,8 @@ import com.exchange.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,11 +23,11 @@ import java.util.Locale;
  * Created by Mrs Hoang on 12/02/2017.
  */
 @RestController
-@RequestMapping(RestApiUser.REST_API_USER_INFO)
-public class RestApiUser {
+@RequestMapping(UserHandle.REST_API_USER_INFO)
+public class UserHandle {
 
     /** The application logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestApiUser.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserHandle.class);
 
     /**
      * URL THIS REST API OF USER
@@ -41,7 +43,7 @@ public class RestApiUser {
     private List<MessageDTO> messageDTOS;
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public Object getUser(@RequestParam("email") String email, Locale locale) {
+    public ResponseEntity<Object> getUser(@RequestParam("email") String email, Locale locale) {
 
         //construct messageDTOs
         messageDTOS = new ArrayList<>();
@@ -52,8 +54,8 @@ public class RestApiUser {
         if (user == null) {
             messageDTOS.add(new MessageDTO(MessageType.ERROR,
                     i18NService.getMessage("user.id.not.found.text", email, locale)));
-            return messageDTOS;
+            return new ResponseEntity<Object>(messageDTOS, HttpStatus.NOT_FOUND);
         }
-        return user;
+        return new ResponseEntity<Object>(user, HttpStatus.OK);
     }
 }

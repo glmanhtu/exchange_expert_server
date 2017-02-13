@@ -98,4 +98,15 @@ public class GoodService implements SearchEverything<Good> {
         }
         return goodRepository.findByIdIn(goodIds);
     }
+
+
+    /**
+     * Checking goodid is existed.
+     *
+     * @param goodId
+     * @return True if good id is existed, otherwise false
+     */
+    public boolean inValidId(String goodId) {
+        return goodRepository.exists(goodId);
+    }
 }

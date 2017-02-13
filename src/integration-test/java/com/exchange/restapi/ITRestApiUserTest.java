@@ -2,7 +2,6 @@ package com.exchange.restapi;
 
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.service.UserService;
-import com.exchange.restapi.userhandle.RestApiUser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +31,7 @@ public class ITRestApiUserTest {
 
         User user = userService.getOne("member_1@gmail.com");
         Assert.assertNotNull(user);
-        Object body = this.testRestTemplate.getForObject("/user/member_1@gmail.com", RestApiUser.class);
+        Object body = this.testRestTemplate.getForObject("/user/member_1@gmail.com", UserHandle.class);
         //assertThat(body).isEqualTo(user);
     }
 }
