@@ -1,6 +1,8 @@
 package com.exchange.config;
 
 import com.exchange.backend.service.UserAuthenticationService;
+import com.exchange.restapi.GoodHandler;
+import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -37,8 +39,8 @@ public class OAuthConfig {
         public void configure(WebSecurity web) throws Exception {
             web.ignoring()
                     .antMatchers("/resource/**")
-                    .antMatchers("/user/info**")
-                    .antMatchers("/goods/create");
+                    .antMatchers(UserHandler.REST_API_USER_INFO)
+                    .antMatchers(GoodHandler.REST_API_GOODS + "/**");
         }
 
         @Override
