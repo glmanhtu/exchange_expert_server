@@ -1,0 +1,704 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "APIs defined for Exchange Expert"
+    },
+    "schemes": [
+        "http"
+    ],
+    "securityDefinitions": {
+        "oauthSecurity": {
+            "type": "oauth2",
+            "tokenUrl": "/oauth/token",
+            "flow": "password",
+            "scopes": {
+                "admin": "Access only by admin",
+                "user": "Access only by User"
+            }
+        }
+    },
+    "paths": {
+        "/good": {
+            "post": {
+                "description": "Create new good\n",
+                "tags": [
+                    "Goods"
+                ],
+                "parameters": [
+                    {
+                        "name": "Good",
+                        "in": "body",
+                        "description": "Information to create new good",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Good"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation Success"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorization"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Time Out"
+                    }
+                },
+                "security": [
+                    {
+                        "oauthSecurity": [
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "description": "Update exists Good",
+                "tags": [
+                    "Goods"
+                ],
+                "parameters": [
+                    {
+                        "name": "Good",
+                        "in": "body",
+                        "description": "Information to create new good",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Good"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation Success"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorization"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Time Out"
+                    }
+                },
+                "security": [
+                    {
+                        "oauthSecurity": [
+                            "user"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/search": {
+            "post": {
+                "description": "Search goods by title, content, location, category, seller, etc\n",
+                "tags": [
+                    "Search"
+                ],
+                "parameters": [
+                    {
+                        "name": "searchGoods",
+                        "in": "body",
+                        "description": "Search parameters",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SearchGoods"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/GoodShortDetail"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Time Out"
+                    }
+                }
+            }
+        },
+        "/admin/search": {
+            "post": {
+                "description": "Search everything, also can filter status of goods\n",
+                "tags": [
+                    "Search",
+                    "Admin"
+                ],
+                "parameters": [
+                    {
+                        "name": "adminSearchGoods",
+                        "in": "body",
+                        "description": "Search parameters",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AdminSearchGoods"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/GoodShortDetail"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorization"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Time Out"
+                    }
+                },
+                "security": [
+                    {
+                        "oauthSecurity": [
+                            "admin"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/admin/good/status": {
+            "post": {
+                "description": "Approve/Ban a good",
+                "tags": [
+                    "Goods",
+                    "Admin"
+                ],
+                "parameters": [
+                    {
+                        "name": "goodDetail",
+                        "in": "body",
+                        "description": "Detail of good to approve",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sellerEmail": {
+                                    "type": "string",
+                                    "description": "Email of seller"
+                                },
+                                "goodSlug": {
+                                    "type": "string",
+                                    "description": "Slug of good"
+                                },
+                                "status": {
+                                    "type": "integer",
+                                    "description": "0 mean waiting for approve, 1 mean approved, 2 | mean baned",
+                                    "enum": [
+                                        0,
+                                        1,
+                                        2
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation Success"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorization"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Time Out"
+                    }
+                },
+                "security": [
+                    {
+                        "oauthSecurity": [
+                            "admin"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/good/{category-slug}/{good-slug}": {
+            "get": {
+                "description": "Get full details of good\n",
+                "tags": [
+                    "Goods"
+                ],
+                "parameters": [
+                    {
+                        "name": "category-slug",
+                        "in": "path",
+                        "description": "Slug of category, which contain good",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "good-slug",
+                        "in": "path",
+                        "description": "Slug of good",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation Success",
+                        "schema": {
+                            "$ref": "#/definitions/GoodFullDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Time Out"
+                    }
+                }
+            }
+        },
+        "/authentication/register/email": {
+            "post": {
+                "description": "Register to our server using email & password\n",
+                "tags": [
+                    "Authentication"
+                ],
+                "parameters": [
+                    {
+                        "name": "userInfo",
+                        "in": "body",
+                        "description": "The basic info of user to register to our server",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation Success",
+                        "schema": {
+                            "$ref": "#/definitions/OauthToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Time Out"
+                    }
+                }
+            }
+        },
+        "/authentication/login/email": {
+            "post": {
+                "description": "Login using email & password\n",
+                "tags": [
+                    "Authentication"
+                ],
+                "parameters": [
+                    {
+                        "name": "emailAuthentication",
+                        "in": "body",
+                        "description": "Email & Password",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/EmailAuthentication"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation Success",
+                        "schema": {
+                            "$ref": "#/definitions/OauthToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Time Out"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "AdminSearchGoods": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/SearchGoods"
+                }
+            ],
+            "properties": {
+                "status": {
+                    "type": "integer",
+                    "description": "Status of good. | 0 mean waiting for approve | 1 mean approved | 2 mean baned",
+                    "enum": [
+                        0,
+                        1,
+                        2
+                    ]
+                }
+            }
+        },
+        "SearchGoods": {
+            "type": "object",
+            "properties": {
+                "pagination": {
+                    "$ref": "#/definitions/Pagination"
+                },
+                "locations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Location"
+                    }
+                },
+                "distance": {
+                    "type": "integer",
+                    "description": "The distance between seller & current user"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "title of good"
+                },
+                "price": {
+                    "type": "object",
+                    "properties": {
+                        "from": {
+                            "type": "integer"
+                        },
+                        "to": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "category": {
+                    "type": "string",
+                    "description": "category-slug"
+                },
+                "seller": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email of seller"
+                },
+                "filter": {
+                    "type": "object",
+                    "properties": {
+                        "by": {
+                            "type": "string",
+                            "enum": [
+                                "location",
+                                "distance",
+                                "title",
+                                "price",
+                                "category",
+                                "seller"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "GoodFullDetail": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/GoodShortDetail"
+                }
+            ],
+            "properties": {
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "description": "Url of Image"
+                    }
+                },
+                "address": {
+                    "type": "string",
+                    "description": "Address to buy this good"
+                },
+                "timeUpdated": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "Good": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/GoodBase"
+                }
+            ],
+            "properties": {
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "description": "Url of Image"
+                    }
+                },
+                "address": {
+                    "type": "string",
+                    "description": "Address to buy this good"
+                }
+            }
+        },
+        "GoodBase": {
+            "type": "object",
+            "properties": {
+                "thumbnail": {
+                    "type": "string",
+                    "description": "The thumbnail of this good"
+                },
+                "price": {
+                    "type": "integer",
+                    "description": "Price of this good"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "The title of this good"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/Location"
+                },
+                "category": {
+                    "type": "object",
+                    "properties": {
+                        "slug": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "GoodShortDetail": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/GoodBase"
+                }
+            ],
+            "properties": {
+                "slug": {
+                    "type": "string",
+                    "description": "the slug of good"
+                },
+                "timeCreated": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "seller": {
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "format": "email"
+                        },
+                        "rating": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    }
+                }
+            }
+        },
+        "EmailAuthentication": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "description": "The email, which one using to login to our server",
+                    "type": "string",
+                    "format": "email"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserInfo": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/EmailAuthentication"
+                }
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2
+                    ],
+                    "description": "`0` mean **female**, `1` mean **male**, `2` mean **Unexpected*\n"
+                }
+            }
+        },
+        "OauthToken": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "token_type": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "expires_in": {
+                    "type": "integer"
+                },
+                "scope": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                }
+            }
+        },
+        "Location": {
+            "type": "object",
+            "properties": {
+                "lat": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "lng": {
+                    "type": "number",
+                    "format": "float"
+                }
+            }
+        },
+        "Pagination": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "itemsPerPage": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
