@@ -59,6 +59,9 @@ public class GoodHandler {
             return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
         }
 
+        //set good id
+        good.setId(goodId);
+
         good.setStatus(new Status(StatusEnum.PENDING));
 
         //create new good
