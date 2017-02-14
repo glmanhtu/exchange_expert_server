@@ -1,9 +1,8 @@
 package com.exchange.restapi;
 
-import com.exchange.backend.enums.MessageType;
-import com.exchange.backend.persistence.domain.MessageDTO;
+import com.exchange.backend.enums.MessageEnum;
+import com.exchange.backend.persistence.domain.Message;
 import com.exchange.backend.persistence.domain.User;
-import com.exchange.backend.service.I18NService;
 import com.exchange.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,47 +14,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
  * Created by Mrs Hoang on 12/02/2017.
  */
 @RestController
-@RequestMapping(UserHandle.REST_API_USER_INFO)
-public class UserHandle {
+public class UserHandler {
 
     /** The application logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserHandle.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserHandler.class);
 
     /**
      * URL THIS REST API OF USER
      */
-    public static final String REST_API_USER_INFO = "/user";
+    public static final String REST_API_USER_INFO = "/user/info";
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private I18NService i18NService;
-
-    private List<MessageDTO> messageDTOS;
-
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequestMapping(value = REST_API_USER_INFO, method = RequestMethod.GET)
     public ResponseEntity<Object> getUser(@RequestParam("email") String email, Locale locale) {
-
-        //construct messageDTOs
-        messageDTOS = new ArrayList<>();
 
         User user = userService.getOne(email);
 
         //if user is null return message not found
         if (user == null) {
-            messageDTOS.add(new MessageDTO(MessageType.ERROR,
-                    i18NService.getMessage("user.id.not.found.text", email, locale)));
-            return new ResponseEntity<Object>(messageDTOS, HttpStatus.NOT_FOUND);
+            Message message = new Message(MessageEnum.USER_NOT_FOUND);
+            return new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
         }
+
         return new ResponseEntity<Object>(user, HttpStatus.OK);
     }
 }

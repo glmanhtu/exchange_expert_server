@@ -31,7 +31,7 @@ public class ITRestApiUserTest {
 
         User user = userService.getOne("member_1@gmail.com");
         Assert.assertNotNull(user);
-        Object body = this.testRestTemplate.getForObject("/user/member_1@gmail.com", UserHandle.class);
+        Object body = this.testRestTemplate.getForObject("/user/member_1@gmail.com", UserHandler.class);
         //assertThat(body).isEqualTo(user);
     }
 }
