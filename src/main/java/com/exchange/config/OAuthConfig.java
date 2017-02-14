@@ -40,7 +40,7 @@ public class OAuthConfig {
             web.ignoring()
                     .antMatchers("/resource/**")
                     .antMatchers(UserHandler.REST_API_USER_INFO)
-                    .antMatchers(GoodHandler.REST_API_GOOD_CREATE);
+                    .antMatchers(GoodHandler.REST_API_GOODS + "/**");
         }
 
         @Override
