@@ -1,16 +1,22 @@
 # Elasticsearch Chef Cookbook
 
-[![Build Status](https://travis-ci.org/elastic/cookbook-elasticsearch.svg?branch=master)](https://travis-ci.org/elastic/cookbook-elasticsearch) [![Cookbook Version](https://img.shields.io/cookbook/v/elasticsearch.svg)](https://supermarket.chef.io/cookbooks/elasticsearch)[![Build Status](https://jenkins-01.eastus.cloudapp.azure.com/job/elasticsearch-cookbook/badge/icon)](https://jenkins-01.eastus.cloudapp.azure.com/job/elasticsearch-cookbook/)
+[![Build Status](https://travis-ci.org/elastic/cookbook-elasticsearch.svg?branch=master)](https://travis-ci.org/elastic/cookbook-elasticsearch) [![Cookbook Version](https://img.shields.io/cookbook/v/elasticsearch.svg)](https://supermarket.chef.io/cookbooks/elasticsearch)
 
-## Pre-requisites & Supported Versions
+This cookbook has been converted into a library cookbook as of version 1.0.0,
+and supports Chef 12.5.1, 12.4.3, 12.3.0, 12.2.1, 12.1.2, and higher. It
+implements support for CI as well as more modern testing with chefspec and
+test-kitchen. It no longer supports some of the more extraneous features such as
+discovery (use [chef search](https://docs.chef.io/chef_search.html) in your wrapper cookbook)
+or EBS device creation (use [the aws cookbook](https://github.com/chef-cookbooks/aws)).
+**Previous versions** of this cookbook may be found using the git tags on this
+repository.
 
-[Java Runtime](https://www.java.com/en/) - This cookbook requires java, but does not provide it. Please install Java before using any recipe in this cookbook. Please also note that Elasticsearch itself has [specific minimum Java version requirements](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html#jvm-version). We recommend [this cookbook](https://github.com/agileorbit-cookbooks/java) to install Java.
+## Pre-requisites
 
-[Elasticsearch](https://www.elastic.co/products/elasticsearch) - This cookbook is being written and tested to support Elasticsearch 5.x and greater. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific, older `major.minor` version of this cookbook and only leave the patch release to float. Older versions can be found via [Git tags](https://github.com/elastic/cookbook-elasticsearch/tags) or on [Chef Supermarket](https://supermarket.chef.io/cookbooks/elasticsearch). We also maintain bugfix branches for major released lines (0.x, 1.x, 2.x) of this cookbook so that we can still release fixes for older cookbooks.
+[Java Runtime](https://www.java.com/en/) - This cookbook requires java, but does not provide it. Please install
+Java before using any recipe in this cookbook. Please also note that Elasticsearch itself has specific minimum Java version requirements. We recommend [this cookbook](https://github.com/agileorbit-cookbooks/java) to install Java.
 
-[Chef](https://www.chef.io/) - The latest release of this cookbook is intended to support the three most recent releases of Chef, and tests against those. Earlier versions may also be supported, though we suggest that you use Chef 12.x at a minimum. It implements support for CI as well as more modern testing with chefspec and test-kitchen. It no longer supports some of the more extraneous features such as discovery (use [chef search](https://docs.chef.io/chef_search.html) in your wrapper cookbook) or EBS device creation (use [the aws cookbook](https://github.com/chef-cookbooks/aws)).
-
-**Previous versions** of this cookbook may be found using the git tags on this repository.
+[Elasticsearch](https://www.elastic.co/products/elasticsearch) - This cookbook is being written and tested to support Elasticsearch 2.x and greater. While this cookbook presently, by sheer luck, still works with ES 1.7.x at the time of this writing, we are not testing against versions < 2.0.0. Should Elasticsearch 2.x somehow break 1.7.x compatibility in a minor release of 2.x, this cookbook could potentially stop working with ES 1.7.x. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific `major.minor` version and only leave the patch release to float.
 
 ## Attributes
 
@@ -24,31 +30,17 @@ the version parameter as a string into your download_url.
 
 |Name|Default|Other values|
 |----|-------|------------|
+|`default['elasticsearch']['version']`|`'2.4.0'`|[See list](attributes/default.rb).|
+|`default['elasticsearch']['install_type']`|`:package`|`:tarball`|
 |`default['elasticsearch']['download_urls']['debian']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['rhel']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
-|`default['elasticsearch']['download_urls']['tarball']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
-
-This cookbook's `elasticsearch::default` recipe also supports setting any `elasticsearch_` resource using attributes:
-
-```
-default['elasticsearch']['user'] = {}
-default['elasticsearch']['install'] = {}
-default['elasticsearch']['configure'] = {}
-default['elasticsearch']['service'] = {}
-default['elasticsearch']['plugin'] = {}
-```
-
-For example, this will pass a username 'foo' to `elasticsearch_user` and set a uid to `1234`:
-```
-default['elasticsearch']['user']['username'] = 'foo'
-default['elasticsearch']['user']['uid'] = '1234'
-```
+|`default['elasticsearch']['download_urls']['tar']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 
 ## Recipes
 
 Resources are the intended way to consume this cookbook, however we have
 provided a single recipe that configures Elasticsearch by downloading an archive
-containing a distribution of Elasticsearch, and extracting that into `/usr/share`.
+containing a distribution of Elasticsearch, and extracting that into /usr/local.
 
 See the attributes section above to for what defaults you can adjust.
 
@@ -64,12 +56,18 @@ including a demonstration of how to configure two instances of Elasticsearch on 
 
 ## Notifications and Service Start/Restart
 
-The resources provided in this cookbook **do not automatically restart** services when changes have occurred. They ***do start services by default when configuring a new service*** This has been done to protect you from accidental data loss and service outages, as nodes might restart simultaneously or may not restart at all when bad configuration values are supplied.
+The resources provided in this cookbook **do not automatically start or
+restart** services when changes have occurred. This has been done to protect you
+from accidental data loss and service outages, as nodes might restart
+simultaneously or may not restart at all when bad configuration values are
+supplied.
 
-elasticsearch_service has a special `service_actions` parameter you can use to specify what state the underlying service should be in on each chef run (defaults to `:enabled` and `:started`). It will also pass through all of the standard `service` resource
+elasticsearch_service has a special `service_actions` parameter you can use to specify what state the underlying service should be in on each chef run (defaults to `:enabled`, but not `:started`). It will also pass through all of the standard `service` resource
 actions to the underlying service resource if you wish to notify it.
 
-You **must** supply your desired notifications when using each resource if you want Chef to automatically restart services. Again, we don't recommend this unless you know what you're doing.
+
+You **must** supply your desired notifications when using each resource if you
+want Chef to automatically restart services. Again, we don't recommend this.
 
 ### Resource names
 
@@ -96,7 +94,10 @@ elasticsearch_user 'elasticsearch'
 elasticsearch_install 'elasticsearch'
 elasticsearch_configure 'elasticsearch'
 elasticsearch_service 'elasticsearch'
-elasticsearch_plugin 'x-pack'
+
+elasticsearch_plugin 'head' do
+  url 'mobz/elasticsearch-head'
+end
 ```
 
 ### elasticsearch_user
@@ -127,12 +128,11 @@ end
 Actions: `:install`, `:remove`
 
 Downloads the elasticsearch software, and unpacks it on the system. There are
-currently three ways to install -- `'repository'` (the default), which creates an
-apt or yum repo and installs from there, `'package'`, which downloads the appropriate
+currently two ways to install -- `:package`, which downloads the appropriate
 package from elasticsearch.org and uses the package manager to install it, and
-`'tarball'` which downloads a tarball from elasticsearch.org and unpacks it.
-This resource also comes with a `:remove` action which will remove the package
-or directory elasticsearch was unpacked into.
+`:tarball` which downloads a tarball from elasticsearch.org and unpacks it in
+/usr/local on the system. This resource also comes with a `:remove` action
+which will remove the package or directory elasticsearch was unpacked into.
 
 You may always specify a download_url and/or download_checksum, and you may
 include `%s` which will be replaced by the version parameter you supply.
@@ -149,15 +149,15 @@ elasticsearch_install 'elasticsearch'
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type 'package' # type of install
-  version "5.0.1"
+  type :package # type of install
+  version "1.7.2"
   action :install # could be :remove as well
 end
 ```
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type 'tarball' # type of install
+  type :tarball # type of install
   dir tarball: '/usr/local' # where to install
 
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz"
@@ -170,15 +170,15 @@ end
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type 'tarball' # type of install
-  version '5.0.1'
+  type :tarball # type of install
+  version '1.7.2'
   action :install # could be :remove as well
 end
 ```
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type 'package' # type of install
+  type :package # type of install
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb"
   # sha256
   download_checksum "791fb9f2131be2cf8c1f86ca35e0b912d7155a53f89c2df67467ca2105e77ec2"
@@ -191,7 +191,7 @@ end
 Actions: `:manage`, `:remove`
 
 Configures an elasticsearch instance; creates directories for configuration,
-logs, and data. Writes files `log4j2.properties`, `elasticsearch.in.sh` and
+logs, and data. Writes files `logging.yml`, `elasticsearch.in.sh` and
 `elasticsearch.yml`.
 
 The main attribute for this resource is `configuration`,
@@ -229,26 +229,28 @@ Very complicated -
 ```ruby
 elasticsearch_configure 'my_elasticsearch' do
   # if you override one of these, you probably want to override all
-  path_home     "/opt/elasticsearch"
-  path_conf     "/etc/opt/elasticsearch"
-  path_data     "/var/opt/elasticsearch"
-  path_logs     "/var/log/elasticsearch"
-  path_pid      "/var/run/elasticsearch"
-  path_plugins  "/opt/elasticsearch/plugins"
-  path_bin      "/opt/elasticsearch/bin"
+  path_home     tarball: "/opt/elasticsearch"
+  path_conf     tarball: "/etc/opt/elasticsearch"
+  path_data     tarball: "/var/opt/elasticsearch"
+  path_logs     tarball: "/var/log/elasticsearch"
+  path_pid      tarball: "/var/run/elasticsearch"
+  path_plugins  tarball: "/opt/elasticsearch/plugins"
+  path_bin      tarball: "/opt/elasticsearch/bin"
 
   logging({:"action" => 'INFO'})
 
   allocated_memory '123m'
+  thread_stack_size '512k'
 
-  jvm_options %w(
+  env_options '-DFOO=BAR'
+  gc_settings <<-CONFIG
                 -XX:+UseParNewGC
                 -XX:+UseConcMarkSweepGC
                 -XX:CMSInitiatingOccupancyFraction=75
                 -XX:+UseCMSInitiatingOccupancyOnly
                 -XX:+HeapDumpOnOutOfMemoryError
                 -XX:+PrintGCDetails
-              )
+              CONFIG
 
   configuration ({
     'node.name' => 'crazy'
@@ -332,7 +334,7 @@ end
 The plugin resource respects the `https_proxy` or `http_proxy` (non-SSL)
 [Chef settings](https://docs.chef.io/config_rb_client.html) unless explicitly
 disabled using `chef_proxy false`:
-```ruby
+```
 elasticsearch_plugin 'kopf' do
   url 'lmenezes/elasticsearch-kopf'
   chef_proxy false
@@ -344,17 +346,18 @@ To run multiple instances per machine, an explicit `plugin_dir` location
 has to be provided:
 
 ```ruby
-elasticsearch_plugin 'x-pack' do
+elasticsearch_plugin 'head' do
+  url 'mobz/elasticsearch-head'
   plugin_dir '/usr/share/elasticsearch_foo/plugins'
 end
 ```
 
 If for some reason, you want to name the resource something else, you may
-provide the true plugin name using the `plugin_name` parameter:
+provide the plugin name using the `name` parameter:
 
 ```ruby
 elasticsearch_plugin 'xyzzy' do
-  plugin_name 'kopf'
+  name 'kopf'
   url 'lmenezes/elasticsearch-kopf'
   action :install
 end

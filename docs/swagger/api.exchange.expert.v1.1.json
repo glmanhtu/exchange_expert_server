@@ -19,6 +19,49 @@
         }
     },
     "paths": {
+        "/user": {
+            "get": {
+                "description": "Get user",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "Email",
+                        "in": "query",
+                        "description": "Email of user",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation Success",
+                        "schema": {
+                            "$ref": "#/definitions/UserInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorization"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Time Out"
+                    }
+                }
+            }
+        },
         "/good": {
             "post": {
                 "description": "Create new good\n",
@@ -115,7 +158,7 @@
                 ]
             }
         },
-        "/search": {
+        "/search/good": {
             "post": {
                 "description": "Search goods by title, content, location, category, seller, etc\n",
                 "tags": [
@@ -160,7 +203,7 @@
                 }
             }
         },
-        "/admin/search": {
+        "/admin/search/good": {
             "post": {
                 "description": "Search everything, also can filter status of goods\n",
                 "tags": [
@@ -618,14 +661,23 @@
         },
         "UserInfo": {
             "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/EmailAuthentication"
-                }
-            ],
             "properties": {
-                "name": {
+                "firstName": {
                     "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "birthday": {
+                    "type": "integer",
+                    "format": "float"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "number",
+                    "format": "float"
                 },
                 "gender": {
                     "type": "integer",

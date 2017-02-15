@@ -4,15 +4,13 @@ import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by optimize on 2/7/17.
@@ -73,7 +71,7 @@ public class ElasticGood implements Serializable {
     /**
      * The locations can be trading this goods.
      */
-    private List<Location> locations = new ArrayList<>();
+    private Location location;
 
     /**
      * Gets id of this goods.
@@ -191,20 +189,20 @@ public class ElasticGood implements Serializable {
     }
 
     /**
-     * Gets locations of this goods.
-     * @return A list of location
+     * Gets location of this goods.
+     * @return A location
      * @see Location
      */
-    public final List<Location> getLocations() {
-        return locations;
+    public final Location getLocation() {
+        return location;
     }
 
     /**
-     * Sets locations given by list of location.
-     * @param locations The variable input
+     * Set location
+     * @param location The variable input
      */
-    public final void setLocations(final List<Location> locations) {
-        this.locations = locations;
+    public final void setLocation(final Location location) {
+        this.location = location;
     }
 
     /**
@@ -254,7 +252,7 @@ public class ElasticGood implements Serializable {
                 + ", price=" + price
                 + ", postBy=" + postBy
                 + ", postDate=" + postDate
-                + ", locations=" + locations
+                + ", location=" + location
                 + '}';
     }
 }

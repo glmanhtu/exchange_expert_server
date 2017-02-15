@@ -2,7 +2,25 @@
 
 This file is used to list changes made in each version of the yum cookbook.
 
+## 5.0.0 (2017-02-12)
+
+### Breaking changes
+
+- Removed the yum_repository resource and instead require chef-client 12.14 or later, which has the yum repository functionality built in. This resolves Chef 13 compatibility warnings for any cookbook with the yum cookbook.
+
+### Other changes
+
+- Convert yum_globalconfig from an LWRP to a custom resource
+
+## 4.2.0 (2017-02-12)
+
+- Make cache in the DNF compat recipe
+- Fix `fastestmirror_enabled`.
+- Require Chef 12.1 not 12.0
+- Convert to Inspec
+
 ## 4.1.0 (2016-10-21)
+
 - Purge yum cache before removing a repo not after
 
 ## 4.0.0 (2016-09-06)

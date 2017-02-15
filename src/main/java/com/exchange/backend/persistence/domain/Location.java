@@ -7,14 +7,14 @@ public class Location {
 
     private String lat;
 
-    private String lng;
+    private String lon;
 
     public Location() {
     }
 
-    public Location(String lat, String lng) {
+    public Location(String lat, String lon) {
         this.lat = lat;
-        this.lng = lng;
+        this.lon = lon;
     }
 
     public String getLat() {
@@ -25,19 +25,19 @@ public class Location {
         this.lat = lat;
     }
 
-    public String getLng() {
-        return lng;
+    public String getLon() {
+        return lon;
     }
 
-    public void setLng(String lng) {
-        this.lng = lng;
+    public void setLon(String lon) {
+        this.lon = lon;
     }
 
     @Override
     public String toString() {
         return "Location{"
                 + "lat='" + lat + '\''
-                + ", lng='" + lng + '\''
+                + ", lon='" + lon + '\''
                 + '}';
     }
 }

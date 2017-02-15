@@ -61,20 +61,47 @@ module ElasticsearchCookbook
       nil # falsey
     end
 
+    def determine_version(new_resource, node)
+      if new_resource.version
+        new_resource.version.to_s
+      elsif node['elasticsearch'] && node['elasticsearch']['version']
+        node['elasticsearch']['version'].to_s
+      else
+        raise 'could not determine version of elasticsearch to install'
+      end
+    end
+
+    def determine_install_type(new_resource, node)
+      if new_resource.type
+        new_resource.type.to_s
+      elsif node['elasticsearch'] && node['elasticsearch']['install_type']
+        node['elasticsearch']['install_type'].to_s
+      else
+        raise 'could not determine how to install elasticsearch (package? tarball?)'
+      end
+    end
+
     def determine_download_url(new_resource, node)
       platform_family = node['platform_family']
+      install_type = determine_install_type(new_resource, node)
+      version = determine_version(new_resource, node)
+      newer_url_style = version.to_f >= 2.0
+
+      # v2 and greater has a different set of URLs
+      url_hash_key = newer_url_style ? 'download_urls_v2' : 'download_urls'
 
       url_string = nil
       if new_resource.download_url
         url_string = new_resource.download_url
-      elsif new_resource.type == 'tarball'
-        url_string = node['elasticsearch']['download_urls']['tarball']
-      elsif new_resource.type == 'package' && node['elasticsearch']['download_urls'][platform_family]
-        url_string = node['elasticsearch']['download_urls'][platform_family]
+      elsif install_type.to_s == 'tar' || install_type.to_s == 'tarball'
+        url_string = node['elasticsearch'][url_hash_key]['tar']
+      elsif install_type.to_s == 'package' && node['elasticsearch'][url_hash_key][platform_family]
+        url_string = node['elasticsearch'][url_hash_key][platform_family]
       end
 
-      if url_string && new_resource.version
-        return format(url_string, new_resource.version)
+      if url_string && version
+        # v2 and greater has two %s entries for version
+        return (newer_url_style ? format(url_string, version, version) : format(url_string, version))
       elsif url_string
         return url_string
       end
@@ -82,24 +109,74 @@ module ElasticsearchCookbook
 
     def determine_download_checksum(new_resource, node)
       platform_family = node['platform_family']
-      install_type = new_resource.type
-      version = new_resource.version
+      install_type = determine_install_type(new_resource, node)
+      version = determine_version(new_resource, node)
 
       if new_resource.download_checksum
         new_resource.download_checksum
-      elsif install_type == 'tarball'
+      elsif install_type.to_s == 'tar' || install_type.to_s == 'tarball'
         node && version &&
           node['elasticsearch'] &&
           node['elasticsearch']['checksums'] &&
           node['elasticsearch']['checksums'][version] &&
-          node['elasticsearch']['checksums'][version]['tarball']
-      elsif install_type == 'package' && node['elasticsearch']['checksums'][version] && node['elasticsearch']['checksums'][version][platform_family]
+          node['elasticsearch']['checksums'][version]['tar']
+      elsif install_type.to_s == 'package' && node['elasticsearch']['checksums'][version] && node['elasticsearch']['checksums'][version][platform_family]
         node && version && platform_family &&
           node['elasticsearch'] &&
           node['elasticsearch']['checksums'] &&
           node['elasticsearch']['checksums'][version] &&
           node['elasticsearch']['checksums'][version][platform_family]
       end
+    end
+
+    # This method takes a hash, but will convert to mash
+    def print_value(data, key, options = {})
+      separator = options[:separator] || ': '
+
+      final_value = format_value(find_value(data, key))
+
+      # track what we've returned in state var
+      data['#_seen'][key] = true unless final_value.nil?
+
+      # keyseparatorexisting_value\n
+      [key, separator, final_value, "\n"].join unless final_value.nil?
+    end
+
+    # given a hash and a key, get a value out or return nil
+    # -- and check for symbols
+    def find_value(data, key)
+      data[key] unless data[key].nil?
+    end
+
+    def format_value(value)
+      if value.nil?
+        nil # just pass through nil
+      elsif value.is_a?(Array)
+        value.join(',').to_s
+      elsif value.respond_to?(:empty?) && value.empty?
+        nil # anything that answers to empty? should be nil again
+      else
+        value.to_s
+      end
+    end
+
+    # proxy helpers for chef
+    def get_configured_proxy
+      if Chef::Config['http_proxy'] && !Chef::Config['http_proxy'].empty?
+        Chef::Config['http_proxy']
+      elsif Chef::Config['https_proxy'] && !Chef::Config['https_proxy'].empty?
+        Chef::Config['https_proxy']
+      end
+    end
+
+    def get_java_proxy_arguments(enabled = true)
+      return '' unless enabled
+
+      require 'uri'
+      parsed_uri = URI(get_configured_proxy)
+      "-DproxyHost=#{parsed_uri.host} -DproxyPort=#{parsed_uri.port}"
+    rescue
+      ''
     end
   end
 end
