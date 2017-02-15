@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Mrs Hoang on 12/02/2017.
@@ -38,8 +37,7 @@ public class GoodHandler {
     /**
      * Creates a new good given by good
      * @param good
-     * @return Message after create.
-     * @see Locale
+     * @return Message after create
      * @see Good
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
