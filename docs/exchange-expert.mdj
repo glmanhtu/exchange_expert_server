@@ -10129,7 +10129,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "-lng: float",
+											"text": "-lon: float",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -23610,7 +23610,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZ6Wc3me3pB8Y="
 							},
-							"name": "lng",
+							"name": "lon",
 							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,

@@ -7,6 +7,35 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe 'elasticsearch'
+
+elasticsearch_install 'elasticsearch' do
+  type :package
+  version "2.4.0"
+  download_checksum "5edf1ac795d6950781b20ecc8db992d6dc95e55abb1ff66e6b1234d85bd68514"
+  action :install
+end
+
+elasticsearch_configure 'elasticsearch' do
+    allocated_memory '512m'
+    configuration ({
+        'cluster.name' => 'escluster',
+        'node.name' => 'exchange_expert',
+        'http.port' => 9200,
+        'network.bind_host' =>  '0',
+        'network.host'  =>  '0.0.0.0',
+        'http.cors.enabled' =>  true,
+        "path.repo" =>  ["/exchange_expert/elasticsearch_data"]
+        })
+end
+
+elasticsearch_user 'elasticsearch' do
+  username 'vagrant'
+  groupname 'vagrant'
+
+  action :create
+end
+
 service "elasticsearch" do
 	action :stop
 end
@@ -42,8 +71,8 @@ execute "start script on boot" do
 end
 
 directory '/exchange_expert/elasticsearch_data' do
-	owner 'elasticsearch'
-	group 'elasticsearch'
+	owner 'vagrant'
+	group 'vagrant'
 	mode '0755'
   	action :create
 end
@@ -60,7 +89,7 @@ end
 begin
 	http_request 'Setup snapshoot ES' do
 	  	action :post
-	  	url 'http://localhost:9201/_snapshot/exchange_expert'
+	  	url 'http://localhost:9200/_snapshot/exchange_expert'
 	  	message (
 	  		{
 	  			:type => 'fs',
@@ -69,15 +98,36 @@ begin
 	  				:compress	=>	true
 	  			}
 			}.to_json
-		)  	
+		)
 	end
 	rescue  Net::HTTPServerException => e
    		puts "Ignore exception: #{e}"
 end
-http_request 'Restore snapshoot ES' do
+
+http_request 'Stop Good' do
   	action :post
-  	url 'http://localhost:9201/_snapshot/exchange_expert/default/_restore'  
+  	url 'http://localhost:9200/good/_close'
   	message (
 	  		{}.to_json
-		)  	
+		)
+    ignore_failure true
+end
+
+
+http_request 'Restore snapshoot ES' do
+  	action :post
+  	url 'http://localhost:9200/_snapshot/exchange_expert/default/_restore'
+  	message (
+	  		{}.to_json
+		)
+    ignore_failure true
+end
+
+http_request 'Start Good' do
+  	action :post
+  	url 'http://localhost:9200/good/_open'
+  	message (
+	  		{}.to_json
+		)
+    ignore_failure true
 end

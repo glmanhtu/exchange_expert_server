@@ -11,81 +11,33 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   end
 
   action :install do
-    if new_resource.type == 'tarball'
+    install_type = determine_install_type(new_resource, node)
+    unless new_resource.version
+      new_resource.version determine_version(new_resource, node)
+    end
+
+    if install_type == 'tarball' || install_type == 'tar'
       install_tarball_wrapper_action
-    elsif new_resource.type == 'package'
+    elsif install_type == 'package'
       install_package_wrapper_action
-    elsif new_resource.type == 'repository'
-      install_repo_wrapper_action
     else
       raise "#{install_type} is not a valid install type"
     end
   end
 
   action :remove do
-    if new_resource.type == 'tarball'
+    install_type = determine_install_type(new_resource, node)
+
+    if install_type == 'tarball' || install_type == 'tar'
       remove_tarball_wrapper_action
-    elsif new_resource.type == 'package'
+    elsif install_type == 'package'
       remove_package_wrapper_action
-    elsif new_resource.type == 'repository'
-      remove_repo_wrapper_action
     else
       raise "#{install_type} is not a valid install type"
     end
   end
 
   protected
-
-  def install_repo_wrapper_action
-    if new_resource.enable_repository_actions
-      if node['platform_family'] == 'debian'
-        apt_r = apt_repo_resource
-        apt_r.run_action(:add)
-        new_resource.updated_by_last_action(true) if apt_r.updated_by_last_action?
-      else
-        yr_r = yum_repo_resource
-        yr_r.run_action(:create)
-        new_resource.updated_by_last_action(true) if yr_r.updated_by_last_action?
-      end
-    end
-
-    if node['platform_family'] == 'rhel' && !new_resource.version.include?('-')
-      # NB: yum repo packages are broken in Chef if you don't specify a release
-      #     https://github.com/chef/chef/issues/4103
-      new_resource.version = "#{new_resource.version}-1"
-    end
-
-    pkg_r = package 'elasticsearch' do
-      options new_resource.package_options
-      version new_resource.version
-      action :nothing
-    end
-
-    pkg_r.run_action(:install)
-    new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
-  end
-
-  def remove_repo_wrapper_action
-    if new_resource.enable_repository_actions
-      if node['platform_family'] == 'debian'
-        apt_r = apt_repo_resource
-        apt_r.run_action(:remove)
-        new_resource.updated_by_last_action(true) if apt_r.updated_by_last_action?
-      else
-        yr_r = yum_repo_resource
-        yr_r.run_action(:delete)
-        new_resource.updated_by_last_action(true) if yr_r.updated_by_last_action?
-      end
-    end
-
-    pkg_r = package 'elasticsearch' do
-      options new_resource.package_options
-      version new_resource.version
-      action :nothing
-    end
-    pkg_r.run_action(:remove)
-    new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
-  end
 
   def install_package_wrapper_action
     download_url = determine_download_url(new_resource, node)
@@ -149,15 +101,15 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       url   determine_download_url(new_resource, node)
       owner es_user.username
       group es_user.groupname
-      version new_resource.version
-      has_binaries ['bin/elasticsearch', 'bin/elasticsearch-plugin']
+      version determine_version(new_resource, node)
+      has_binaries ['bin/elasticsearch', 'bin/plugin']
       checksum determine_download_checksum(new_resource, node)
-      prefix_root   new_resource.dir
-      prefix_home   new_resource.dir
+      prefix_root   new_resource.dir[new_resource.type]
+      prefix_home   new_resource.dir[new_resource.type]
 
       not_if do
         link   = "#{new_resource.dir}/elasticsearch"
-        target = "#{new_resource.dir}/elasticsearch-#{new_resource.version}"
+        target = "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}"
         binary = "#{target}/bin/elasticsearch"
 
         ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target && ::File.exist?(binary)
@@ -166,16 +118,6 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     end
     ark_r.run_action(:install)
     new_resource.updated_by_last_action(true) if ark_r.updated_by_last_action?
-
-    # destroy the sample config directory for tarball installs, or it will
-    # take precedence beyond the default stuff in /etc/elasticsearch and within
-    # /etc/sysconfig or /etc/default
-    sample_r = directory "#{new_resource.dir}/elasticsearch/config" do
-      action :nothing
-      recursive true
-    end
-    sample_r.run_action(:delete)
-    new_resource.updated_by_last_action(true) if sample_r.updated_by_last_action?
   end
 
   def remove_tarball_wrapper_action
@@ -183,7 +125,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     link_r = link "#{new_resource.dir}/elasticsearch" do
       only_if do
         link   = "#{new_resource.dir}/elasticsearch"
-        target = "#{new_resource.dir}/elasticsearch-#{new_resource.version}"
+        target = "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}"
 
         ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target
       end
@@ -193,28 +135,10 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     new_resource.updated_by_last_action(true) if link_r.updated_by_last_action?
 
     # remove the specific version
-    d_r = directory "#{new_resource.dir}/elasticsearch-#{new_resource.version}" do
+    d_r = directory "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}" do
       action :nothing
     end
     d_r.run_action(:delete)
     new_resource.updated_by_last_action(true) if d_r.updated_by_last_action?
-  end
-
-  def yum_repo_resource
-    yum_repository 'elastic-5.x' do
-      baseurl 'https://artifacts.elastic.co/packages/5.x/yum'
-      gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
-      action :nothing # :add, remove
-    end
-  end
-
-  def apt_repo_resource
-    apt_repository 'elastic-5.x' do
-      uri 'https://artifacts.elastic.co/packages/5.x/apt'
-      key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
-      components ['main']
-      distribution 'stable'
-      action :nothing # :create, :delete
-    end
   end
 end
