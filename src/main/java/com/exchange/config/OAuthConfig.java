@@ -2,6 +2,7 @@ package com.exchange.config;
 
 import com.exchange.backend.service.UserAuthenticationService;
 import com.exchange.restapi.GoodHandler;
+import com.exchange.restapi.SearchHandler;
 import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -39,16 +40,17 @@ public class OAuthConfig {
         public void configure(WebSecurity web) throws Exception {
             web.ignoring()
                     .antMatchers("/resource/**")
-                    .antMatchers(UserHandler.REST_API_USER_INFO)
-                    .antMatchers(GoodHandler.REST_API_GOODS + "/**");
+                    .antMatchers(UserHandler.REST_API_USER)
+                    .antMatchers(GoodHandler.REST_API_GOODS + "/**")
+                    .antMatchers(SearchHandler.REST_API_USER + "/**");
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
             //disable csrf header for dev env
-            List<String> activeProflies = Arrays.asList(env.getActiveProfiles());
-            if (activeProflies.contains("dev")) {
+            List<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+            if (activeProfiles.contains("dev")) {
                 http.csrf().disable();
                 http.headers().frameOptions().disable();
             }

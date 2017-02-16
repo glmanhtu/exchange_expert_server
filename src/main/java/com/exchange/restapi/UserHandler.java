@@ -9,12 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Locale;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Mrs Hoang on 12/02/2017.
@@ -28,13 +26,13 @@ public class UserHandler {
     /**
      * URL THIS REST API OF USER
      */
-    public static final String REST_API_USER_INFO = "/user/info";
+    public static final String REST_API_USER = "/user";
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = REST_API_USER_INFO, method = RequestMethod.GET)
-    public ResponseEntity<Object> getUser(@RequestParam("email") String email, Locale locale) {
+    @RequestMapping(value = REST_API_USER, method = RequestMethod.GET)
+    public ResponseEntity<Object> getUser(@RequestParam("email") String email) {
 
         User user = userService.getOne(email);
 

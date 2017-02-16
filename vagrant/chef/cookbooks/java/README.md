@@ -259,9 +259,9 @@ is called when a JDK version changes. This gives cookbook authors a way
 to subscribe to JDK changes and take actions (say restart a java service):
 
 ```ruby
-service 'somejavaservice'
+service 'somejavaservice' do
   action :restart
-  subscribes :write, 'log[jdk-version-changed]', :delayed
+  subscribes :restart, 'log[jdk-version-changed]', :delayed
 end
 ```
 
@@ -456,7 +456,7 @@ License and Author
 -----
 * Author: Eric Helgeson (<erichelgeson@gmail.com>)
 
-Copyright: 2014-2015, Agile Orbit, LLC
+Copyright: 2014-2017, Agile Orbit, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
