@@ -5,8 +5,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import java.io.Serializable;
@@ -24,7 +22,6 @@ public class ElasticGood implements Serializable {
      * The Id of this Good.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
     /**
