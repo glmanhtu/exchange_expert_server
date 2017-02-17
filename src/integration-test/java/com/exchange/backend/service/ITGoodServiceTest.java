@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -65,21 +64,6 @@ public class ITGoodServiceTest {
             Assert.assertNotNull("Delete good success", good);
         } catch (Exception e) {
             Assert.assertTrue("Delete good failed" + e.getMessage(), false);
-        }
-
-        List<Good> goods = goodService.getAll();
-        for (Good good1 : goods) {
-            ElasticGood elasticGood = new ElasticGood();
-            elasticGood.setDescription(good1.getDescription());
-            elasticGood.setId(good1.getId());
-            elasticGood.setLocation(good1.getLocation());
-            elasticGood.setPostBy(good1.getPostBy());
-            elasticGood.setPostDate(good1.getPostDate());
-            elasticGood.setPrice(good1.getPrice());
-            elasticGood.setSlug(good1.getSlug());
-            elasticGood.setTitle(good1.getTitle());
-            elasticGood.setType(good1.getType());
-            elasticGoodRepository.save(elasticGood);
         }
     }
 

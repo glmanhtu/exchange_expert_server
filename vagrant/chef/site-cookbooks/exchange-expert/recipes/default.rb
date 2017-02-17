@@ -44,6 +44,11 @@ service "mongodb" do
 	action :stop
 end
 
+cookbook_file "/tmp/prepare.sh" do
+  source "scripts/prepare.sh"
+  mode 0755
+end
+
 cookbook_file "/tmp/startup.sh" do
   source "scripts/startup.sh"
   mode 0755
@@ -66,8 +71,14 @@ cookbook_file "/exchange_expert/scripts/mongo_backup.sh" do
 	mode 0755
 end
 
-execute "start script on boot" do
-  command "sh /tmp/startup.sh"
+cookbook_file "/exchange_expert/scripts/startup.sh" do
+	source "scripts/startup.sh"
+	mode 0755
+end
+
+
+execute "prepare script on boot" do
+  command "sh /tmp/prepare.sh"
 end
 
 directory '/exchange_expert/elasticsearch_data' do
@@ -130,4 +141,8 @@ http_request 'Start Good' do
 	  		{}.to_json
 		)
     ignore_failure true
+end
+
+execute "start script on boot" do
+  command "sh /tmp/startup.sh"
 end

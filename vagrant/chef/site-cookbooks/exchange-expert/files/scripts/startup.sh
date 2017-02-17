@@ -1,3 +1,1 @@
-sudo chown -R vagrant /var/lib/mongodb
-sudo mongorestore --db exchange_expert --dbpath /var/lib/mongodb --username admin --password admin123 --drop /exchange_expert/mongo_data/exchange_expert
-sudo chown -R mongodb:nogroup /var/lib/mongodb
+nohup java -jar /exchange_expert/release/exchange-0.0.1-SNAPSHOT.jar &
