@@ -1,10 +1,8 @@
 package com.exchange.restapi;
 
 import com.exchange.backend.enums.MessageEnum;
-import com.exchange.backend.enums.StatusEnum;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Message;
-import com.exchange.backend.persistence.domain.Status;
 import com.exchange.backend.service.GoodService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,18 +42,6 @@ public class GoodHandler {
     public ResponseEntity<Object> createGoods(@RequestBody Good good) {
 
         LOGGER.info("Creating goods {}", good);
-
-        //create good id given by user id and good slug
-        String goodId = good.getPostBy().getId() + good.getSlug();
-
-        //checking good slug is existed
-        if (goodService.inValidSlug(goodId)) {
-
-            LOGGER.error("The slug {} is already exists", good.getSlug());
-            Message message = new Message(MessageEnum.GOODS_SLUG_INVALID);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-        good.setStatus(new Status(StatusEnum.PENDING));
 
         //create new good
         good = goodService.create(good);
