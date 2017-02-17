@@ -1,9 +1,12 @@
 package com.exchange.backend.service;
 
+import com.exchange.backend.enums.StatusEnum;
 import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
+import com.exchange.backend.persistence.domain.Status;
 import com.exchange.backend.persistence.repositories.elasticsearch.ElasticGoodRepository;
 import com.exchange.backend.persistence.repositories.mongodb.GoodRepository;
+import com.github.slugify.Slugify;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,6 +40,13 @@ public class GoodService implements SearchEverything<Good> {
      */
     public Good create(Good good) {
 
+        //Generate slug
+        good.setSlug(generatedSlug(good.getTitle()));
+
+        //create good id given by user id and good slug
+        String goodId = good.getPostBy().getId() + "-" + good.getSlug();
+        good.setId(goodId);
+        good.setStatus(new Status(StatusEnum.PENDING));
         good.setPostDate(new Date().getTime());
 
         return goodRepository.save(good);
@@ -115,5 +125,41 @@ public class GoodService implements SearchEverything<Good> {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Generates slug given by title
+     * @param title
+     * @return A slug
+     */
+    public String generatedSlug(String title) {
+
+        Slugify slg = new Slugify();
+        String slug = slg.slugify(title);
+
+        //checking valid slug
+        slug = findValidSlug(slug);
+
+        return slug;
+    }
+
+    /**
+     * Finds valid slug given by slug
+     * @param slug
+     * @return A valid slug
+     */
+    public String findValidSlug(String slug) {
+        //checking good slug is existed
+        if (inValidSlug(slug)) {
+            int i = 1;
+           String slugTemp = slug + "-" + i;
+           while (inValidSlug(slugTemp)) {
+               i++;
+               slugTemp = slug + "-" + i;
+           }
+           slug += "-" + i;
+        }
+
+        return slug;
     }
 }
