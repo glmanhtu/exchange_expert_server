@@ -11,9 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +37,7 @@ public class GoodService implements SearchEverything<Good> {
      */
     public Good create(Good good) {
 
-        good.setPostDate(LocalDateTime.now(Clock.systemDefaultZone()));
+        good.setPostDate(new Date().getTime());
 
         return goodRepository.save(good);
     }

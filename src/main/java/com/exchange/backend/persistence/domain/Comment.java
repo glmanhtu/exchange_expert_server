@@ -1,9 +1,9 @@
 package com.exchange.backend.persistence.domain;
 
 import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.Convert;
-import java.time.LocalDateTime;
 
 /**
  * Created by greenlucky on 1/31/17.

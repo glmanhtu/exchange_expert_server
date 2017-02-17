@@ -7,8 +7,6 @@ import com.exchange.backend.persistence.repositories.mongodb.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +34,7 @@ public class RatingService {
         // repairs content
         Content content = new Content();
         content.setBy(byEmailUser);
-        content.setOn(LocalDateTime.now(Clock.systemDefaultZone()));
+        content.setOn(new org.joda.time.LocalDateTime());
         content.setValue(star);
 
         Rating rating = new Rating();

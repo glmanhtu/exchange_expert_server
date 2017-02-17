@@ -1,12 +1,12 @@
 package com.exchange.backend.persistence.domain;
 
 import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
+import org.joda.time.LocalDateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

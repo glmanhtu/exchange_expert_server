@@ -5,9 +5,6 @@ import com.exchange.backend.persistence.domain.Good;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-
 /**
  * Created by greenlucky on 1/31/17.
  */
@@ -31,7 +28,7 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setMessage(message);
         comment.setBy(byUser);
-        comment.setCommentDate(LocalDateTime.now(Clock.systemDefaultZone()));
+        comment.setCommentDate(new org.joda.time.LocalDateTime());
 
         Good good = goodService.getOne(goodId);
         good.getComments().add(comment);
