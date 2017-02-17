@@ -8,6 +8,8 @@
 #
 
 include_recipe 'elasticsearch'
+include_recipe 'apt::default'
+include_recipe 'nginx::repo'
 
 elasticsearch_install 'elasticsearch' do
   type :package
@@ -44,6 +46,11 @@ service "mongodb" do
 	action :stop
 end
 
+cookbook_file "/tmp/prepare.sh" do
+  source "scripts/prepare.sh"
+  mode 0755
+end
+
 cookbook_file "/tmp/startup.sh" do
   source "scripts/startup.sh"
   mode 0755
@@ -66,8 +73,14 @@ cookbook_file "/exchange_expert/scripts/mongo_backup.sh" do
 	mode 0755
 end
 
-execute "start script on boot" do
-  command "sh /tmp/startup.sh"
+cookbook_file "/exchange_expert/scripts/startup.sh" do
+	source "scripts/startup.sh"
+	mode 0755
+end
+
+
+execute "prepare script on boot" do
+  command "sh /tmp/prepare.sh"
 end
 
 directory '/exchange_expert/elasticsearch_data' do
@@ -130,4 +143,17 @@ http_request 'Start Good' do
 	  		{}.to_json
 		)
     ignore_failure true
+end
+
+package 'nginx' do
+  action :install
+end
+
+service 'nginx' do
+  supports status: true, restart: true, reload: true
+  action :enable
+end
+
+execute "start script on boot" do
+  command "sh /tmp/startup.sh"
 end

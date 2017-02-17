@@ -2,6 +2,7 @@ package com.exchange.backend.service;
 
 import com.exchange.backend.persistence.domain.Comment;
 import com.exchange.backend.persistence.domain.Content;
+import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Image;
 import com.exchange.backend.persistence.domain.Location;
@@ -14,6 +15,7 @@ import io.codearte.jfairy.Fairy;
 import io.codearte.jfairy.producer.person.Person;
 import io.codearte.jfairy.producer.text.TextProducer;
 import org.joda.time.LocalDateTime;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,6 +58,24 @@ public class ITCreateDataTest {
 
     private int randomBetween(int from, int to) {
         return ThreadLocalRandom.current().nextInt(from, to);
+    }
+
+    @Test
+    public void moveGoodToElasticSearch() {
+        List<Good> goods = goodService.getAll();
+        for (Good good1 : goods) {
+            ElasticGood elasticGood = new ElasticGood();
+            elasticGood.setDescription(good1.getDescription());
+            elasticGood.setId(good1.getId());
+            elasticGood.setLocation(good1.getLocation());
+            elasticGood.setPostBy(good1.getPostBy());
+            elasticGood.setPostDate(good1.getPostDate());
+            elasticGood.setPrice(good1.getPrice());
+            elasticGood.setSlug(good1.getSlug());
+            elasticGood.setTitle(good1.getTitle());
+            elasticGood.setType(good1.getType());
+            elasticGoodRepository.save(elasticGood);
+        }
     }
 
     public void generateTestData() throws Exception {
