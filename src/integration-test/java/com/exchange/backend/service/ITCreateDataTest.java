@@ -15,6 +15,7 @@ import io.codearte.jfairy.Fairy;
 import io.codearte.jfairy.producer.person.Person;
 import io.codearte.jfairy.producer.text.TextProducer;
 import org.joda.time.LocalDateTime;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,6 +60,7 @@ public class ITCreateDataTest {
         return ThreadLocalRandom.current().nextInt(from, to);
     }
 
+    @Test
     public void moveGoodToElasticSearch() {
         List<Good> goods = goodService.getAll();
         for (Good good1 : goods) {
