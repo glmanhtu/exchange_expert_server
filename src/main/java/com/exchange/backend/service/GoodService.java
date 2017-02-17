@@ -82,6 +82,15 @@ public class GoodService implements SearchEverything<Good> {
     }
 
     /**
+     * Gets Good given by slug
+     * @param slug
+     * @return A good or null if not found
+     */
+    public Good getBySlug(String slug) {
+        return goodRepository.findBySlug(slug);
+    }
+
+    /**
      * Retrieves a list goods or null if not exist
      * @return A list of good or null if not exist
      */
