@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by optimize on 2/10/17.
@@ -20,8 +21,14 @@ import java.util.List;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ITGoodServiceTest {
 
+    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
+
     @Autowired
     private GoodService goodService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ElasticGoodRepository elasticGoodRepository;

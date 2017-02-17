@@ -1,6 +1,5 @@
 package com.exchange.backend.datatype.search;
 
-import com.exchange.backend.datatype.Filter;
 import com.exchange.backend.datatype.Location;
 import com.exchange.backend.datatype.Order;
 import com.exchange.backend.datatype.Pagination;
@@ -16,7 +15,6 @@ public class SearchGood {
     private String title;
     private String category;
     private String seller;
-    private Filter filter;
     private Price price;
     private Order order;
 
@@ -66,14 +64,6 @@ public class SearchGood {
 
     public void setSeller(String seller) {
         this.seller = seller;
-    }
-
-    public Filter getFilter() {
-        return filter;
-    }
-
-    public void setFilter(Filter filter) {
-        this.filter = filter;
     }
 
     public Price getPrice() {
