@@ -8,6 +8,8 @@
 #
 
 include_recipe 'elasticsearch'
+include_recipe 'apt::default'
+include_recipe 'nginx::repo'
 
 elasticsearch_install 'elasticsearch' do
   type :package
@@ -141,6 +143,15 @@ http_request 'Start Good' do
 	  		{}.to_json
 		)
     ignore_failure true
+end
+
+package 'nginx' do
+  action :install
+end
+
+service 'nginx' do
+  supports status: true, restart: true, reload: true
+  action :enable
 end
 
 execute "start script on boot" do
