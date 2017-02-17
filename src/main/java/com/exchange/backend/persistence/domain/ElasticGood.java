@@ -1,14 +1,11 @@
 package com.exchange.backend.persistence.domain;
 
-import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.persistence.Id;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * Created by optimize on 2/7/17.
@@ -61,9 +58,8 @@ public class ElasticGood implements Serializable {
      * This method using LocalDateTimeConverter to
      * convert from LocalDateTimeConverter to Timestamp
      */
-    @Convert(converter = LocalDateTimeConverter.class)
     @Column(name = "post_date")
-    private LocalDateTime postDate;
+    private Long postDate;
 
     /**
      * The locations can be trading this goods.
@@ -169,19 +165,17 @@ public class ElasticGood implements Serializable {
 
     /**
      * Gets postDate of this goods.
-     * @return The postDate with format LocalDateTime
-     * @see LocalDateTime
+     * @return The postDate with format Date.getTime()
      */
-    public final LocalDateTime getPostDate() {
+    public final Long getPostDate() {
         return postDate;
     }
 
     /**
      * Sets postDate given by postDate.
-     * @param postDate The variable input with LocalDateTime format
-     * @see LocalDateTime
+     * @param postDate The variable input with Date.getTime() format
      */
-    public final void setPostDate(final LocalDateTime postDate) {
+    public final void setPostDate(final Long postDate) {
         this.postDate = postDate;
     }
 

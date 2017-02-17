@@ -14,9 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,7 +47,7 @@ public class GoodService implements SearchEverything<Good> {
         String goodId = good.getPostBy().getId() + "-" + good.getSlug();
         good.setId(goodId);
         good.setStatus(new Status(StatusEnum.PENDING));
-        good.setPostDate(LocalDateTime.now(Clock.systemDefaultZone()));
+        good.setPostDate(new Date().getTime());
 
         return goodRepository.save(good);
     }

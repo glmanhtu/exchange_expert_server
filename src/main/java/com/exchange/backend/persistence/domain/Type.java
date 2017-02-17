@@ -15,6 +15,8 @@ public class Type {
      */
     private String description;
 
+    private String slug;
+
     /**
      * Declares constructor with empty param.
      */
@@ -30,6 +32,14 @@ public class Type {
     public Type(final String name, final String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     /**

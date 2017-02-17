@@ -5,31 +5,31 @@ package com.exchange.backend.persistence.domain;
  */
 public class Location {
 
-    private String lat;
+    private Double lat;
 
-    private String lon;
+    private Double lon;
 
     public Location() {
     }
 
-    public Location(String lat, String lon) {
+    public Location(Double lat, Double lon) {
         this.lat = lat;
         this.lon = lon;
     }
 
-    public String getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public String getLon() {
+    public Double getLon() {
         return lon;
     }
 
-    public void setLon(String lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 

@@ -1,11 +1,7 @@
 package com.exchange.backend.persistence.domain;
 
-import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
-
-import javax.persistence.Convert;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.time.LocalDateTime;
 
 /**
  * Created by greenlucky on 1/24/17.
@@ -14,8 +10,7 @@ public class Content {
 
     private String by;
 
-    @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime on;
+    private Long on;
 
     @Min(value = 1)
     @Max(value = 5)
@@ -24,7 +19,7 @@ public class Content {
     public Content() {
     }
 
-    public Content(String by, LocalDateTime on, double value) {
+    public Content(String by, Long on, double value) {
         this.by = by;
         this.on = on;
         this.value = value;
@@ -38,11 +33,11 @@ public class Content {
         this.by = by;
     }
 
-    public LocalDateTime getOn() {
+    public Long getOn() {
         return on;
     }
 
-    public void setOn(LocalDateTime on) {
+    public void setOn(Long on) {
         this.on = on;
     }
 
