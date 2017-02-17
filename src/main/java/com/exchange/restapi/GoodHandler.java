@@ -66,4 +66,20 @@ public class GoodHandler {
         }
         return new ResponseEntity<>(good, HttpStatus.OK);
     }
+
+    /**
+     * Gets Goods given by slug
+     * @param slug
+     * @return A Good or message enum Goods not found good not found if not found
+     * @see MessageEnum
+     */
+    @RequestMapping(value = "/slug/{slug}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getBySlug(@PathVariable String slug) {
+        Good good = goodService.getBySlug(slug);
+        if (good == null) {
+            Message message = new Message(MessageEnum.GOODS_NOT_FOUND);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(good, HttpStatus.OK);
+    }
 }
