@@ -520,9 +520,12 @@
                     "format": "email",
                     "description": "Email of seller"
                 },
-                "filter": {
+                "order": {
                     "type": "object",
                     "properties": {
+                        "isASC": {
+                            "type": "boolean"
+                        },
                         "by": {
                             "type": "string",
                             "enum": [
