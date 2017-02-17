@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class RatingService {
         // repairs content
         Content content = new Content();
         content.setBy(byEmailUser);
-        content.setOn(new org.joda.time.LocalDateTime());
+        content.setOn(new Date().getTime());
         content.setValue(star);
 
         Rating rating = new Rating();

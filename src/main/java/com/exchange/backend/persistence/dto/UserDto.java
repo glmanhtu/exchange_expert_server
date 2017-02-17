@@ -20,7 +20,7 @@ public class UserDto {
 
     private boolean enabled = true;
 
-    private double rating;
+    private double avgRating;
 
     public String getId() {
         return id;
@@ -86,12 +86,12 @@ public class UserDto {
         this.enabled = enabled;
     }
 
-    public double getRating() {
-        return rating;
+    public double getAvgRating() {
+        return avgRating;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
     }
 }
 

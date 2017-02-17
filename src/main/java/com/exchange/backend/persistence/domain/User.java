@@ -1,15 +1,10 @@
 package com.exchange.backend.persistence.domain;
 
-import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Email;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Convert;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,13 +38,11 @@ public class User implements Serializable, UserDetails {
 
     private String lastName;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate birthday;
+    private Long birthday;
 
     private String avatar;
 
-    @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime createDate;
+    private Long createDate;
 
     //default 1: male; 0: female
     private int gender = 1;
@@ -99,11 +92,11 @@ public class User implements Serializable, UserDetails {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthday() {
+    public Long getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Long birthday) {
         this.birthday = birthday;
     }
 
@@ -115,11 +108,11 @@ public class User implements Serializable, UserDetails {
         this.avatar = avatar;
     }
 
-    public LocalDateTime getCreateDate() {
+    public Long getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(Long createDate) {
         this.createDate = createDate;
     }
 

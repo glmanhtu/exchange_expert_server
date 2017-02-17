@@ -66,8 +66,8 @@ public class ITCreateDataTest {
             user.setFirstName(person.getFirstName());
             user.setLastName(person.getLastName());
             user.setAvatar("http://blog.florianlopes.io/wp-content/uploads/2016/04/spring-boot-project-logo.png");
-            user.setBirthday(person.getDateOfBirth().toLocalDate());
-            user.setCreateDate(new LocalDateTime());
+            user.setBirthday(person.getDateOfBirth().getMillis());
+            user.setCreateDate(new Date().getTime());
             user.setEnabled(true);
             int gender = person.getSex() == Person.Sex.MALE ? 1 : 0;
             user.setGender(gender);
@@ -88,7 +88,7 @@ public class ITCreateDataTest {
                 }
                 double r = randomBetween(1, 5);
                 totalRating += r;
-                content.setOn(new LocalDateTime());
+                content.setOn(new Date().getTime());
                 content.setValue(r);
                 contents.add(content);
             }

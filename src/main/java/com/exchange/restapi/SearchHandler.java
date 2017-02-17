@@ -78,7 +78,7 @@ public class SearchHandler {
     private ElasticGoodDto convertToDto(ElasticGood elasticGood) {
         ElasticGoodDto elasticGoodDto = modelMapper.map(elasticGood, ElasticGoodDto.class);
         UserDto userDto = modelMapper.map(elasticGood.getPostBy(), UserDto.class);
-        userDto.setRating(elasticGood.getPostBy().getRating().getAvg());
+        userDto.setAvgRating(elasticGood.getPostBy().getRating().getAvg());
         elasticGoodDto.setSeller(userDto);
         return elasticGoodDto;
     }
