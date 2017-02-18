@@ -83,13 +83,6 @@ execute "prepare script on boot" do
   command "sh /tmp/prepare.sh"
 end
 
-directory '/exchange_expert/elasticsearch_data' do
-	owner 'vagrant'
-	group 'vagrant'
-	mode '0755'
-  	action :create
-end
-
 service "elasticsearch" do
 	action :restart
 end
