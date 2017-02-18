@@ -1,1 +1,1 @@
-nohup java -jar /exchange_expert/release/exchange-0.0.1-SNAPSHOT.jar &
+`nohup java -jar /exchange_expert/release/exchange-0.0.1-SNAPSHOT.jar &`
