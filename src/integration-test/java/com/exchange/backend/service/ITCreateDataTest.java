@@ -1,7 +1,15 @@
 package com.exchange.backend.service;
 
-import com.exchange.backend.persistence.domain.*;
 import com.exchange.backend.persistence.domain.Category;
+import com.exchange.backend.persistence.domain.Comment;
+import com.exchange.backend.persistence.domain.Content;
+import com.exchange.backend.persistence.domain.ElasticGood;
+import com.exchange.backend.persistence.domain.Good;
+import com.exchange.backend.persistence.domain.Image;
+import com.exchange.backend.persistence.domain.Location;
+import com.exchange.backend.persistence.domain.Rating;
+import com.exchange.backend.persistence.domain.Status;
+import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.repositories.elasticsearch.ElasticGoodRepository;
 import io.codearte.jfairy.Fairy;
 import io.codearte.jfairy.producer.person.Person;
@@ -111,18 +119,18 @@ public class ITCreateDataTest {
         }
     }
 
-    public Category randomType() {
-        List<String> types = new ArrayList<>();
-        types.add("Book");
-        types.add("Screen");
-        types.add("CPU");
-        types.add("Mouse");
-        types.add("Laptop");
-        types.add("Guitar");
-        types.add("Wifi Card");
-        types.add("Chair");
+    public Category randomCategory() {
+        List<String> categories = new ArrayList<>();
+        categories.add("Book");
+        categories.add("Screen");
+        categories.add("CPU");
+        categories.add("Mouse");
+        categories.add("Laptop");
+        categories.add("Guitar");
+        categories.add("Wifi Card");
+        categories.add("Chair");
         TextProducer text = Fairy.create().textProducer();
-        return new Category(types.get(randomBetween(0, types.size())), text.loremIpsum());
+        return new Category(categories.get(randomBetween(0, categories.size())), text.loremIpsum());
     }
 
     public Status randomStatus() {
@@ -149,7 +157,7 @@ public class ITCreateDataTest {
             TextProducer text = Fairy.create().textProducer();
             Good good = new Good();
             User author = userList.get(randomBetween(0, userList.size()));
-            good.setCategory(randomType());
+            good.setCategory(randomCategory());
             good.setStatus(randomStatus());
             good.setDescription(text.loremIpsum());
             good.setTitle(text.latinSentence(20));
@@ -172,7 +180,7 @@ public class ITCreateDataTest {
 
             int numbImages = randomBetween(0, 15);
             List<Image> images = new ArrayList<>();
-            for (int k=0; k< numbComments; k++) {
+            for (int k=0; k< numbImages; k++) {
                 Image image = new Image("http://lorempixel.com/1200/800/", text.latinSentence(20), "");
                 images.add(image);
             }
