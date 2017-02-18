@@ -27,7 +27,7 @@ public class GoodHandler {
     /** The application logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(GoodHandler.class);
 
-    public static final String REST_API_GOODS = "/goods";
+    public static final String REST_API_GOODS = "/good";
 
     @Autowired
     private GoodService goodService;
@@ -68,14 +68,14 @@ public class GoodHandler {
     }
 
     /**
-     * Gets Goods given by slug
+     * Gets Goods given by (category slug) type slug or slug of goods
      * @param slug
      * @return A Good or message enum Goods not found good not found if not found
      * @see MessageEnum
      */
-    @RequestMapping(value = "/slug/{slug}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getBySlug(@PathVariable String slug) {
-        Good good = goodService.getBySlug(slug);
+    @RequestMapping(value = "/{categorySlug}/{slug}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getBySlug(@PathVariable String categorySlug, @PathVariable String slug) {
+        Good good = goodService.getByTypeSlugAndSlug(categorySlug, slug);
         if (good == null) {
             Message message = new Message(MessageEnum.GOODS_NOT_FOUND);
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);

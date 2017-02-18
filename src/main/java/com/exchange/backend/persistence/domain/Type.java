@@ -79,10 +79,11 @@ public class Type {
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         return "Type{"
-                + ", name='" + name + '\''
+                + "name='" + name + '\''
                 + ", description='" + description + '\''
+                + ", slug='" + slug + '\''
                 + '}';
     }
 }

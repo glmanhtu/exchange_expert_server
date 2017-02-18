@@ -43,6 +43,8 @@ public class GoodService implements SearchEverything<Good> {
         //Generate slug
         good.setSlug(generatedSlug(good.getTitle()));
 
+        good.getType().setSlug(createSlug(good.getType().getName()));
+
         //create good id given by user id and good slug
         String goodId = good.getPostBy().getId() + "-" + good.getSlug();
         good.setId(goodId);
@@ -137,20 +139,31 @@ public class GoodService implements SearchEverything<Good> {
     }
 
     /**
+     * creates slug given by title
+     * @param title
+     * @return slug
+     */
+    private String createSlug(String title) {
+        Slugify slg = new Slugify();
+        String slug = slg.slugify(title);
+        return slug;
+    }
+
+    /**
      * Generates slug given by title
      * @param title
      * @return A slug
      */
     public String generatedSlug(String title) {
 
-        Slugify slg = new Slugify();
-        String slug = slg.slugify(title);
+       String slug = createSlug(title);
 
         //checking valid slug
         slug = findValidSlug(slug);
 
         return slug;
     }
+
 
     /**
      * Finds valid slug given by slug
@@ -170,5 +183,15 @@ public class GoodService implements SearchEverything<Good> {
         }
 
         return slug;
+    }
+
+    /**
+     * get Goods given by cagtegory slug (type slug) and slug of goods
+     * @param categorySlug (type slug)
+     * @param slug
+     * @return A goods or null if not exist
+     */
+    public Good getByTypeSlugAndSlug(String categorySlug, String slug) {
+        return goodRepository.findByTypeSlugAndSlug(categorySlug, slug);
     }
 }
