@@ -39,7 +39,7 @@ public class ElasticGood implements Serializable {
     /**
      * The type of this good.
      */
-    private Type type;
+    private Category category;
 
     /**
      * The price of this good.
@@ -129,22 +129,12 @@ public class ElasticGood implements Serializable {
         this.description = description;
     }
 
-    /**
-     * Gets type.
-     * @return the type.
-     * @see Type
-     */
-    public final Type getType() {
-        return type;
+    public Category getCategory() {
+        return category;
     }
 
-    /**
-     * Sets type.
-     * @param type the variable input
-     * @see Type
-     */
-    public final void setType(final Type type) {
-        this.type = type;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     /**
@@ -239,7 +229,7 @@ public class ElasticGood implements Serializable {
                 + ", title='" + title + '\''
                 + ", slug='" + slug + '\''
                 + ", description='" + description + '\''
-                + ", type=" + type
+                + ", category=" + category
                 + ", price=" + price
                 + ", postBy=" + postBy
                 + ", postDate=" + postDate

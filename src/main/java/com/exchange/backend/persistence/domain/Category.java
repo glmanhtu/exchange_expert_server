@@ -3,7 +3,7 @@ package com.exchange.backend.persistence.domain;
 /**
  * Created by greenlucky on 1/31/17.
  */
-public class Type {
+public class Category {
 
     /**
      * The name of type class.
@@ -20,7 +20,7 @@ public class Type {
     /**
      * Declares constructor with empty param.
      */
-    public Type() {
+    public Category() {
     }
 
     /**
@@ -29,7 +29,7 @@ public class Type {
      * @param name with style of String
      * @param description with style of String
      */
-    public Type(final String name, final String description) {
+    public Category(final String name, final String description) {
         this.name = name;
         this.description = description;
     }
@@ -79,10 +79,11 @@ public class Type {
     }
 
     @Override
-    public final String toString() {
-        return "Type{"
-                + ", name='" + name + '\''
+    public String toString() {
+        return "Category{"
+                + "name='" + name + '\''
                 + ", description='" + description + '\''
+                + ", slug='" + slug + '\''
                 + '}';
     }
 }

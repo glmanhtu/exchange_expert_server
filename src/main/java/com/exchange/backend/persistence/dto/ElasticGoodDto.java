@@ -1,7 +1,7 @@
 package com.exchange.backend.persistence.dto;
 
 import com.exchange.backend.persistence.domain.Location;
-import com.exchange.backend.persistence.domain.Type;
+import com.exchange.backend.persistence.domain.Category;
 
 /**
  * Created by glmanhtu on 2/16/17.
@@ -29,7 +29,7 @@ public class ElasticGoodDto {
     /**
      * The type of this good.
      */
-    private Type type;
+    private Category type;
 
     /**
      * The price of this good.
@@ -77,11 +77,11 @@ public class ElasticGoodDto {
         this.description = description;
     }
 
-    public Type getType() {
+    public Category getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(Category type) {
         this.type = type;
     }
 
