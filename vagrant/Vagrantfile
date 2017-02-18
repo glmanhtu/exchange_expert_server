@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
    config.vm.synced_folder "mongo_data", "/exchange_expert/mongo_data"
-   config.vm.synced_folder "release/client", "/usr/share/nginx/html"
+   config.vm.synced_folder "release/client", "/exchange_expert/client"
    config.vm.synced_folder "release", "/exchange_expert/release"
    config.vm.synced_folder "elasticsearch_data", "/exchange_expert/elasticsearch_data",
     owner: "vagrant",
