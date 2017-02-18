@@ -16,5 +16,5 @@ public interface GoodRepository extends MongoRepository<Good, String> {
 
     Good findBySlug(String slug);
 
-    Good findByTypeSlugAndSlug(String categorySlug, String slug);
+    Good findByCategorySlugAndSlug(String categorySlug, String slug);
 }

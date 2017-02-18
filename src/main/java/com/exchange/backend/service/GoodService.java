@@ -43,7 +43,9 @@ public class GoodService implements SearchEverything<Good> {
         //Generate slug
         good.setSlug(generatedSlug(good.getTitle()));
 
-        good.getType().setSlug(createSlug(good.getType().getName()));
+        String categoryName = good.getCategory().getName();
+
+        good.getCategory().setSlug(createSlug(categoryName));
 
         //create good id given by user id and good slug
         String goodId = good.getPostBy().getId() + "-" + good.getSlug();
@@ -191,7 +193,7 @@ public class GoodService implements SearchEverything<Good> {
      * @param slug
      * @return A goods or null if not exist
      */
-    public Good getByTypeSlugAndSlug(String categorySlug, String slug) {
-        return goodRepository.findByTypeSlugAndSlug(categorySlug, slug);
+    public Good getByCategorySlugAndSlug(String categorySlug, String slug) {
+        return goodRepository.findByCategorySlugAndSlug(categorySlug, slug);
     }
 }

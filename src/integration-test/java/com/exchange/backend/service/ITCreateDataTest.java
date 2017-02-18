@@ -1,15 +1,7 @@
 package com.exchange.backend.service;
 
-import com.exchange.backend.persistence.domain.Comment;
-import com.exchange.backend.persistence.domain.Content;
-import com.exchange.backend.persistence.domain.ElasticGood;
-import com.exchange.backend.persistence.domain.Good;
-import com.exchange.backend.persistence.domain.Image;
-import com.exchange.backend.persistence.domain.Location;
-import com.exchange.backend.persistence.domain.Rating;
-import com.exchange.backend.persistence.domain.Status;
-import com.exchange.backend.persistence.domain.Type;
-import com.exchange.backend.persistence.domain.User;
+import com.exchange.backend.persistence.domain.*;
+import com.exchange.backend.persistence.domain.Category;
 import com.exchange.backend.persistence.repositories.elasticsearch.ElasticGoodRepository;
 import io.codearte.jfairy.Fairy;
 import io.codearte.jfairy.producer.person.Person;
@@ -73,7 +65,7 @@ public class ITCreateDataTest {
             elasticGood.setPrice(good1.getPrice());
             elasticGood.setSlug(good1.getSlug());
             elasticGood.setTitle(good1.getTitle());
-            elasticGood.setType(good1.getType());
+            elasticGood.setCategory(good1.getCategory());
             elasticGoodRepository.save(elasticGood);
         }
     }
@@ -119,7 +111,7 @@ public class ITCreateDataTest {
         }
     }
 
-    public Type randomType() {
+    public Category randomType() {
         List<String> types = new ArrayList<>();
         types.add("Book");
         types.add("Screen");
@@ -130,7 +122,7 @@ public class ITCreateDataTest {
         types.add("Wifi Card");
         types.add("Chair");
         TextProducer text = Fairy.create().textProducer();
-        return new Type(types.get(randomBetween(0, types.size())), text.loremIpsum());
+        return new Category(types.get(randomBetween(0, types.size())), text.loremIpsum());
     }
 
     public Status randomStatus() {
@@ -157,7 +149,7 @@ public class ITCreateDataTest {
             TextProducer text = Fairy.create().textProducer();
             Good good = new Good();
             User author = userList.get(randomBetween(0, userList.size()));
-            good.setType(randomType());
+            good.setCategory(randomType());
             good.setStatus(randomStatus());
             good.setDescription(text.loremIpsum());
             good.setTitle(text.latinSentence(20));
