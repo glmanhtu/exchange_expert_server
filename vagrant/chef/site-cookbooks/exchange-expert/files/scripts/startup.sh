@@ -1,1 +1,1 @@
-`nohup java -jar /exchange_expert/release/exchange-0.0.1-SNAPSHOT.jar &`
+echo `nohup java -jar /exchange_expert/release/exchange-0.0.1-SNAPSHOT.jar > /exchange_expert/exchange.expert.log &`

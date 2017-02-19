@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
    config.vm.synced_folder "data/mongodb", "/exchange_expert/data/mongodb"
    config.vm.synced_folder "release/client", "/exchange_expert/client"
    config.vm.synced_folder "release", "/exchange_expert/release"
-   config.vm.synced_folder "data/elastic", "/exchange_expert/data/elasticsearch",
+   config.vm.synced_folder "data/elasticsearch", "/exchange_expert/data/elasticsearch",
     owner: "vagrant",
     group: "vagrant",
     mount_options: ["dmode=775,fmode=664"]
