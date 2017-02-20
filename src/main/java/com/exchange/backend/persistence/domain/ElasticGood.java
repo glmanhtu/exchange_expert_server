@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by optimize on 2/7/17.
@@ -64,7 +65,7 @@ public class ElasticGood implements Serializable {
     /**
      * The locations can be trading this goods.
      */
-    private Location location;
+    private List<Location> locations;
 
     /**
      * Gets id of this goods.
@@ -169,21 +170,12 @@ public class ElasticGood implements Serializable {
         this.postDate = postDate;
     }
 
-    /**
-     * Gets location of this goods.
-     * @return A location
-     * @see Location
-     */
-    public final Location getLocation() {
-        return location;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    /**
-     * Set location
-     * @param location The variable input
-     */
-    public final void setLocation(final Location location) {
-        this.location = location;
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 
     /**
@@ -233,7 +225,7 @@ public class ElasticGood implements Serializable {
                 + ", price=" + price
                 + ", postBy=" + postBy
                 + ", postDate=" + postDate
-                + ", location=" + location
+                + ", location=" + locations
                 + '}';
     }
 }

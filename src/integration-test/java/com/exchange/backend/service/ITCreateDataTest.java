@@ -21,10 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
@@ -65,7 +62,7 @@ public class ITCreateDataTest {
             ElasticGood elasticGood = new ElasticGood();
             elasticGood.setDescription(good1.getDescription());
             elasticGood.setId(good1.getId());
-            elasticGood.setLocation(good1.getLocation());
+            elasticGood.setLocations(good1.getLocations());
             elasticGood.setPostBy(good1.getPostBy());
             elasticGood.setPostDate(good1.getPostDate());
             elasticGood.setPrice(good1.getPrice());
@@ -172,7 +169,7 @@ public class ITCreateDataTest {
             good.setComments(comments);
             good.setPublishDate(new LocalDateTime());
             Location location = new Location((double)randomBetween(-90, 90), (double)randomBetween(0, 180));
-            good.setLocation(location);
+            good.setLocations(Arrays.asList(location));
             good.setPostDate(new Date().getTime());
             good.setFeaturedImage("http://lorempixel.com/1200/800/");
 
