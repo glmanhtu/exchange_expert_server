@@ -1,9 +1,12 @@
 package com.exchange.backend.persistence.dto;
 
+import com.exchange.backend.persistence.domain.User;
+
 /**
  * Created by glmanhtu on 2/16/17.
  */
 public class UserDto {
+
     private String id;
 
     private String firstName;
@@ -18,9 +21,21 @@ public class UserDto {
 
     private int gender = 1;
 
-    private boolean enabled = true;
-
     private double avgRating;
+
+    public UserDto() {
+    }
+
+    public UserDto(User user){
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.birthday = user.getBirthday();
+        this.avatar = user.getAvatar();
+        this.createDate = user.getCreateDate();
+        this.gender = user.getGender();
+        this.avgRating = user.getRating().getAvg();
+    }
 
     public String getId() {
         return id;
@@ -76,14 +91,6 @@ public class UserDto {
 
     public void setGender(int gender) {
         this.gender = gender;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public double getAvgRating() {

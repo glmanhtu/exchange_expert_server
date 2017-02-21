@@ -3,6 +3,7 @@ package com.exchange.restapi;
 import com.exchange.backend.enums.MessageEnum;
 import com.exchange.backend.persistence.domain.Message;
 import com.exchange.backend.persistence.domain.User;
+import com.exchange.backend.persistence.dto.UserDto;
 import com.exchange.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,8 @@ public class UserHandler {
             return new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Object>(user, HttpStatus.OK);
+        UserDto userDto = new UserDto(user);
+
+        return new ResponseEntity<Object>(userDto, HttpStatus.OK);
     }
 }
