@@ -1,17 +1,16 @@
 package com.exchange.backend.persistence.dto;
 
-import com.exchange.backend.persistence.domain.Location;
 import com.exchange.backend.persistence.domain.Category;
+import com.exchange.backend.persistence.domain.ElasticGood;
+import com.exchange.backend.persistence.domain.Location;
 
 /**
  * Created by glmanhtu on 2/16/17.
  */
 public class ElasticGoodDto {
+
     private String id;
 
-    /**
-     * The title of this Good.
-     */
     private String title;
 
     /**
@@ -26,24 +25,34 @@ public class ElasticGoodDto {
      */
     private String description;
 
-    /**
-     * The type of this good.
-     */
-    private Category type;
+    private Category category;
 
-    /**
-     * The price of this good.
-     */
     private double price = 0.0;
 
     private UserDto seller;
 
     private Long postDate;
 
-    /**
-     * The locations can be trading this goods.
-     */
     private Location location;
+
+    public ElasticGoodDto() {
+
+    }
+
+    public ElasticGoodDto(ElasticGood good) {
+
+        UserDto localUser = new UserDto(good.getPostBy());
+
+        this.id = good.getId();
+        this.title = good.getTitle();
+        this.slug = good.getSlug();
+        this.description = good.getDescription();
+        this.category = good.getCategory();
+        this.price = good.getPrice();
+        this.seller = localUser;
+        this.postDate = good.getPostDate();
+        this.location = good.getLocation();
+    }
 
     public String getId() {
         return id;
@@ -77,12 +86,12 @@ public class ElasticGoodDto {
         this.description = description;
     }
 
-    public Category getType() {
-        return type;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setType(Category type) {
-        this.type = type;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public double getPrice() {
