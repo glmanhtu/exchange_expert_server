@@ -11,6 +11,7 @@ after_success:
 - mvn clean install -DskipTests
 - export SSHPASS=$DEPLOY_PASS
 - sshpass -e scp target/exchange-0.0.1-SNAPSHOT.jar $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+- sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST -o stricthostkeychecking=no rm -rf deploy.sh service.sh
 - sshpass -e scp scripts/deploy.sh $DEPLOY_USER@$DEPLOY_HOST:/root/
 - sshpass -e scp scripts/service.sh $DEPLOY_USER@$DEPLOY_HOST:/root/
 - sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST -o stricthostkeychecking=no chmod +x deploy.sh service.sh
