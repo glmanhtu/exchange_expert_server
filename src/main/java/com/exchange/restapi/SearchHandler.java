@@ -1,8 +1,8 @@
 package com.exchange.restapi;
 
 import com.exchange.backend.datatype.search.SearchGood;
-import com.exchange.backend.persistence.domain.ElasticGood;
-import com.exchange.backend.persistence.dto.ElasticGoodDto;
+import com.exchange.backend.persistence.domain.Good;
+import com.exchange.backend.persistence.dto.SimpleGoodDto;
 import com.exchange.backend.persistence.dto.UserDto;
 import com.exchange.backend.service.GoodService;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -70,17 +70,17 @@ public class SearchHandler {
         if (searchGood.getSeller() != null) {
             queryBuilder.must(QueryBuilders.termQuery("postBy.id", searchGood.getSeller()));
         }
-        List<ElasticGoodDto> elasticGoodDtos = goodService.findAll(queryBuilder, pageRequest).stream()
+        List<SimpleGoodDto> simpleGoodDtos = goodService.findAll(queryBuilder, pageRequest).stream()
                 .map(this::convertToDto).collect(Collectors.toList());
-        return new ResponseEntity<>(elasticGoodDtos, HttpStatus.OK);
+        return new ResponseEntity<>(simpleGoodDtos, HttpStatus.OK);
     }
 
-    private ElasticGoodDto convertToDto(ElasticGood elasticGood) {
-        ElasticGoodDto elasticGoodDto = modelMapper.map(elasticGood, ElasticGoodDto.class);
+    private SimpleGoodDto convertToDto(Good elasticGood) {
+        SimpleGoodDto simpleGoodDto = modelMapper.map(elasticGood, SimpleGoodDto.class);
         UserDto userDto = modelMapper.map(elasticGood.getPostBy(), UserDto.class);
         userDto.setAvgRating(elasticGood.getPostBy().getRating().getAvg());
-        elasticGoodDto.setSeller(userDto);
-        return elasticGoodDto;
+        simpleGoodDto.setSeller(userDto);
+        return simpleGoodDto;
     }
 
 }
