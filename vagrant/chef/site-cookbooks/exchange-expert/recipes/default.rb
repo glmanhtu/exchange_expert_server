@@ -32,8 +32,8 @@ elasticsearch_configure 'elasticsearch' do
 end
 
 elasticsearch_user 'elasticsearch' do
-  username 'vagrant'
-  groupname 'vagrant'
+  username 'ubuntu'
+  groupname 'ubuntu'
 
   action :create
 end
@@ -57,8 +57,8 @@ cookbook_file "/tmp/startup.sh" do
 end
 
 directory '/exchange_expert/scripts' do
-  owner 'vagrant'
-  group 'vagrant'
+  owner 'ubuntu'
+  group 'ubuntu'
   mode '0755'
   action :create
 end
