@@ -1,14 +1,11 @@
 package com.exchange.restapi;
 
 import com.exchange.backend.datatype.search.SearchGood;
-import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.dto.SimpleGoodDto;
-import com.exchange.backend.persistence.dto.UserDto;
 import com.exchange.backend.service.GoodService;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by glmanhtu on 2/15/17.
@@ -30,9 +27,6 @@ import java.util.stream.Collectors;
 public class SearchHandler {
 
     public static final String REST_API_USER = "/search";
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Autowired
     private GoodService goodService;
@@ -70,17 +64,9 @@ public class SearchHandler {
         if (searchGood.getSeller() != null) {
             queryBuilder.must(QueryBuilders.termQuery("postBy.id", searchGood.getSeller()));
         }
-        List<SimpleGoodDto> simpleGoodDtos = goodService.findAll(queryBuilder, pageRequest).stream()
-                .map(this::convertToDto).collect(Collectors.toList());
+        List<SimpleGoodDto> simpleGoodDtos = new ArrayList<>();
+        goodService.findAll(queryBuilder, pageRequest).forEach(good -> simpleGoodDtos.add(new SimpleGoodDto(good)));
         return new ResponseEntity<>(simpleGoodDtos, HttpStatus.OK);
-    }
-
-    private SimpleGoodDto convertToDto(Good elasticGood) {
-        SimpleGoodDto simpleGoodDto = modelMapper.map(elasticGood, SimpleGoodDto.class);
-        UserDto userDto = modelMapper.map(elasticGood.getPostBy(), UserDto.class);
-        userDto.setAvgRating(elasticGood.getPostBy().getRating().getAvg());
-        simpleGoodDto.setSeller(userDto);
-        return simpleGoodDto;
     }
 
 }
