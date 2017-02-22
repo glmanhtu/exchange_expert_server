@@ -33,18 +33,18 @@ public class UserHandler {
     private UserService userService;
 
     @RequestMapping(value = REST_API_USER, method = RequestMethod.GET)
-    public ResponseEntity<Object> getUser(@RequestParam("email") String email) {
+    public ResponseEntity<?> getUser(@RequestParam("email") String email) {
 
         User user = userService.getOne(email);
 
         //if user is null return message not found
         if (user == null) {
             Message message = new Message(MessageEnum.USER_NOT_FOUND);
-            return new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
 
         UserDto userDto = new UserDto(user);
 
-        return new ResponseEntity<Object>(userDto, HttpStatus.OK);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 }

@@ -3,21 +3,19 @@ package com.exchange.restapi;
 import com.exchange.backend.enums.MessageEnum;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Message;
-import com.exchange.backend.persistence.dto.ElasticGoodDto;
+import com.exchange.backend.persistence.dto.GoodDto;
+import com.exchange.backend.persistence.dto.SimpleGoodDto;
 import com.exchange.backend.service.GoodService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Mrs Hoang on 12/02/2017.
@@ -40,7 +38,7 @@ public class GoodHandler {
      * @return Message after create
      * @see Good
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createGoods(@RequestBody Good good) {
 
         LOGGER.info("Creating goods {}", good);
@@ -48,35 +46,11 @@ public class GoodHandler {
         //create new good
         good = goodService.create(good);
 
-        ElasticGoodDto elasticGoodDto = new ElasticGoodDto(good);
+        SimpleGoodDto simpleGoodDto = new SimpleGoodDto(good);
 
         LOGGER.info("Created goods {}", good);
 
-        return new ResponseEntity<>(elasticGoodDto, HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Object> getAll() {
-        List<Good> goods = goodService.getAll();
-        List<ElasticGoodDto> elasticGoodDtos = new ArrayList<>();
-
-        //convert Goods to elasticGoodDtos
-        goods.forEach(good -> elasticGoodDtos.add(new ElasticGoodDto(good)));
-
-        return new ResponseEntity<>(elasticGoodDtos, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/{goodId:.+}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getOne(@PathVariable String goodId) {
-        Good good = goodService.getOne(goodId);
-        if (good == null) {
-            Message message = new Message(MessageEnum.GOODS_NOT_FOUND);
-            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-        }
-
-        ElasticGoodDto elasticGoodDto = new ElasticGoodDto(good);
-
-        return new ResponseEntity<>(elasticGoodDto, HttpStatus.OK);
+        return new ResponseEntity<>(simpleGoodDto, HttpStatus.OK);
     }
 
     /**
@@ -92,7 +66,9 @@ public class GoodHandler {
             Message message = new Message(MessageEnum.GOODS_NOT_FOUND);
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
-        ElasticGoodDto elasticGoodDto = new ElasticGoodDto(good);
-        return new ResponseEntity<>(elasticGoodDto, HttpStatus.OK);
+        GoodDto goodDto = new GoodDto(good);
+        return new ResponseEntity<>(goodDto, HttpStatus.OK);
     }
+
+
 }

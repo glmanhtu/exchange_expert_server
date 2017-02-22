@@ -1,13 +1,13 @@
 package com.exchange.backend.persistence.dto;
 
 import com.exchange.backend.persistence.domain.Category;
-import com.exchange.backend.persistence.domain.ElasticGood;
+import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Location;
 
 /**
  * Created by glmanhtu on 2/16/17.
  */
-public class ElasticGoodDto {
+public class SimpleGoodDto {
 
     private String id;
 
@@ -35,13 +35,13 @@ public class ElasticGoodDto {
 
     private Location location;
 
-    public ElasticGoodDto() {
+    private String featuredImage;
+
+    public SimpleGoodDto() {
 
     }
 
-    public ElasticGoodDto(ElasticGood good) {
-
-        UserDto localUser = new UserDto(good.getPostBy());
+    public SimpleGoodDto(Good good) {
 
         this.id = good.getId();
         this.title = good.getTitle();
@@ -49,9 +49,19 @@ public class ElasticGoodDto {
         this.description = good.getDescription();
         this.category = good.getCategory();
         this.price = good.getPrice();
-        this.seller = localUser;
+        this.seller = new UserDto(good.getPostBy());
         this.postDate = good.getPostDate();
         this.location = good.getLocation();
+        setFeaturedImage(good.getFeaturedImage());
+
+    }
+
+    public String getFeaturedImage() {
+        return featuredImage;
+    }
+
+    public void setFeaturedImage(String featuredImage) {
+        this.featuredImage = featuredImage;
     }
 
     public String getId() {
