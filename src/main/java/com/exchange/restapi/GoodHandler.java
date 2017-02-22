@@ -1,7 +1,6 @@
 package com.exchange.restapi;
 
 import com.exchange.backend.enums.MessageEnum;
-import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Message;
 import com.exchange.backend.persistence.dto.ElasticGoodDto;
@@ -11,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;

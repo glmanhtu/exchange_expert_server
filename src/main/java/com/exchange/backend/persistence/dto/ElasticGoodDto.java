@@ -1,9 +1,8 @@
 package com.exchange.backend.persistence.dto;
 
-import com.exchange.backend.persistence.domain.ElasticGood;
-import com.exchange.backend.persistence.domain.Good;
-import com.exchange.backend.persistence.domain.Location;
 import com.exchange.backend.persistence.domain.Category;
+import com.exchange.backend.persistence.domain.ElasticGood;
+import com.exchange.backend.persistence.domain.Location;
 
 /**
  * Created by glmanhtu on 2/16/17.

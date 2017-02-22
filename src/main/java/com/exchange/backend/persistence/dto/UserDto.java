@@ -23,10 +23,9 @@ public class UserDto {
 
     private double avgRating;
 
-    public UserDto() {
-    }
+    public UserDto() { }
 
-    public UserDto(User user){
+    public UserDto(User user) {
         this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
