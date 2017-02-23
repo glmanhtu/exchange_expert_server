@@ -25,7 +25,7 @@ public class UserDto {
 
     public UserDto() { }
 
-    public UserDto(String userId){
+    public UserDto(String userId) {
         this.id = userId;
     }
 
