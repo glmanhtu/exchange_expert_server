@@ -1,1 +1,1 @@
-echo `nohup java -jar /exchange_expert/release/exchange-0.0.1-SNAPSHOT.jar > /exchange_expert/exchange.expert.log &`
+`cd /exchange_expert/repository/scripts && sudo sh deploy.sh`
