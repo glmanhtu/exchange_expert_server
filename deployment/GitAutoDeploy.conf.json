@@ -1,9 +1,0 @@
-{
-  "port": 8001,
-  "repositories":
-  [{
-    "url": "https://github.com/yehnkay/exchange_expert_server",
-    "path": "/exchange_expert/repository",
-    "deploy": "cd /scripts && sh deploy.sh"
-  }]
-}

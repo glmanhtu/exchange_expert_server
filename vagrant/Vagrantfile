@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 9200, host: 9200
   config.vm.network "forwarded_port", guest: 9300, host: 9300
-  config.vm.network "forwarded_port", guest: 8080, host: 8080	
+  config.vm.network "forwarded_port", guest: 8080, host: 8081
   config.vm.network "forwarded_port", guest: 27017, host: 27017
 
   # Create a private network, which allows host-only access to the machine
@@ -40,13 +40,6 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-   config.vm.synced_folder "data/mongodb", "/exchange_expert/data/mongodb"
-   config.vm.synced_folder "release/client", "/exchange_expert/client"
-   config.vm.synced_folder "release", "/exchange_expert/release"
-   config.vm.synced_folder "data/elasticsearch", "/exchange_expert/data/elasticsearch",
-    owner: "vagrant",
-    group: "vagrant",
-    mount_options: ["dmode=775,fmode=664"]
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -58,7 +51,7 @@ Vagrant.configure("2") do |config|
     vb.gui = false
   
     # Customize the amount of memory on the VM:
-    vb.memory = "1524"
+    vb.memory = "1024"
   end
 
   config.vm.provision :chef_solo, :run => 'always' do |chef|
