@@ -1,1 +1,1 @@
-`cd /exchange_expert/repository/scripts && sudo sh deploy.sh`
+echo `cd /exchange_expert/repository/scripts && sudo sh deploy.sh`
