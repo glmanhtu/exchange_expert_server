@@ -49,7 +49,7 @@ public class SimpleGoodDto {
         this.description = good.getDescription();
         this.category = good.getCategory();
         this.price = good.getPrice();
-        this.seller = new UserDto(good.getPostBy());
+        this.seller = new UserDto(good.getPostBy().getId());
         this.postDate = good.getPostDate();
         this.location = good.getLocation();
         setFeaturedImage(good.getFeaturedImage());
