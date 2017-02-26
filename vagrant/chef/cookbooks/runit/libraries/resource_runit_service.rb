@@ -1,9 +1,9 @@
 #
-# Cookbook:: runit
+# Cookbook Name:: runit
 # Provider:: service
 #
-# Copyright:: 2011-2016, Joshua Timberman
-# Copyright:: 2011-2016, Chef Software, Inc.
+# Copyright 2011, Joshua Timberman
+# Copyright 2011, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -107,7 +107,7 @@ class Chef
       end
 
       def sv_timeout(arg = nil)
-        set_or_return(:sv_timeout, arg, kind_of: [Integer])
+        set_or_return(:sv_timeout, arg, kind_of: [Fixnum])
       end
 
       def sv_verbose(arg = nil)
@@ -266,8 +266,8 @@ class Chef
       end
 
       def runit_attributes_from_node(run_context)
-        if run_context && run_context.node && run_context.node['runit']
-          run_context.node['runit']
+        if run_context && run_context.node && run_context.node[:runit]
+          run_context.node[:runit]
         else
           {}
         end

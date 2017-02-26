@@ -1,7 +1,9 @@
 source "https://supermarket.getchef.com"
 
+cookbook 'elasticsearch', '= 2.4.0'
+cookbook 'nginx'
 cookbook 'apt'
 cookbook 'java'
 cookbook 'mongodb'
-cookbook 'elasticsearch', '= 2.4.0'
-cookbook 'nginx'
+cookbook 'ohai'
+cookbook 'nodejs'

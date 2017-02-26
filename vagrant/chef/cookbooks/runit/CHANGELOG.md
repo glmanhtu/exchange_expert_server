@@ -2,51 +2,6 @@
 
 This file is used to list changes made in each version of the runit cookbook.
 
-## 3.0.5 (2017-01-25)
-
-- Don’t mask errors from shellout helper if the binary is present.
-- Don't error stopping a service that doesn't exist
-
-## 3.0.4 (2017-01-24)
-
-- Cookstyle fixes
-- Update the cookbook description
-- Check that chef_version exists before declaring it
-
-## 3.0.3 (2016-12-07)
-
-- Convert main suite test spec to inspec
-- Add a number of debug statements to the provider to make debugging failed runs easier
-- Fix faulty shell outs in the status commands that caused silent failures introduced in the 3.0.2 release
-
-## 3.0.2 (2016-12-05)
-- Remove unused helper method runit_sv_works?
-- Use our new official Oracle images in Test Kitchen
-- Update wording to clarify that we’re deleting not ‘zapping’ files
-- Don’t hang forever if Runit isn’t installed when using the provider
-- Check for the runit binary before every shellout
-- Remove Fedora support since it doesn’t work
-
-## 3.0.1 (2016-12-05)
-- Set service to restart on env changes
-
-## 3.0.0 (2016-09-16)
-- Testing updates
-- Require Chef 12.1+
-
-## 2.0.0 (2016-08-30)
-
-- Remove support for Gentoo as we have no way to test this
-- Remove the empty library file
-- Run specs against the latest RHEL 5
-- Basic convergence testing in Travis CI
-- Remove the need for apt in test kitchen
-
-## 1.8.1 (2016-08-30)
-
-- Enable runit installation in Oracle Linux systems
-- Remove double oracle in the metadata
-
 ## 1.8.0
 
 - Breaking change: Removed support for EOL Ubuntu platforms (i.e. versions 6.10, 7.04, 7.10, 8.04) (#194)

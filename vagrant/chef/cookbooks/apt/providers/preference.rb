@@ -1,8 +1,8 @@
 #
-# Cookbook:: apt
+# Cookbook Name:: apt
 # Provider:: preference
 #
-# Copyright:: 2010-2016, Chef Software, Inc.
+# Copyright 2010-2011, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-use_inline_resources
+use_inline_resources if defined?(use_inline_resources)
 
 def whyrun_supported?
   true
@@ -25,9 +25,7 @@ end
 
 # Build preferences.d file contents
 def build_pref(package_name, pin, pin_priority)
-  pref = "Package: #{package_name}\nPin: #{pin}\n"
-  pref << "Pin-Priority: #{pin_priority}\n" unless pin_priority.nil?
-  pref
+  "Package: #{package_name}\nPin: #{pin}\nPin-Priority: #{pin_priority}\n"
 end
 
 def safe_name(name)
@@ -44,15 +42,14 @@ action :add do
   directory '/etc/apt/preferences.d' do
     owner 'root'
     group 'root'
-    mode '0755'
+    mode 00755
     recursive true
     action :create
   end
 
   name = safe_name(new_resource.name)
 
-  file "cleanup_#{new_resource.name}.pref" do
-    path "/etc/apt/preferences.d/#{new_resource.name}.pref"
+  file "/etc/apt/preferences.d/#{new_resource.name}.pref" do
     action :delete
     if ::File.exist?("/etc/apt/preferences.d/#{new_resource.name}.pref")
       Chef::Log.warn "Replacing #{new_resource.name}.pref with #{name}.pref in /etc/apt/preferences.d/"
@@ -60,8 +57,7 @@ action :add do
     only_if { name != new_resource.name }
   end
 
-  file "cleanup_#{new_resource.name}" do
-    path "/etc/apt/preferences.d/#{new_resource.name}"
+  file "/etc/apt/preferences.d/#{new_resource.name}" do
     action :delete
     if ::File.exist?("/etc/apt/preferences.d/#{new_resource.name}")
       Chef::Log.warn "Replacing #{new_resource.name} with #{new_resource.name}.pref in /etc/apt/preferences.d/"
@@ -71,7 +67,7 @@ action :add do
   file "/etc/apt/preferences.d/#{name}.pref" do
     owner 'root'
     group 'root'
-    mode '0644'
+    mode 00644
     content preference
     action :create
   end
@@ -81,8 +77,7 @@ action :remove do
   name = safe_name(new_resource.name)
   if ::File.exist?("/etc/apt/preferences.d/#{name}.pref")
     Chef::Log.info "Un-pinning #{name} from /etc/apt/preferences.d/"
-    file "remove_#{name}.pref" do
-      path "/etc/apt/preferences.d/#{name}.pref"
+    file "/etc/apt/preferences.d/#{name}.pref" do
       action :delete
     end
   end

@@ -1,6 +1,6 @@
 #
 # Author:: Paul Mooring (<paul@chef.io>)
-# Cookbook:: windows
+# Cookbook Name:: windows
 # Resource:: task
 #
 # Copyright:: 2012-2016, Chef Software, Inc.

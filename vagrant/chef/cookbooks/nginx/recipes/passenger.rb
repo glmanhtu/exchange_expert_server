@@ -2,6 +2,8 @@
 # Cookbook Name:: nginx
 # Recipe:: Passenger
 #
+# Copyright 2013, Chef Software, Inc.
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,42 +17,40 @@
 # limitations under the License.
 #
 
-packages = value_for_platform( ["redhat", "centos", "scientific", "amazon", "oracle"] => {
-                                 "default" => %w(ruby-devel curl-devel) },
-                               ["ubuntu", "debian"] => {
-                                 "default" => %w(ruby-dev libcurl4-gnutls-dev) } )
+packages = value_for_platform_family(
+  %w(rhel)   => node['nginx']['passenger']['packages']['rhel'],
+  %w(fedora)   => node['nginx']['passenger']['packages']['fedora'],
+  %w(debian) => node['nginx']['passenger']['packages']['debian']
+)
 
-packages.each do |devpkg|
-  package devpkg
+unless packages.empty?
+  packages.each do |name|
+    package name
+  end
 end
 
-gem_package 'rake'
+gem_package 'rake' if node['nginx']['passenger']['install_rake']
 
-gem_package 'passenger' do
-  action :install
-  version node["nginx"]["passenger"]["version"]
-  gem_binary node["nginx"]["passenger"]["gem_binary"] if node["nginx"]["passenger"]["gem_binary"]
+if node['nginx']['passenger']['install_method'] == 'package'
+  package node['nginx']['package_name']
+  package 'passenger'
+elsif node['nginx']['passenger']['install_method'] == 'source'
+
+  gem_package 'passenger' do
+    action     :install
+    version    node['nginx']['passenger']['version']
+    gem_binary node['nginx']['passenger']['gem_binary'] if node['nginx']['passenger']['gem_binary']
+  end
+
+  node.run_state['nginx_configure_flags'] =
+    node.run_state['nginx_configure_flags'] | ["--add-module=#{node['nginx']['passenger']['root']}/ext/nginx"]
+
 end
 
-template "#{node["nginx"]["dir"]}/conf.d/passenger.conf" do
-  source "modules/passenger.conf.erb"
-  owner "root"
-  group "root"
-  mode 00644
-  variables(
-    :passenger_root => node["nginx"]["passenger"]["root"],
-    :passenger_ruby => node["nginx"]["passenger"]["ruby"],
-    :passenger_spawn_method => node["nginx"]["passenger"]["spawn_method"],
-    :passenger_use_global_queue => node["nginx"]["passenger"]["use_global_queue"],
-    :passenger_buffer_response => node["nginx"]["passenger"]["buffer_response"],
-    :passenger_max_pool_size => node["nginx"]["passenger"]["max_pool_size"],
-    :passenger_min_instances => node["nginx"]["passenger"]["min_instances"],
-    :passenger_max_instances_per_app => node["nginx"]["passenger"]["max_instances_per_app"],
-    :passenger_pool_idle_time => node["nginx"]["passenger"]["pool_idle_time"],
-    :passenger_max_requests => node["nginx"]["passenger"]["max_requests"]
-  )
-  notifies :reload, "service[nginx]"
+template "#{node['nginx']['dir']}/conf.d/passenger.conf" do
+  source 'modules/passenger.conf.erb'
+  owner  'root'
+  group  node['root_group']
+  mode   '0644'
+  notifies :reload, 'service[nginx]', :delayed
 end
-
-node.run_state['nginx_configure_flags'] =
-  node.run_state['nginx_configure_flags'] | ["--add-module=#{node["nginx"]["passenger"]["root"]}/ext/nginx"]

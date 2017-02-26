@@ -2,12 +2,12 @@
 # Author:: Doug MacEachern (<dougm@vmware.com>)
 # Author:: Seth Chisamore (<schisamo@chef.io>)
 # Author:: Paul Morton (<pmorton@biaprotect.com>)
-# Cookbook:: windows
+# Cookbook Name:: windows
 # Provider:: registry
 #
-# Copyright:: 2010-2016, VMware, Inc.
+# Copyright:: 2010, VMware, Inc.
 # Copyright:: 2011-2016, Chef Software, Inc.
-# Copyright:: 2011-2016, Business Intelligence Associates, Inc
+# Copyright:: 2011, Business Intelligence Associates, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,12 +29,7 @@ end
 
 module Windows
   module RegistryHelper
-    @@native_registry_constant = if ENV['PROCESSOR_ARCHITECTURE'] == 'AMD64' ||
-                                    ENV['PROCESSOR_ARCHITEW6432'] == 'AMD64'
-                                   0x0100
-                                 else
-                                   0x0200
-                                 end
+    @@native_registry_constant = ENV['PROCESSOR_ARCHITEW6432'] == 'AMD64' ? 0x0100 : 0x0200
 
     def get_hive_name(path)
       Chef::Log.debug('Resolving registry shortcuts to full names')

@@ -1,6 +1,6 @@
 #
 # Author:: Seth Chisamore (<schisamo@chef.io>)
-# Cookbook:: windows
+# Cookbook Name:: windows
 # Provider:: feature_servermanagercmd
 #
 # Copyright:: 2011-2016, Chef Software, Inc.

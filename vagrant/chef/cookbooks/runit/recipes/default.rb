@@ -1,8 +1,8 @@
 #
-# Cookbook:: runit
+# Cookbook Name:: runit
 # Recipe:: default
 #
-# Copyright:: 2008-2016, Chef Software, Inc.
+# Copyright 2008-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
@@ -27,15 +27,13 @@ execute 'start-runsvdir' do
 end
 
 case node['platform_family']
-when 'rhel'
+when 'rhel', 'fedora'
 
   # add the necessary repos unless prefer_local_yum is set
   unless node['runit']['prefer_local_yum']
     include_recipe 'yum-epel' if node['platform_version'].to_i < 7
 
-    packagecloud_repo 'imeyer/runit' do
-      force_os 'rhel' if node['platform'].eql?('oracle')
-    end
+    packagecloud_repo 'imeyer/runit'
   end
 
   package 'runit'
@@ -45,9 +43,23 @@ when 'rhel'
     only_if { node['platform_version'].to_i == 7 }
   end
 
-when 'debian'
+when 'debian', 'gentoo'
+
+  if platform?('gentoo')
+    template '/etc/init.d/runit-start' do
+      source 'runit-start.sh.erb'
+      mode '0755'
+    end
+
+    service 'runit-start' do
+      action :nothing
+    end
+  end
+
   package 'runit' do
     action :install
-    response_file 'runit.seed'
+    response_file 'runit.seed' if platform?('ubuntu', 'debian')
+    notifies :run, 'execute[start-runsvdir]', :immediately if platform?('gentoo')
+    notifies :enable, 'service[runit-start]' if platform?('gentoo')
   end
 end
