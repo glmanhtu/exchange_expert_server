@@ -11,6 +11,14 @@ include_recipe 'elasticsearch'
 include_recipe 'apt::default'
 include_recipe 'nginx::repo'
 
+git "/exchange_expert/repository" do
+  repository "git@github.com:yehnkay/exchange_expert_server.git"
+  reference "develop"
+  action :sync
+end
+
+
+
 elasticsearch_install 'elasticsearch' do
   type :package
   version "2.4.0"
