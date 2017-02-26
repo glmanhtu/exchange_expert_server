@@ -31,20 +31,27 @@ public class UserDto {
 
     public UserDto(User user) {
 
-        if(user.getId() != null)
+        if (user.getId() != null) {
             this.id = user.getId();
-        if(user.getFirstName() != null)
+        }
+        if (user.getFirstName() != null) {
             this.firstName = user.getFirstName();
-        if(user.getLastName() != null)
+        }
+        if (user.getLastName() != null) {
             this.lastName = user.getLastName();
-        if(user.getBirthday() != null)
+        }
+        if (user.getBirthday() != null) {
             this.birthday = user.getBirthday();
-        if(user.getAvatar() != null)
+        }
+        if (user.getAvatar() != null) {
             this.avatar = user.getAvatar();
-        if(user.getCreateDate() != null)
+        }
+        if (user.getCreateDate() != null) {
             this.createDate = user.getCreateDate();
-        if(user.getRating() != null)
+        }
+        if (user.getRating() != null) {
             this.avgRating = user.getRating().getAvg();
+        }
     }
 
     public String getId() {
