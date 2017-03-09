@@ -53,7 +53,19 @@ public class GoodService implements SearchEverything<Good> {
         good.setStatus(new Status(StatusEnum.PENDING));
         good.setPostDate(new Date().getTime());
 
-        return goodRepository.save(good);
+        good = goodRepository.save(good);
+        ElasticGood elasticGood = new ElasticGood();
+        elasticGood.setDescription(good.getDescription());
+        elasticGood.setId(good.getId());
+        elasticGood.setLocation(good.getLocation());
+        elasticGood.setPostBy(good.getPostBy());
+        elasticGood.setPostDate(good.getPostDate());
+        elasticGood.setPrice(good.getPrice());
+        elasticGood.setSlug(good.getSlug());
+        elasticGood.setTitle(good.getTitle());
+        elasticGood.setCategory(good.getCategory());
+        elasticGoodRepository.save(elasticGood);
+        return good;
     }
 
     /**
