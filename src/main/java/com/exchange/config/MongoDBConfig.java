@@ -2,10 +2,14 @@ package com.exchange.config;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+import java.util.Collections;
 
 /**
  * Created by optimize on 2/7/17.
@@ -37,7 +41,10 @@ public class MongoDBConfig extends AbstractMongoConfiguration {
 
     @Override
     public Mongo mongo() throws Exception {
-        return new MongoClient(host, port);
+        return new MongoClient(
+            Collections.singletonList(new ServerAddress(host, port)),
+            Collections.singletonList(MongoCredential.createCredential(username, database, password.toCharArray()))
+        );
     }
 
 
