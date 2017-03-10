@@ -20,9 +20,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by optimize on 2/12/17.
  */
@@ -51,15 +48,8 @@ public class OAuthConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-
-            //disable csrf header for dev env
-            List<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-            if (activeProfiles.contains("dev")) {
-                http.csrf().disable();
-                http.headers().frameOptions().disable();
-            }
             http.authorizeRequests()
-                    .anyRequest().authenticated();
+                    .anyRequest().permitAll();
         }
     }
 

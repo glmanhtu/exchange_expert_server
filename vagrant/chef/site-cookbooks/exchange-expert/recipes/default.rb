@@ -9,7 +9,27 @@
 
 include_recipe 'elasticsearch'
 include_recipe 'apt::default'
-include_recipe 'nginx::repo'
+include_recipe 'nginx::default'
+include_recipe "nodejs::npm"
+
+git "/exchange_expert/repository" do
+  repository "git@github.com:yehnkay/exchange_expert_server.git"
+  reference "develop"
+  action :sync
+  user "ubuntu"
+end
+
+git "/exchange_expert/client" do
+  repository "git@github.com:yehnkay/exchange_expert_client.git"
+  revision "development"
+  checkout_branch 'development'
+  enable_checkout false
+  action :sync
+end
+
+package 'nginx' do
+  action :install
+end
 
 elasticsearch_install 'elasticsearch' do
   type :package
@@ -138,15 +158,26 @@ http_request 'Start Good' do
     ignore_failure true
 end
 
-package 'nginx' do
-  action :install
+cookbook_file "#{node['nginx']['dir']}/sites-available/exchange-expert.cf.conf" do
+  source "exchange-expert.cf.conf"
+  owner "root"
+  group "root"
+  mode  "0644"
 end
 
-service 'nginx' do
-  supports status: true, restart: true, reload: true
-  action :enable
+# enable your sites configuration using a definition from the nginx cookbook
+nginx_site "exchange-expert.cf.conf" do
+  enable true
 end
+
+nodejs_npm "bower"
+
+nodejs_npm "gulp"
 
 execute "start script on boot" do
   command "sh /tmp/startup.sh"
+end
+
+service 'nginx' do
+  action :restart
 end
