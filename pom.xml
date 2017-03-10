@@ -123,7 +123,6 @@
             <artifactId>jfairy</artifactId>
             <version>0.5.6</version>
         </dependency>
-
         <dependency>
             <groupId>com.vividsolutions</groupId>
             <artifactId>jts</artifactId>

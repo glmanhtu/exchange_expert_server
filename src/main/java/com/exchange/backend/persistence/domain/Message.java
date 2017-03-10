@@ -3,6 +3,7 @@ package com.exchange.backend.persistence.domain;
 import com.exchange.backend.enums.MessageEnum;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 
 /**
  * Created by greenlucky on 12/21/16.
@@ -26,6 +27,10 @@ public class Message implements Serializable {
         this.link = massage.getLink();
     }
 
+    public Message(MessageEnum userNotFound, String param) {
+        this.message = MessageFormat.format(this.getMessage(), param);
+    }
+
     public int getCode() {
         return code;
     }
@@ -36,5 +41,9 @@ public class Message implements Serializable {
 
     public String getLink() {
         return link;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
