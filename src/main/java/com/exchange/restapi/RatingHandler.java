@@ -41,19 +41,19 @@ public class RatingHandler {
     @GetMapping("/add")
     public ResponseEntity<Object> rating(@RequestParam("forEmailUser") String forEmailUser,
                                          @RequestParam("byEmailUser") String byEmailUser,
-                                         @RequestParam("star") float star){
+                                         @RequestParam("star") float star) {
 
         User forUser = userService.getOne(forEmailUser);
         User byUser = userService.getOne(byEmailUser);
 
         Message message = null;
 
-        if(forUser == null){
+        if (forUser == null) {
             message = new Message(MessageEnum.USER_NOT_FOUND, forEmailUser);
             return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
         }
 
-        if(byUser == null){
+        if (byUser == null) {
             message = new Message(MessageEnum.USER_NOT_FOUND, byEmailUser);
             return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
         }
