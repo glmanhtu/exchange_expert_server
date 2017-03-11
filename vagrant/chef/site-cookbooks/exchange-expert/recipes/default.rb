@@ -14,7 +14,7 @@ include_recipe "nodejs::npm"
 
 git "/exchange_expert/repository" do
   repository "git@github.com:yehnkay/exchange_expert_server.git"
-  reference "develop"
+  branch "develop"
   action :sync
   user "ubuntu"
 end
