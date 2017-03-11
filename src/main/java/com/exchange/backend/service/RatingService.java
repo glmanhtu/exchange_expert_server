@@ -23,14 +23,12 @@ public class RatingService {
     /**
      * Ratings user given by rated email user, rating email user and start.
      *
-     * @param forEmailUser
+     * @param forUser
      * @param byEmailUser
      * @param star
      * @return A Rating of user after rating
      */
-    public Rating add(String forEmailUser, String byEmailUser, float star) {
-
-        User forUser = userRepository.findOne(forEmailUser);
+    public Rating add(User forUser, String byEmailUser, float star) {
 
         // repairs content
         Content content = new Content();
