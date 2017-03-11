@@ -9,14 +9,7 @@ default_attributes({
 	    }
   	},
   	"mongodb" => {
-  		"bind_ip"   =>  "0.0.0.0",
-  		"config"    =>  {
-  		    "auth"  => true
-  		},
-  		"admin" =>  {
-  		    "username"  =>  "exchange",
-  		    "password"  =>  "admin123@qwe"
-  		}
+  		"bind_ip"   =>  "0.0.0.0"
   	}
 })
 
