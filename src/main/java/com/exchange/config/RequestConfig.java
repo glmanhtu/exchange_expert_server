@@ -1,6 +1,8 @@
 package com.exchange.config;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,7 +17,8 @@ import java.io.IOException;
 /**
  * Created by optimize on 2/12/17.
  */
-@Configuration
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class RequestConfig implements Filter {
 
     @Override
