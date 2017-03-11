@@ -5,9 +5,7 @@ import com.exchange.restapi.GoodHandler;
 import com.exchange.restapi.SearchHandler;
 import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,8 +23,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
  */
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
-@EnableOAuth2Sso
-@PropertySource("classpath:config/application-oauth.yml")
 public class OAuthConfig {
 
 
