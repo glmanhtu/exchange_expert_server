@@ -5,11 +5,11 @@ package com.exchange.backend.enums;
  */
 public enum MessageEnum {
 
-    USER_NOT_FOUND(404, "User was not found", ""),
-    USER_EMAIL_INVALID(400, "User email is invalid", ""),
+    USER_NOT_FOUND(404, "User {0} was not found", ""),
+    USER_EMAIL_INVALID(400, "User email {0} is invalid", ""),
 
-    GOODS_NOT_FOUND(404, "Goods was not found", ""),
-    GOODS_SLUG_INVALID(400, "The slug is invalid", "");
+    GOODS_NOT_FOUND(404, "Goods {0} was not found", ""),
+    GOODS_SLUG_INVALID(400, "The slug {0} is invalid", "");
 
     private int code;
 
