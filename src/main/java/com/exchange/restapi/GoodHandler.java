@@ -69,6 +69,4 @@ public class GoodHandler {
         GoodDto goodDto = new GoodDto(good);
         return new ResponseEntity<>(goodDto, HttpStatus.OK);
     }
-
-
 }
