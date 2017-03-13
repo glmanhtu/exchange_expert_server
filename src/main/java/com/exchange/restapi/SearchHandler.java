@@ -1,6 +1,7 @@
 package com.exchange.restapi;
 
 import com.exchange.backend.datatype.search.SearchGood;
+import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.dto.SimpleGoodDto;
 import com.exchange.backend.service.GoodService;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -11,10 +12,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,8 @@ import java.util.List;
 public class SearchHandler {
 
     public static final String REST_API_USER = "/search";
+
+    private static final int DEFAULT_NUMBER_ITEM_PER_PAGE = 5;
 
     @Autowired
     private GoodService goodService;
@@ -67,6 +72,29 @@ public class SearchHandler {
         List<SimpleGoodDto> simpleGoodDtos = new ArrayList<>();
         goodService.findAll(queryBuilder, pageRequest).forEach(good -> simpleGoodDtos.add(new SimpleGoodDto(good)));
         return new ResponseEntity<>(simpleGoodDtos, HttpStatus.OK);
+    }
+
+    /**
+     * Suggest search google given by title.
+     *
+     *
+     * @param title
+     * @return A list of google or null if not found
+     */
+    @GetMapping(value = "/good")
+    public ResponseEntity<Object> suggestSearchGoodsByTitle(@RequestParam String title) {
+        List<ElasticGood> elasticGoods = null;
+        if (title != null) {
+
+            PageRequest pageRequest = new PageRequest(0, DEFAULT_NUMBER_ITEM_PER_PAGE,
+                    new Sort(new Sort.Order(Sort.Direction.ASC, "title")));
+            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+
+            queryBuilder.must(QueryBuilders.matchQuery("title", title));
+            elasticGoods = goodService.findGoodsByQuery(queryBuilder, pageRequest);
+        }
+
+        return new ResponseEntity<Object>(elasticGoods, HttpStatus.OK);
     }
 
 }
