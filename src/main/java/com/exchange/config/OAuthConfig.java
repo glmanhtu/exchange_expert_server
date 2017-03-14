@@ -39,8 +39,7 @@ public class OAuthConfig {
                     .antMatchers("/resource/**")
                     .antMatchers(UserHandler.REST_API_USER)
                     .antMatchers(GoodHandler.REST_API_GOODS + "/**")
-                    .antMatchers(SearchHandler.REST_API_USER + "/**")
-                    .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**");
+                    .antMatchers(SearchHandler.REST_API_USER + "/**");
         }
 
         @Override

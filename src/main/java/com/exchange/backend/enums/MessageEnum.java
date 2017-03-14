@@ -9,7 +9,10 @@ public enum MessageEnum {
     USER_EMAIL_INVALID(400, "User email {0} is invalid", ""),
 
     GOODS_NOT_FOUND(404, "Goods {0} was not found", ""),
-    GOODS_SLUG_INVALID(400, "The slug {0} is invalid", "");
+    GOODS_SLUG_INVALID(400, "The slug {0} is invalid", ""),
+
+    BAD_WORD_TITLE(403, "The title can not contain {0}", ""),
+    BAD_WORD_DES(403, "The description can not contain {0}", "");
 
     private int code;
 
