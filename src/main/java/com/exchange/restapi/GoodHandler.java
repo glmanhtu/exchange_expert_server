@@ -5,6 +5,7 @@ import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Message;
 import com.exchange.backend.persistence.dto.GoodDto;
 import com.exchange.backend.persistence.dto.SimpleGoodDto;
+import com.exchange.backend.service.BadWordFilterService;
 import com.exchange.backend.service.GoodService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,21 @@ public class GoodHandler {
     public ResponseEntity<Object> createGoods(@RequestBody Good good) {
 
         LOGGER.info("Creating goods {}", good);
+        String badWordTitle = BadWordFilterService.filterText(good.getTitle());
+        String badWordDes = BadWordFilterService.filterText(good.getTitle());
+        Message message = null;
+
+        if (badWordTitle != null) {
+            LOGGER.info("The title goods can not contain {}", badWordTitle);
+            message = new Message(MessageEnum.BAD_WORD_TITLE, badWordTitle);
+            return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+        }
+
+        if (badWordDes != null) {
+            LOGGER.info("The description goods can not contain {}", badWordDes);
+            message = new Message(MessageEnum.BAD_WORD_DES, badWordDes);
+            return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+        }
 
         //create new good
         good = goodService.create(good);
@@ -69,6 +85,4 @@ public class GoodHandler {
         GoodDto goodDto = new GoodDto(good);
         return new ResponseEntity<>(goodDto, HttpStatus.OK);
     }
-
-
 }
