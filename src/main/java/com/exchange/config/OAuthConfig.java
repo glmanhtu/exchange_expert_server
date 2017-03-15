@@ -7,7 +7,6 @@ import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,7 +21,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
  * Created by optimize on 2/12/17.
  */
 @Configuration
-@EnableGlobalMethodSecurity(securedEnabled = true)
 public class OAuthConfig {
 
 
@@ -46,6 +44,7 @@ public class OAuthConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
                     .anyRequest().permitAll();
+            http.csrf().disable();
         }
     }
 

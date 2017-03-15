@@ -1,5 +1,6 @@
 package com.exchange.restapi;
 
+import com.exchange.backend.Roles;
 import com.exchange.backend.datatype.search.AdminSearchGood;
 import com.exchange.backend.enums.StatusEnum;
 import com.exchange.backend.persistence.dto.SimpleGoodDto;
@@ -12,8 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -26,13 +30,15 @@ import static com.exchange.restapi.AdminHandler.REST_API_ADMIN;
  */
 @RestController
 @RequestMapping(REST_API_ADMIN)
+@EnableResourceServer
+@Secured(Roles.LOGGED_USER)
 public class AdminHandler {
     public static final String REST_API_ADMIN = "/admin";
 
     @Autowired
     private GoodService goodService;
 
-    @RequestMapping(value = "/search/good")
+    @RequestMapping(value = "/search/good", method = RequestMethod.POST)
     public ResponseEntity<?> searchGood(@RequestBody AdminSearchGood searchGood) {
         Sort.Direction sort = Sort.Direction.ASC;
         if (!searchGood.getOrder().getASC()) {
