@@ -38,6 +38,7 @@ public class GoodHandler {
      * @return Message after create
      * @see Good
      */
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createGoods(@RequestBody Good good) {
 

@@ -74,6 +74,7 @@ public class ITCreateDataTest {
             elasticGood.setSlug(good1.getSlug());
             elasticGood.setTitle(good1.getTitle());
             elasticGood.setCategory(good1.getCategory());
+            elasticGood.setStatus(good1.getStatus());
             elasticGoodRepository.save(elasticGood);
         }
     }

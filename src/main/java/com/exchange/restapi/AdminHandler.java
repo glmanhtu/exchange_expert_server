@@ -1,6 +1,6 @@
 package com.exchange.restapi;
 
-import com.exchange.backend.datatype.search.SearchGood;
+import com.exchange.backend.datatype.search.AdminSearchGood;
 import com.exchange.backend.enums.StatusEnum;
 import com.exchange.backend.persistence.dto.SimpleGoodDto;
 import com.exchange.backend.service.GoodService;
@@ -14,26 +14,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.exchange.restapi.AdminHandler.REST_API_ADMIN;
+
 /**
- * Created by glmanhtu on 2/15/17.
+ * Created by optimize on 3/15/17.
  */
 @RestController
-@RequestMapping(SearchHandler.REST_API_USER)
-public class SearchHandler {
-
-    public static final String REST_API_USER = "/search";
+@RequestMapping(REST_API_ADMIN)
+public class AdminHandler {
+    public static final String REST_API_ADMIN = "/admin";
 
     @Autowired
     private GoodService goodService;
 
-    @RequestMapping(value = "/good", method = RequestMethod.POST)
-    public ResponseEntity<?> searchGood(@RequestBody SearchGood searchGood) {
+    @RequestMapping(value = "/search/good")
+    public ResponseEntity<?> searchGood(@RequestBody AdminSearchGood searchGood) {
         Sort.Direction sort = Sort.Direction.ASC;
         if (!searchGood.getOrder().getASC()) {
             sort = Sort.Direction.DESC;
@@ -44,7 +44,8 @@ public class SearchHandler {
                 new Sort(new Sort.Order(sort, searchGood.getOrder().getBy()))
         );
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-        queryBuilder.must(QueryBuilders.matchQuery("status.name", StatusEnum.TRADING.getName()));
+
+        queryBuilder.must(QueryBuilders.matchQuery("status.name", StatusEnum.convert(searchGood.getStatus())));
         if (searchGood.getTitle() != null) {
             queryBuilder.must(QueryBuilders.matchQuery("title", searchGood.getTitle()));
         }
@@ -70,5 +71,4 @@ public class SearchHandler {
         goodService.findAll(queryBuilder, pageRequest).forEach(good -> simpleGoodDtos.add(new SimpleGoodDto(good)));
         return new ResponseEntity<>(simpleGoodDtos, HttpStatus.OK);
     }
-
 }
