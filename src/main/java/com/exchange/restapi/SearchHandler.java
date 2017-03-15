@@ -8,6 +8,8 @@ import com.exchange.backend.service.GoodService;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,8 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -30,6 +32,9 @@ import java.util.List;
 @RequestMapping(SearchHandler.REST_API_USER)
 public class SearchHandler {
 
+    /** The application logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchHandler.class);
+
     public static final String REST_API_USER = "/search";
 
     private static final int DEFAULT_NUMBER_ITEM_PER_PAGE = 5;
@@ -39,6 +44,8 @@ public class SearchHandler {
 
     @RequestMapping(value = "/good", method = RequestMethod.POST)
     public ResponseEntity<?> searchGood(@RequestBody SearchGood searchGood) {
+
+        LOGGER.info("Search good {}", searchGood);
         Sort.Direction sort = Sort.Direction.ASC;
         if (!searchGood.getOrder().getASC()) {
             sort = Sort.Direction.DESC;
