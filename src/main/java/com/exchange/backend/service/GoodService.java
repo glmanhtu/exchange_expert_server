@@ -133,6 +133,18 @@ public class GoodService implements SearchEverything<Good> {
         return goodRepository.findByIdIn(goodIds);
     }
 
+    /**
+     * Find goods by query builder.
+     *
+     * @param queryBuilder the query input
+     * @param pageRequest
+     * @return A list of elastic good or null if not found
+     */
+    public List<ElasticGood> findGoodsByQuery(QueryBuilder queryBuilder, PageRequest pageRequest) {
+        List<ElasticGood> elasticGoods = elasticGoodRepository.search(queryBuilder, pageRequest).getContent();
+        return elasticGoods;
+    }
+
 
     /**
      * Checking goodid is existed.
