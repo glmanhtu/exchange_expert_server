@@ -6,7 +6,8 @@ package com.exchange.backend.enums;
 public enum StatusEnum {
 
     PENDING("Pending", ""),
-    TRADING("Trading", "");
+    TRADING("Trading", ""),
+    BANNED("Banned", "");
 
     private String name;
 
@@ -23,5 +24,13 @@ public enum StatusEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public static String convert(int status) {
+        switch (status) {
+            case 0: return PENDING.getName();
+            case 1: return TRADING.getName();
+            default: return BANNED.getName();
+        }
     }
 }

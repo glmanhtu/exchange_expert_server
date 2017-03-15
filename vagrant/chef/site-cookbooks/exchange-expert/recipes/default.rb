@@ -99,11 +99,11 @@ cookbook_file "/exchange_expert/scripts/startup.sh" do
 end
 
 
-execute "prepare script on boot" do
-  command "sh /tmp/prepare.sh"
-end
+#execute "prepare script on boot" do
+#  command "sh /tmp/prepare.sh"
+#end
 
-service "elasticsearch" do
+#service "elasticsearch" do
 	action :restart
 end
 
@@ -130,33 +130,33 @@ begin
    		puts "Ignore exception: #{e}"
 end
 
-http_request 'Stop Good' do
-  	action :post
-  	url 'http://localhost:9200/good/_close'
-  	message (
-	  		{}.to_json
-		)
-    ignore_failure true
-end
+# http_request 'Stop Good' do
+#   	action :post
+#   	url 'http://localhost:9200/good/_close'
+#   	message (
+# 	  		{}.to_json
+# 		)
+#     ignore_failure true
+# end
 
 
-http_request 'Restore snapshoot ES' do
-  	action :post
-  	url 'http://localhost:9200/_snapshot/exchange_expert/default/_restore'
-  	message (
-	  		{}.to_json
-		)
-    ignore_failure true
-end
+# http_request 'Restore snapshoot ES' do
+#   	action :post
+#   	url 'http://localhost:9200/_snapshot/exchange_expert/default/_restore'
+#   	message (
+# 	  		{}.to_json
+# 		)
+#     ignore_failure true
+# end
 
-http_request 'Start Good' do
-  	action :post
-  	url 'http://localhost:9200/good/_open'
-  	message (
-	  		{}.to_json
-		)
-    ignore_failure true
-end
+# http_request 'Start Good' do
+#   	action :post
+#   	url 'http://localhost:9200/good/_open'
+#   	message (
+# 	  		{}.to_json
+# 		)
+#     ignore_failure true
+# end
 
 cookbook_file "#{node['nginx']['dir']}/sites-available/exchange-expert.cf.conf" do
   source "exchange-expert.cf.conf"

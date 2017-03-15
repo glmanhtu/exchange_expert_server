@@ -1,5 +1,6 @@
 package com.exchange.backend.persistence.domain;
 
+import com.exchange.backend.Roles;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -172,6 +173,7 @@ public class User implements Serializable, UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         roles.forEach(ur->authorities.add(new Authority(ur)));
+        authorities.add(new Authority(Roles.LOGGED_USER));
         return authorities;
     }
 
