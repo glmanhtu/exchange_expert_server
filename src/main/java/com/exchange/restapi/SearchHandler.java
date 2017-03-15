@@ -43,7 +43,7 @@ public class SearchHandler {
 
     @RequestMapping(value = "/good", method = RequestMethod.POST)
     public ResponseEntity<?> searchGood(@RequestBody SearchGood searchGood) {
-        System.out.println(searchGood.toString());
+
         LOGGER.info("Search good {}", searchGood);
         Sort.Direction sort = Sort.Direction.ASC;
         if (!searchGood.getOrder().getASC()) {

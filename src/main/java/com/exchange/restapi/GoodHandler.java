@@ -44,7 +44,7 @@ public class GoodHandler {
 
         LOGGER.info("Creating goods {}", good);
         String badWordTitle = BadWordFilterService.filterText(good.getTitle());
-        String badWordDes = BadWordFilterService.filterText(good.getTitle());
+        String badWordDes = BadWordFilterService.filterText(good.getDescription());
         Message message = null;
 
         if (badWordTitle != null) {
