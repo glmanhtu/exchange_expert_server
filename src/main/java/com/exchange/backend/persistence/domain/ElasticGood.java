@@ -47,6 +47,11 @@ public class ElasticGood implements Serializable {
     private double price = 0.0;
 
     /**
+     * The status of this good.
+     */
+    private Status status;
+
+    /**
      * The user who post this good.
      */
     @DBRef
@@ -201,6 +206,14 @@ public class ElasticGood implements Serializable {
      */
     public final void setPostBy(final User postBy) {
         this.postBy = postBy;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
