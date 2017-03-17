@@ -33,10 +33,6 @@ public class Good extends ElasticGood implements Serializable {
     @Column(name = "publish_date")
     private LocalDateTime publishDate;
 
-    /**
-     * The status of this good.
-     */
-    private Status status;
 
     /**
      * List of image of this good.
@@ -74,24 +70,6 @@ public class Good extends ElasticGood implements Serializable {
      */
     public final void setPublishDate(final LocalDateTime publishDate) {
         this.publishDate = publishDate;
-    }
-
-    /**
-     * Gets status.
-     * @return The status with format is Status
-     * @see Status
-     */
-    public final Status getStatus() {
-        return status;
-    }
-
-    /**
-     * Sets status given by status
-     * @param status The variable input with status formation
-     * @see Status
-     */
-    public final void setStatus(final Status status) {
-        this.status = status;
     }
 
     /**
