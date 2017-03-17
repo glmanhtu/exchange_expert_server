@@ -1,9 +1,6 @@
 package com.exchange.config;
 
 import com.exchange.backend.service.UserAuthenticationService;
-import com.exchange.restapi.GoodHandler;
-import com.exchange.restapi.SearchHandler;
-import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -33,18 +30,17 @@ public class OAuthConfig {
 
         @Override
         public void configure(WebSecurity web) throws Exception {
-            web.ignoring()
-                    .antMatchers("/resource/**")
-                    .antMatchers(UserHandler.REST_API_USER)
-                    .antMatchers(GoodHandler.REST_API_GOODS + "/**")
-                    .antMatchers(SearchHandler.REST_API_USER + "/**");
+            web
+                    .ignoring()
+                    .antMatchers("/resources/**");
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                    .anyRequest().permitAll();
             http.csrf().disable();
+            http
+                    .authorizeRequests()
+                    .anyRequest().authenticated();
         }
     }
 
@@ -65,7 +61,7 @@ public class OAuthConfig {
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-            security.checkTokenAccess("isAuthenticated()");
+            security.tokenKeyAccess("isAnonymous()").checkTokenAccess("isAuthenticated()");
         }
 
         @Override

@@ -54,6 +54,8 @@ public class User implements Serializable, UserDetails {
 
     private Rating rating;
 
+    private List<String> excluded;
+
     public User() {
     }
 
@@ -169,29 +171,38 @@ public class User implements Serializable, UserDetails {
         return true;
     }
 
+    public List<String> getExcluded() {
+        return excluded;
+    }
+
+    public void setExcluded(List<String> excluded) {
+        this.excluded = excluded;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         roles.forEach(ur->authorities.add(new Authority(ur)));
-        authorities.add(new Authority(Roles.LOGGED_USER));
+        authorities.add(new Authority(Roles.USER));
         return authorities;
     }
 
     @Override
     public String toString() {
-        return "User{"
-                + "id='" + id + '\''
-                + ", password='" + password + '\''
-                + ", firstName='" + firstName + '\''
-                + ", lastName='" + lastName + '\''
-                + ", birthday=" + birthday
-                + ", avatar='" + avatar + '\''
-                + ", createDate=" + createDate
-                + ", gender=" + gender
-                + ", enabled=" + enabled
-                + ", roles=" + roles
-                + ", rating=" + rating
-                + '}';
+        return "{\"User\":{"
+                + "\"id\":\"" + id + "\""
+                + ", \"password\":\"" + password + "\""
+                + ", \"firstName\":\"" + firstName + "\""
+                + ", \"lastName\":\"" + lastName + "\""
+                + ", \"birthday\":\"" + birthday + "\""
+                + ", \"avatar\":\"" + avatar + "\""
+                + ", \"createDate\":\"" + createDate + "\""
+                + ", \"gender\":\"" + gender + "\""
+                + ", \"enabled\":\"" + enabled + "\""
+                + ", \"roles\":" + roles
+                + ", \"rating\":" + rating
+                + ", \"excluded\":" + excluded
+                + "}}";
     }
 
     @Override
