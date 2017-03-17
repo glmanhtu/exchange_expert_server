@@ -27,7 +27,10 @@ public class Message implements Serializable {
         this.link = massage.getLink();
     }
 
-    public Message(MessageEnum userNotFound, String param) {
+    public Message(MessageEnum massage, String param) {
+        this.code = massage.getCode();
+        this.message = massage.getMessage();
+        this.link = massage.getLink();
         this.message = MessageFormat.format(this.getMessage(), param);
     }
 
