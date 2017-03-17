@@ -1,4 +1,4 @@
-name "java"
+name "default"
 description "Install Oracle Java"
 default_attributes({
 	"java" => {

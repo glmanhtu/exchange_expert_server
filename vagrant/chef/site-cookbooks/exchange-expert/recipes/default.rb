@@ -13,16 +13,15 @@ include_recipe 'nginx::default'
 include_recipe "nodejs::npm"
 
 git "/exchange_expert/repository" do
-  repository "git@github.com:yehnkay/exchange_expert_server.git"
+  repository "git@github.com:glmanhtu/exchange_expert_server.git"
   branch "develop"
   action :sync
   user "ubuntu"
 end
 
 git "/exchange_expert/client" do
-  repository "git@github.com:yehnkay/exchange_expert_client.git"
-  revision "development"
-  checkout_branch 'development'
+  repository "git@github.com:glmanhtu/exchange_expert_client.git"
+  branch 'development'
   enable_checkout false
   action :sync
 end
@@ -103,7 +102,7 @@ end
 #  command "sh /tmp/prepare.sh"
 #end
 
-#service "elasticsearch" do
+service "elasticsearch" do
 	action :restart
 end
 

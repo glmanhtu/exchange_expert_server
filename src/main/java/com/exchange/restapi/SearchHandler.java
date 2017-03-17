@@ -1,5 +1,6 @@
 package com.exchange.restapi;
 
+import com.exchange.backend.Roles;
 import com.exchange.backend.datatype.search.SearchGood;
 import com.exchange.backend.enums.StatusEnum;
 import com.exchange.backend.persistence.domain.ElasticGood;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +32,14 @@ import java.util.List;
  * Created by glmanhtu on 2/15/17.
  */
 @RestController
-@RequestMapping(SearchHandler.REST_API_USER)
+@RequestMapping(SearchHandler.REST_API_SEARCH)
+@Secured(Roles.ANONYMOUS)
 public class SearchHandler {
 
     /** The application logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchHandler.class);
 
-    public static final String REST_API_USER = "/search";
+    public static final String REST_API_SEARCH = "/search";
 
     private static final int DEFAULT_NUMBER_ITEM_PER_PAGE = 5;
 
@@ -43,8 +47,8 @@ public class SearchHandler {
     private GoodService goodService;
 
     @RequestMapping(value = "/good", method = RequestMethod.POST)
-    public ResponseEntity<?> searchGood(@RequestBody SearchGood searchGood) {
 
+    public ResponseEntity<?> searchGood(@RequestBody SearchGood searchGood, Principal principal) {
         LOGGER.info("Search good {}", searchGood);
         Sort.Direction sort = Sort.Direction.ASC;
         if (!searchGood.getOrder().getASC()) {
