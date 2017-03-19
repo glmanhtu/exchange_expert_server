@@ -2,10 +2,13 @@ package com.exchange.config;
 
 import com.exchange.backend.service.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -20,9 +23,10 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 @Configuration
 public class OAuthConfig {
 
-
     @Configuration
+    @EnableWebSecurity
     @EnableResourceServer
+    @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
     protected static class ResourceServer extends WebSecurityConfigurerAdapter {
 
         @Autowired
@@ -42,6 +46,8 @@ public class OAuthConfig {
                     .authorizeRequests()
                     .anyRequest().authenticated();
         }
+
+
     }
 
     @Configuration
@@ -61,7 +67,7 @@ public class OAuthConfig {
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-            security.tokenKeyAccess("isAnonymous()").checkTokenAccess("isAuthenticated()");
+            security.checkTokenAccess("anonymous").checkTokenAccess("isAuthenticated");
         }
 
         @Override

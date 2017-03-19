@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
+
 /**
  * Created by Mrs Hoang on 12/02/2017.
  */
@@ -71,5 +73,17 @@ public class UserHandler {
         UserDto userDto = new UserDto(user);
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
+
+
+
+    @RequestMapping(value = "/temp", method = RequestMethod.GET)
+    public String temp(){
+        return "Hello";
+    }
+
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    public Principal getCurrentUser(Principal principal){
+        return principal;
     }
 }
