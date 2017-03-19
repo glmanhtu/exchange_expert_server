@@ -1,11 +1,12 @@
 package com.exchange.restapi;
 
-import com.exchange.backend.Roles;
 import com.exchange.backend.datatype.search.SearchGood;
 import com.exchange.backend.enums.StatusEnum;
 import com.exchange.backend.persistence.domain.ElasticGood;
+import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.dto.SimpleGoodDto;
 import com.exchange.backend.service.GoodService;
+import com.exchange.backend.service.UserService;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -16,13 +17,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(SearchHandler.REST_API_SEARCH)
-@Secured(Roles.ANONYMOUS)
 public class SearchHandler {
 
     /**
@@ -48,8 +47,10 @@ public class SearchHandler {
     @Autowired
     private GoodService goodService;
 
-    @RequestMapping(value = "/good", method = RequestMethod.POST)
+    @Autowired
+    private UserService userService;
 
+    @RequestMapping(value = "/good", method = RequestMethod.POST)
     public ResponseEntity<?> searchGood(@RequestBody SearchGood searchGood, Principal principal) {
         LOGGER.info("Search good {}", searchGood);
         Sort.Direction sort = Sort.Direction.ASC;
@@ -63,6 +64,10 @@ public class SearchHandler {
         );
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         queryBuilder.must(QueryBuilders.matchQuery("status.name", StatusEnum.TRADING.getName()));
+        if (principal != null) {
+            User user = userService.getOne(principal.getName());
+            queryBuilder.mustNot(QueryBuilders.termsQuery("post_by.id", user.getExcluded()));
+        }
         if (searchGood.getTitle() != null) {
             queryBuilder.must(QueryBuilders.matchQuery("title", searchGood.getTitle()));
         }
