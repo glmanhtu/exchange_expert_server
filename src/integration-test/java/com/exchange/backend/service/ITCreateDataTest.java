@@ -11,6 +11,7 @@ import com.exchange.backend.persistence.domain.Rating;
 import com.exchange.backend.persistence.domain.Status;
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.repositories.elasticsearch.ElasticGoodRepository;
+import com.exchange.utils.Utils;
 import io.codearte.jfairy.Fairy;
 import io.codearte.jfairy.producer.person.Person;
 import io.codearte.jfairy.producer.text.TextProducer;
@@ -23,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -147,10 +149,11 @@ public class ITCreateDataTest {
         TextProducer text = Fairy.create().textProducer();
         Comment comment = new Comment();
         comment.setBy(users.get(randomBetween(0, users.size())).getId());
-        comment.setCommentDate(new LocalDateTime());
+        comment.setCommentDate(Utils.getCurrentTimestamp());
         comment.setMessage(text.loremIpsum());
         return comment;
     }
+
 
     public void generateGoodData() throws Exception {
         List<User> userList = userService.getAll();
@@ -175,7 +178,7 @@ public class ITCreateDataTest {
             good.setComments(comments);
             good.setPublishDate(new LocalDateTime());
             Location location = new Location((double)randomBetween(-90, 90), (double)randomBetween(0, 180));
-            good.setLocation(location);
+            good.setLocation(Collections.singletonList(location));
             good.setPostDate(new Date().getTime());
             good.setFeaturedImage("http://lorempixel.com/1200/800/");
 

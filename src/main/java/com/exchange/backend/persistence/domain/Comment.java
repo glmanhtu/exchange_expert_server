@@ -1,10 +1,5 @@
 package com.exchange.backend.persistence.domain;
 
-import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
-import org.joda.time.LocalDateTime;
-
-import javax.persistence.Convert;
-
 /**
  * Created by greenlucky on 1/31/17.
  */
@@ -12,8 +7,7 @@ public class Comment {
 
     private String message;
 
-    @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime commentDate;
+    private Long commentDate;
 
     private String by;
 
@@ -28,11 +22,11 @@ public class Comment {
         this.message = message;
     }
 
-    public LocalDateTime getCommentDate() {
+    public Long getCommentDate() {
         return commentDate;
     }
 
-    public void setCommentDate(LocalDateTime commentDate) {
+    public void setCommentDate(Long commentDate) {
         this.commentDate = commentDate;
     }
 

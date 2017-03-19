@@ -1,16 +1,24 @@
 package com.exchange.backend.service;
 
+import com.exchange.backend.persistence.domain.Feedback;
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.repositories.mongodb.UserRepository;
+import com.exchange.utils.Constants;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * Created by greenlucky on 1/24/17.
@@ -22,6 +30,9 @@ public class UserService implements SearchEverything<User> {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MongoOperations mongoOperations;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -85,18 +96,33 @@ public class UserService implements SearchEverything<User> {
      * @return A user or null if not exist
      */
     public User getOne(String id) {
-        return userRepository.findOne(id);
+
+        return userRepository.findById(id, 0, Constants.DEFAULT_LIMIT_FEEDBACK);
     }
 
     /**
-     * Gets users given by ids
-     * @param ids a list of id of user
-     * @return A page content lis of User or list null if not found
+     * Get list of feedbacks from user
+     *
+     * @param userId
+     * @param skip
+     * @param limit
+     * @return
      */
-    public Page<User> getByIds(List<String> ids, Pageable pageable) {
-        return userRepository.findByIdIn(ids, pageable);
+    public List<Feedback> getFeedbacks(String userId, int skip, int limit) {
+        User user = userRepository.findById(userId, skip, limit);
+        return user.getFeedbacks();
     }
 
+    /**
+     * Save new feedback to user
+     * @param userId
+     * @param feedback
+     */
+    public void saveFeedback(String userId, Feedback feedback) {
+        Query query = query(where("_id").is(userId));
+        Update update = Update.update("feedbacks.-1", feedback);
+        mongoOperations.updateFirst(query, update, User.class);
+    }
 
     /**
      * Enables user given by userId
