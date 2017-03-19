@@ -66,7 +66,9 @@ public class SearchHandler {
         queryBuilder.must(QueryBuilders.matchQuery("status.name", StatusEnum.TRADING.getName()));
         if (principal != null) {
             User user = userService.getOne(principal.getName());
-            queryBuilder.mustNot(QueryBuilders.termsQuery("post_by.id", user.getExcluded()));
+            if (user.getExcluded() != null && user.getExcluded().size() > 0) {
+                queryBuilder.mustNot(QueryBuilders.termsQuery("post_by.id", user.getExcluded()));
+            }
         }
         if (searchGood.getTitle() != null) {
             queryBuilder.must(QueryBuilders.matchQuery("title", searchGood.getTitle()));
