@@ -4,6 +4,8 @@ import com.exchange.backend.persistence.domain.Category;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Location;
 
+import java.util.List;
+
 /**
  * Created by glmanhtu on 2/16/17.
  */
@@ -33,7 +35,7 @@ public class SimpleGoodDto {
 
     private Long postDate;
 
-    private Location location;
+    private List<Location> location;
 
     private String featuredImage;
 
@@ -128,11 +130,11 @@ public class SimpleGoodDto {
         this.postDate = postDate;
     }
 
-    public Location getLocation() {
+    public List<Location> getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(List<Location> location) {
         this.location = location;
     }
 }
