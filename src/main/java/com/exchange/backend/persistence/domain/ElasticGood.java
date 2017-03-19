@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by optimize on 2/7/17.
@@ -52,7 +53,7 @@ public class ElasticGood implements Serializable {
     @Column(name = "post_date")
     private Long postDate;
 
-    private Location location;
+    private List<Location> location;
 
     public final String getId() {
         return id;
@@ -111,11 +112,11 @@ public class ElasticGood implements Serializable {
         this.postDate = postDate;
     }
 
-    public final Location getLocation() {
+    public final List<Location> getLocation() {
         return location;
     }
 
-    public final void setLocation(final Location location) {
+    public final void setLocation(final List<Location> location) {
         this.location = location;
     }
 

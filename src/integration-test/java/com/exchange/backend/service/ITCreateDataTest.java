@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -153,6 +154,7 @@ public class ITCreateDataTest {
         return comment;
     }
 
+
     public void generateGoodData() throws Exception {
         List<User> userList = userService.getAll();
         for (int i = 0; i< 10000; i++) {
@@ -176,7 +178,7 @@ public class ITCreateDataTest {
             good.setComments(comments);
             good.setPublishDate(new LocalDateTime());
             Location location = new Location((double)randomBetween(-90, 90), (double)randomBetween(0, 180));
-            good.setLocation(location);
+            good.setLocation(Collections.singletonList(location));
             good.setPostDate(new Date().getTime());
             good.setFeaturedImage("http://lorempixel.com/1200/800/");
 
