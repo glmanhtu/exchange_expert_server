@@ -1,16 +1,19 @@
 package com.exchange.config;
 
 import com.exchange.backend.service.UserAuthenticationService;
+import com.exchange.restapi.SearchHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
@@ -20,9 +23,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 @Configuration
 public class OAuthConfig {
 
-
     @Configuration
-    @EnableResourceServer
+    @EnableWebSecurity
     protected static class ResourceServer extends WebSecurityConfigurerAdapter {
 
         @Autowired
@@ -34,12 +36,22 @@ public class OAuthConfig {
                     .ignoring()
                     .antMatchers("/resources/**");
         }
+    }
+
+    @Configuration
+    @EnableResourceServer
+    protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+
 
         @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable();
+        public void configure(HttpSecurity http) throws Exception {
+
             http
+                    .csrf().disable();
+            http
+                    .anonymous().and()
                     .authorizeRequests()
+                    .antMatchers(SearchHandler.REST_API_SEARCH + "/**", "/user/current").permitAll()
                     .anyRequest().authenticated();
         }
     }
@@ -61,7 +73,7 @@ public class OAuthConfig {
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-            security.tokenKeyAccess("isAnonymous()").checkTokenAccess("isAuthenticated()");
+            security.checkTokenAccess("anonymous").checkTokenAccess("isAuthenticated");
         }
 
         @Override

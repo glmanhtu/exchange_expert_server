@@ -17,7 +17,6 @@ public class Message implements Serializable {
     private String message;
     private String link;
 
-
     public Message() {
     }
 
