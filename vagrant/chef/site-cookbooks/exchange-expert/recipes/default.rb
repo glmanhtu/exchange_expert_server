@@ -12,18 +12,26 @@ include_recipe 'apt::default'
 include_recipe 'nginx::default'
 include_recipe "nodejs::npm"
 
+file "/tmp/git_wrapper.sh" do
+  owner "ubuntu"
+  mode "0755"
+  content "#!/bin/sh\nexec /usr/bin/ssh -o \"StrictHostKeyChecking=no\" -i /home/ubuntu/.ssh/id_rsa \"$@\""
+end
+
 git "/exchange_expert/repository" do
   repository "git@github.com:glmanhtu/exchange_expert_server.git"
   branch "develop"
   action :sync
   user "ubuntu"
+  ssh_wrapper "/tmp/git_wrapper.sh"
 end
 
 git "/exchange_expert/client" do
   repository "git@github.com:glmanhtu/exchange_expert_client.git"
   branch 'development'
-  enable_checkout false
   action :sync
+  user "ubuntu"
+  ssh_wrapper "/tmp/git_wrapper.sh"
 end
 
 package 'nginx' do

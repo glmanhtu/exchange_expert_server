@@ -2,6 +2,7 @@ package com.exchange.backend.service;
 
 import com.exchange.backend.persistence.domain.Comment;
 import com.exchange.backend.persistence.domain.Good;
+import com.exchange.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setMessage(message);
         comment.setBy(byUser);
-        comment.setCommentDate(new org.joda.time.LocalDateTime());
+        comment.setCommentDate(Utils.getCurrentTimestamp());
 
         Good good = goodService.getOne(goodId);
         good.getComments().add(comment);

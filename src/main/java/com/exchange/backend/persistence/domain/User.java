@@ -56,7 +56,10 @@ public class User implements Serializable, UserDetails {
 
     private List<String> excluded;
 
+    private List<Feedback> feedbacks;
+
     public User() {
+        feedbacks = new ArrayList<>();
     }
 
     /**
@@ -65,6 +68,14 @@ public class User implements Serializable, UserDetails {
      */
     public String getId() {
         return id;
+    }
+
+    public List<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
     }
 
     public void setId(String id) {
