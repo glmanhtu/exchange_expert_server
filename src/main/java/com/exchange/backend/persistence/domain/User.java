@@ -1,6 +1,8 @@
 package com.exchange.backend.persistence.domain;
 
 import com.exchange.backend.Roles;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +20,7 @@ import java.util.Set;
  * Created by greenlucky on 1/24/17.
  */
 @Document(collection = "users")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable, UserDetails {
 
     /** The Serial Version UID for Serializable classes */
@@ -50,7 +53,7 @@ public class User implements Serializable, UserDetails {
 
     private boolean enabled = true;
 
-    private List<String> roles = new ArrayList<>();
+    private List<String> roles;
 
     private Rating rating;
 
@@ -60,6 +63,7 @@ public class User implements Serializable, UserDetails {
 
     public User() {
         feedbacks = new ArrayList<>();
+        roles = new ArrayList<>();
     }
 
     /**
@@ -191,6 +195,7 @@ public class User implements Serializable, UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         roles.forEach(ur->authorities.add(new Authority(ur)));
