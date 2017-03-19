@@ -9,10 +9,12 @@ import com.exchange.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 /**
  * Created by greenlucky on 3/10/17.
@@ -30,36 +32,26 @@ public class RatingHandler {
     private UserService userService;
 
     /**
-     * Adds rating for user given by forEmailUser, byEmailUser and star.
+     * Adds rating for user given by forEmailUser and star.
      *
      * @param forEmailUser
-     * @param byEmailUser
      * @param star
-     * @return A rating if success or message forEmailUser or byEmailUser not found
+     * @return A rating if success or message forEmailUser or not found
      * @exception MessageEnum
      */
-    @GetMapping("/add")
-    public ResponseEntity<Object> rating(@RequestParam("forEmailUser") String forEmailUser,
-                                         @RequestParam("byEmailUser") String byEmailUser,
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Object> rating(Principal principal, @RequestParam("forEmailUser") String forEmailUser,
                                          @RequestParam("star") float star) {
 
         User forUser = userService.getOne(forEmailUser);
-        User byUser = userService.getOne(byEmailUser);
-
-        Message message = null;
 
         if (forUser == null) {
-            message = new Message(MessageEnum.USER_NOT_FOUND, forEmailUser);
-            return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+            Message message = new Message(MessageEnum.USER_NOT_FOUND, forEmailUser);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
-        if (byUser == null) {
-            message = new Message(MessageEnum.USER_NOT_FOUND, byEmailUser);
-            return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
-        }
+        Rating rating = ratingService.add(forUser, principal.getName(), star);
 
-        Rating rating = ratingService.add(forUser, byEmailUser, star);
-
-        return new ResponseEntity<Object>(rating, HttpStatus.OK);
+        return new ResponseEntity<>(rating, HttpStatus.OK);
     }
 }
