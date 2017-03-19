@@ -32,7 +32,7 @@ public class OAuthConfig {
         public void configure(WebSecurity web) throws Exception {
             web
                     .ignoring()
-                    .antMatchers("/resources/**");
+                    .antMatchers("/resource/**");
         }
 
         @Override
