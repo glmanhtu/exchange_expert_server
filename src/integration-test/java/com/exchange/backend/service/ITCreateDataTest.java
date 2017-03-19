@@ -11,6 +11,7 @@ import com.exchange.backend.persistence.domain.Rating;
 import com.exchange.backend.persistence.domain.Status;
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.repositories.elasticsearch.ElasticGoodRepository;
+import com.exchange.utils.Utils;
 import io.codearte.jfairy.Fairy;
 import io.codearte.jfairy.producer.person.Person;
 import io.codearte.jfairy.producer.text.TextProducer;
@@ -147,7 +148,7 @@ public class ITCreateDataTest {
         TextProducer text = Fairy.create().textProducer();
         Comment comment = new Comment();
         comment.setBy(users.get(randomBetween(0, users.size())).getId());
-        comment.setCommentDate(new LocalDateTime());
+        comment.setCommentDate(Utils.getCurrentTimestamp());
         comment.setMessage(text.loremIpsum());
         return comment;
     }
