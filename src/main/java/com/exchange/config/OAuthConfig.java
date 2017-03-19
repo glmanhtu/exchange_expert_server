@@ -1,10 +1,9 @@
 package com.exchange.config;
 
 import com.exchange.backend.service.UserAuthenticationService;
+import com.exchange.restapi.SearchHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -14,6 +13,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
@@ -25,8 +25,6 @@ public class OAuthConfig {
 
     @Configuration
     @EnableWebSecurity
-    @EnableResourceServer
-    @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
     protected static class ResourceServer extends WebSecurityConfigurerAdapter {
 
         @Autowired
@@ -38,16 +36,24 @@ public class OAuthConfig {
                     .ignoring()
                     .antMatchers("/resources/**");
         }
+    }
+
+    @Configuration
+    @EnableResourceServer
+    protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+
 
         @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable();
+        public void configure(HttpSecurity http) throws Exception {
+
             http
+                    .csrf().disable();
+            http
+                    .anonymous().and()
                     .authorizeRequests()
+                    .antMatchers(SearchHandler.REST_API_SEARCH + "/**", "/user/current").permitAll()
                     .anyRequest().authenticated();
         }
-
-
     }
 
     @Configuration

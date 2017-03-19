@@ -19,8 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -36,7 +36,9 @@ import java.util.List;
 @Secured(Roles.ANONYMOUS)
 public class SearchHandler {
 
-    /** The application logger */
+    /**
+     * The application logger
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchHandler.class);
 
     public static final String REST_API_SEARCH = "/search";
@@ -89,7 +91,6 @@ public class SearchHandler {
 
     /**
      * Suggest search google given by title.
-     *
      *
      * @param title
      * @return A list of google or null if not found
