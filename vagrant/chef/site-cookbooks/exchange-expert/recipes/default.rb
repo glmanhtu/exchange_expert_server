@@ -65,51 +65,11 @@ elasticsearch_user 'elasticsearch' do
   action :create
 end
 
-service "elasticsearch" do
-	action :stop
-end
-
-service "mongodb" do
-	action :stop
-end
-
-cookbook_file "/tmp/prepare.sh" do
-  source "scripts/prepare.sh"
-  mode 0755
-end
-
 cookbook_file "/tmp/startup.sh" do
   source "scripts/startup.sh"
   mode 0755
 end
 
-directory '/exchange_expert/scripts' do
-  owner 'ubuntu'
-  group 'ubuntu'
-  mode '0755'
-  action :create
-end
-
-cookbook_file "/exchange_expert/scripts/es_backup.sh" do
-	source "scripts/es_backup.sh"
-	mode 0755
-end
-
-cookbook_file "/exchange_expert/scripts/mongo_backup.sh" do
-	source "scripts/mongo_backup.sh"
-	mode 0755
-end
-
-cookbook_file "/exchange_expert/scripts/startup.sh" do
-	source "scripts/startup.sh"
-	mode 0755
-end
-
-
-#execute "prepare script on boot" do
-#  command "sh /tmp/prepare.sh"
-#end
-
 service "elasticsearch" do
 	action :restart
 end
@@ -117,53 +77,6 @@ end
 service "mongodb" do
 	action :restart
 end
-
-# restore backup of ES
-begin
-	http_request 'Setup snapshoot ES' do
-	  	action :post
-	  	url 'http://localhost:9200/_snapshot/exchange_expert'
-	  	message (
-	  		{
-	  			:type => 'fs',
-	  			:settings => {
-	  				:location	=>	"/exchange_expert/elasticsearch_data",
-	  				:compress	=>	true
-	  			}
-			}.to_json
-		)
-	end
-	rescue  Net::HTTPServerException => e
-   		puts "Ignore exception: #{e}"
-end
-
-# http_request 'Stop Good' do
-#   	action :post
-#   	url 'http://localhost:9200/good/_close'
-#   	message (
-# 	  		{}.to_json
-# 		)
-#     ignore_failure true
-# end
-
-
-# http_request 'Restore snapshoot ES' do
-#   	action :post
-#   	url 'http://localhost:9200/_snapshot/exchange_expert/default/_restore'
-#   	message (
-# 	  		{}.to_json
-# 		)
-#     ignore_failure true
-# end
-
-# http_request 'Start Good' do
-#   	action :post
-#   	url 'http://localhost:9200/good/_open'
-#   	message (
-# 	  		{}.to_json
-# 		)
-#     ignore_failure true
-# end
 
 cookbook_file "#{node['nginx']['dir']}/sites-available/exchange-expert.cf.conf" do
   source "exchange-expert.cf.conf"
