@@ -26,11 +26,11 @@ public enum StatusEnum {
         return description;
     }
 
-    public static String convert(int status) {
+    public static StatusEnum convert(int status) {
         switch (status) {
-            case 0: return PENDING.getName();
-            case 1: return TRADING.getName();
-            default: return BANNED.getName();
+            case 0: return PENDING;
+            case 1: return TRADING;
+            default: return BANNED;
         }
     }
 }
