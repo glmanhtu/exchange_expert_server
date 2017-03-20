@@ -1,10 +1,13 @@
 package com.exchange.config;
 
 import com.exchange.backend.service.UserAuthenticationService;
+import com.exchange.restapi.GoodHandler;
 import com.exchange.restapi.SearchHandler;
+import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,7 +37,9 @@ public class OAuthConfig {
         public void configure(WebSecurity web) throws Exception {
             web
                     .ignoring()
-                    .antMatchers("/resource/**");
+                    .antMatchers("/resource/**")
+                    .antMatchers(HttpMethod.GET, GoodHandler.REST_API_GOODS + "/**")
+                    .antMatchers(HttpMethod.GET, UserHandler.REST_API_USER + "/**");
         }
     }
 
