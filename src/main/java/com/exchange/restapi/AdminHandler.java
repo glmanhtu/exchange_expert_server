@@ -2,9 +2,14 @@ package com.exchange.restapi;
 
 import com.exchange.backend.Roles;
 import com.exchange.backend.datatype.search.AdminSearchGood;
+import com.exchange.backend.enums.MessageEnum;
 import com.exchange.backend.enums.StatusEnum;
+import com.exchange.backend.persistence.domain.Good;
+import com.exchange.backend.persistence.domain.Message;
+import com.exchange.backend.persistence.domain.Status;
 import com.exchange.backend.persistence.dto.SimpleGoodDto;
 import com.exchange.backend.service.GoodService;
+import com.exchange.restapi.request.GoodStatus;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -37,6 +42,19 @@ public class AdminHandler {
 
     @Autowired
     private GoodService goodService;
+
+
+    @RequestMapping(value = "/good/status", method = RequestMethod.POST)
+    public ResponseEntity<?> status(@RequestBody GoodStatus goodStatus) {
+        Good good = goodService.getOne(goodStatus.getGoodId());
+        if (good != null) {
+            good.setStatus(new Status(StatusEnum.convert(goodStatus.getStatus())));
+            goodService.update(good);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        Message message = new Message(MessageEnum.GOODS_NOT_FOUND);
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+    }
 
     @RequestMapping(value = "/search/good", method = RequestMethod.POST)
     public ResponseEntity<?> searchGood(@RequestBody AdminSearchGood searchGood) {
