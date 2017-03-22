@@ -52,7 +52,9 @@ public class SearchHandler {
 
     @RequestMapping(value = "/good", method = RequestMethod.POST)
     public ResponseEntity<?> searchGood(@RequestBody SearchGood searchGood, Principal principal) {
+
         LOGGER.info("Search good {}", searchGood);
+        System.out.println(principal);
         Sort.Direction sort = Sort.Direction.ASC;
         if (!searchGood.getOrder().getASC()) {
             sort = Sort.Direction.DESC;
@@ -103,7 +105,8 @@ public class SearchHandler {
      * @return A list of google or null if not found
      */
     @GetMapping(value = "/good")
-    public ResponseEntity<Object> suggestSearchGoodsByTitle(@RequestParam String title) {
+    public ResponseEntity<Object> suggestSearchGoodsByTitle(@RequestParam String title, Principal principal) {
+
         List<ElasticGood> elasticGoods = null;
         if (title != null) {
 
@@ -117,5 +120,4 @@ public class SearchHandler {
 
         return new ResponseEntity<Object>(elasticGoods, HttpStatus.OK);
     }
-
 }
