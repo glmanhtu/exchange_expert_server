@@ -88,6 +88,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers("/resource/**")
                 .antMatchers(HttpMethod.GET, GoodHandler.REST_API_GOODS + "/**")
+                .antMatchers(UserHandler.REST_API_USER)
                 .antMatchers(HttpMethod.GET, UserHandler.REST_API_USER + "/**");
     }
 
