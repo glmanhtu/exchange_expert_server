@@ -163,6 +163,10 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated();
         }
     }
+
+    /**
+     * Mapping basic login to Oauth and vice versa
+     */
     private static class OAuthRequestedMatcher implements RequestMatcher {
         @Override
         public boolean matches(HttpServletRequest request) {
