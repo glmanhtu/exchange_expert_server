@@ -42,7 +42,7 @@ security:
    oauth2:
       client:
         client-id: default
-        client-secret: acmesecret
-        scope: read,write
+        client-secret: 123456
+        scope: read,write,trust
         auto-approve-scopes: '.*'
 

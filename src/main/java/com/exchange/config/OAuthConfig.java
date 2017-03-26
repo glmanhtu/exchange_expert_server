@@ -1,5 +1,6 @@
 package com.exchange.config;
 
+import com.exchange.backend.service.UserAuthenticationService;
 import com.exchange.restapi.GoodHandler;
 import com.exchange.restapi.SearchHandler;
 import com.exchange.restapi.UserHandler;
@@ -17,16 +18,21 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -42,7 +48,7 @@ import java.util.List;
  */
 @Configuration
 @EnableOAuth2Client
-@EnableAuthorizationServer
+@EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class OAuthConfig extends WebSecurityConfigurerAdapter {
 
@@ -112,7 +118,6 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
     }
 
-
     private Filter ssoFilter() {
         CompositeFilter filter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
@@ -163,6 +168,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .anyRequest().authenticated();
         }
+
     }
 
     /**
@@ -177,7 +183,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-   /* @Configuration
+    @Configuration
     @EnableAuthorizationServer
     protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
@@ -194,7 +200,8 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-            security.checkTokenAccess("anonymous").checkTokenAccess("isAuthenticated");
+            security.checkTokenAccess("anonymous").checkTokenAccess("isAuthenticated")
+                    .allowFormAuthenticationForClients();
         }
 
         @Override
@@ -207,5 +214,5 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
                     .refreshTokenValiditySeconds(REFRESH_TOKEN_VALID_TIME)
                     .accessTokenValiditySeconds(TOKEN_VALID_TIME);
         }
-    }*/
+    }
 }
