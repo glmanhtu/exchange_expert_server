@@ -21,15 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.util.*;
-
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 /**
  * Created by greenlucky on 3/21/17.
  */
 @RestController
 public class AuthorizeHandler {
 
-    /** The application logger */
+    /**
+     * The application logger
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizeHandler.class);
 
     @Autowired
@@ -74,15 +79,17 @@ public class AuthorizeHandler {
         OAuth2Request oAuth2Request = new OAuth2Request(requestParameters, clientId,
                 authorities, approved, scope, resourceIds,
                 null, responseTypes, extensionProperties);
-        User userPrincipal = new User(principal.getName(), "", true, true, true, true, authorities);
+        User userPrincipal = new User(principal.getName(), "", true,
+                true, true, true, authorities);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal, null, authorities);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userPrincipal, null, authorities);
         OAuth2Authentication auth = new OAuth2Authentication(oAuth2Request, authenticationToken);
         AuthorizationServerTokenServices tokenService = configuration.getEndpointsConfigurer().getTokenServices();
         OAuth2AccessToken token = tokenService.createAccessToken(auth);
 
         LOGGER.info("Generate access token {} for {}", token, principal.getName());
-        
+
         return token;
     }
 }
