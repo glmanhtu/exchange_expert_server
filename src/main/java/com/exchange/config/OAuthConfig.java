@@ -26,14 +26,14 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticat
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
@@ -113,7 +113,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/unauthorized"))
+                .authenticationEntryPoint(new OAuth2AuthenticationEntryPoint())
                 .and()
                 .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
     }
@@ -163,12 +163,11 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http
-                    .antMatcher("/me")
+                    .antMatcher("/**")
                     .requestMatcher(new OAuthRequestedMatcher())
                     .authorizeRequests()
                     .anyRequest().authenticated();
         }
-
     }
 
     /**
@@ -208,8 +207,9 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
             clients.inMemory()
                     .withClient("default")
-                    .authorizedGrantTypes("password", "refresh_token")
-                    .scopes("read", "write", "trust")
+                    .authorizedGrantTypes("password", "refresh_token", "authorization_code")
+                    .scopes("read", "write", "trust", "openid")
+                    .autoApprove(".*")
                     .resourceIds("oauth2-resource")
                     .refreshTokenValiditySeconds(REFRESH_TOKEN_VALID_TIME)
                     .accessTokenValiditySeconds(TOKEN_VALID_TIME);
