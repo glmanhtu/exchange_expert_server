@@ -6,8 +6,8 @@ server:
 
 facebook:
     client:
-      clientId: 233668646673605
-      clientSecret: 33b17e044ee6a4fa383f46ec6e28ea1d
+      clientId: 551029818251398
+      clientSecret: 532265375174807e5971510d8f0b363a
       accessTokenUri: https://graph.facebook.com/oauth/access_token
       userAuthorizationUri: https://www.facebook.com/dialog/oauth
       tokenName: oauth_token
@@ -19,7 +19,7 @@ facebook:
 github:
   client:
     clientId: bd1c0a783ccdd1c9b9e4
-    clientSecret: 1a9030fbca47a5b2c28e92f19050bb77824b5ad1
+    clientSecret: 2f85f2f552050edf02e479a56d86ce756b2d3b07
     accessTokenUri: https://github.com/login/oauth/access_token
     userAuthorizationUri: https://github.com/login/oauth/authorize
     clientAuthenticationScheme: form
@@ -42,7 +42,7 @@ security:
    oauth2:
       client:
         client-id: default
-        client-secret: acmesecret
-        scope: read,write
+        client-secret: 123456
+        scope: read,write,trust
         auto-approve-scopes: '.*'
 
