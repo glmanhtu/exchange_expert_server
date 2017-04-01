@@ -1,6 +1,8 @@
 package com.exchange.backend.persistence.domain;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.persistence.Id;
@@ -53,7 +55,8 @@ public class ElasticGood implements Serializable {
     @Column(name = "post_date")
     private Long postDate;
 
-    private List<Location> location;
+    @GeoPointField
+    private List<GeoPoint> location;
 
     public final String getId() {
         return id;
@@ -112,11 +115,11 @@ public class ElasticGood implements Serializable {
         this.postDate = postDate;
     }
 
-    public final List<Location> getLocation() {
+    public final List<GeoPoint> getLocation() {
         return location;
     }
 
-    public final void setLocation(final List<Location> location) {
+    public final void setLocation(final List<GeoPoint> location) {
         this.location = location;
     }
 
