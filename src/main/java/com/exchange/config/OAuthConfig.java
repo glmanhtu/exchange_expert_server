@@ -207,7 +207,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
             clients.inMemory()
                     .withClient("default")
-                    .authorizedGrantTypes("password", "refresh_token", "authorization_code")
+                    .authorizedGrantTypes("password", "refresh_token", "authorization_code", "implicit")
                     .scopes("read", "write", "trust", "openid")
                     .autoApprove(".*")
                     .resourceIds("oauth2-resource")
