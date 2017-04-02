@@ -92,12 +92,23 @@ cookbook_file "#{node['nginx']['dir']}/sites-available/admin.exchange-expert.cf.
   mode  "0644"
 end
 
+cookbook_file "#{node['nginx']['dir']}/sites-available/api.exchange-expert.cf.conf" do
+  source "api.exchange-expert.cf.conf"
+  owner "root"
+  group "root"
+  mode  "0644"
+end
+
 # enable your sites configuration using a definition from the nginx cookbook
 nginx_site "exchange-expert.cf.conf" do
   enable true
 end
 
 nginx_site "admin.exchange-expert.cf.conf" do
+  enable true
+end
+
+nginx_site "api.exchange-expert.cf.conf" do
   enable true
 end
 

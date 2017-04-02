@@ -6,7 +6,6 @@ import com.exchange.backend.persistence.domain.Content;
 import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Image;
-import com.exchange.backend.persistence.domain.Location;
 import com.exchange.backend.persistence.domain.Rating;
 import com.exchange.backend.persistence.domain.Status;
 import com.exchange.backend.persistence.domain.User;
@@ -20,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.Normalizer;
@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
@@ -60,6 +61,39 @@ public class ITCreateDataTest {
 
     private int randomBetween(int from, int to) {
         return ThreadLocalRandom.current().nextInt(from, to);
+    }
+
+    public static GeoPoint getLocation(GeoPoint location, int radius) {
+        Random random = new Random();
+
+        // Convert radius from meters to degrees
+        double radiusInDegrees = radius / 	111000f;
+
+        double x0 = location.getLon();
+        double y0 = location.getLat();
+        double u = random.nextDouble() / 1000;
+        double v = random.nextDouble() / 1000;
+        double w = radiusInDegrees * Math.sqrt(u);
+        double t = 2 * Math.PI * v;
+        double x = w * Math.cos(t);
+        double y = w * Math.sin(t);
+
+        // Adjust the x-coordinate for the shrinking of the east-west distances
+        double new_x = x / Math.cos(y0);
+
+        // Set the adjusted location
+
+        return new GeoPoint(y + y0, new_x + x0);
+    }
+
+    @Test
+    public void fixGoodLocation() {
+        List<Good> goods = goodService.getAll();
+        GeoPoint geoPoint = new GeoPoint(10.88224452, 106.66164737);
+        for (Good good1 : goods) {
+            good1.setLocation(Collections.singletonList(getLocation(geoPoint, 10000)));
+            goodService.update(good1);
+        }
     }
 
     @Test
@@ -177,7 +211,7 @@ public class ITCreateDataTest {
 
             good.setComments(comments);
             good.setPublishDate(new LocalDateTime());
-            Location location = new Location((double)randomBetween(-90, 90), (double)randomBetween(0, 180));
+            GeoPoint location = new GeoPoint((double)randomBetween(-90, 90), (double)randomBetween(0, 180));
             good.setLocation(Collections.singletonList(location));
             good.setPostDate(new Date().getTime());
             good.setFeaturedImage("http://lorempixel.com/1200/800/");

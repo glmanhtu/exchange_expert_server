@@ -2,7 +2,7 @@ package com.exchange.backend.persistence.dto;
 
 import com.exchange.backend.persistence.domain.Category;
 import com.exchange.backend.persistence.domain.Good;
-import com.exchange.backend.persistence.domain.Location;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class SimpleGoodDto {
 
     private Long postDate;
 
-    private List<Location> location;
+    private List<GeoPoint> location;
 
     private String featuredImage;
 
@@ -130,11 +130,11 @@ public class SimpleGoodDto {
         this.postDate = postDate;
     }
 
-    public List<Location> getLocation() {
+    public List<GeoPoint> getLocation() {
         return location;
     }
 
-    public void setLocation(List<Location> location) {
+    public void setLocation(List<GeoPoint> location) {
         this.location = location;
     }
 }
