@@ -5,16 +5,17 @@ import com.exchange.restapi.GoodHandler;
 import com.exchange.restapi.SearchHandler;
 import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.*;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -121,7 +122,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
             http
                     .antMatcher("/**")
                     .authorizeRequests()
-                    .antMatchers(  "/login/**").permitAll()
+                    .antMatchers("/login/**").permitAll()
                     .antMatchers(SearchHandler.REST_API_SEARCH + "/**").permitAll()
                     .anyRequest().authenticated();
         }

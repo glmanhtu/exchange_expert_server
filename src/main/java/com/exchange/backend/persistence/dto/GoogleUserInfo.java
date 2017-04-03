@@ -1,20 +1,26 @@
 package com.exchange.backend.persistence.dto;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by greenlucky on 4/2/17.
  */
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "GoogleUserInfo")
 public class GoogleUserInfo {
 
     private String sub;
 
     private String name;
 
-    private String given_name;
+    @XmlElement(name = "givenName")
+    private String givenName;
 
-    private String family_name;
+    @XmlElement(name = "familyName")
+    private String familyName;
 
     private String profile;
 
@@ -22,7 +28,8 @@ public class GoogleUserInfo {
 
     private String email;
 
-    private String email_verified;
+    @XmlElement(name = "emailVerified")
+    private String emailVerified;
 
     private String gender;
 
@@ -31,6 +38,7 @@ public class GoogleUserInfo {
 
     public GoogleUserInfo() {
     }
+
 
     public String getSub() {
         return sub;
@@ -48,20 +56,20 @@ public class GoogleUserInfo {
         this.name = name;
     }
 
-    public String getGiven_name() {
-        return given_name;
+    public String getGivenName() {
+        return givenName;
     }
 
-    public void setGiven_name(String given_name) {
-        this.given_name = given_name;
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
     }
 
-    public String getFamily_name() {
-        return family_name;
+    public String getFamilyName() {
+        return familyName;
     }
 
-    public void setFamily_name(String family_name) {
-        this.family_name = family_name;
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
     }
 
     public String getProfile() {
@@ -88,12 +96,12 @@ public class GoogleUserInfo {
         this.email = email;
     }
 
-    public String getEmail_verified() {
-        return email_verified;
+    public String getEmailVerified() {
+        return emailVerified;
     }
 
-    public void setEmail_verified(String email_verified) {
-        this.email_verified = email_verified;
+    public void setEmailVerified(String emailVerified) {
+        this.emailVerified = emailVerified;
     }
 
     public String getGender() {
@@ -111,5 +119,4 @@ public class GoogleUserInfo {
     public void setLocale(String locale) {
         this.locale = locale;
     }
-
 }

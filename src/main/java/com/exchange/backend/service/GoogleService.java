@@ -19,6 +19,9 @@ public class GoogleService {
 
     private static final String URL_GOOGLE = "https://www.googleapis.com/oauth2/v3/userinfo";
 
+    private static final Integer AUTHORIZE = 201;
+    private static final Integer OK = 200;
+
     private Client client;
 
     public GoogleService() {
@@ -27,12 +30,9 @@ public class GoogleService {
 
     public GoogleUserInfo getProfileGoogle(String accessToken) {
 
-        GoogleUserInfo userInfo = null;
-        
         ClientResponse response = getResponse(URL_GOOGLE, accessToken);
 
-        userInfo = response.getEntity(GoogleUserInfo.class);
-
+        GoogleUserInfo userInfo = response.getEntity(GoogleUserInfo.class);
 
         return userInfo;
     }
@@ -46,10 +46,9 @@ public class GoogleService {
 
         response = webResource.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
 
-        if ((!(response.getStatus() == 201 || response.getStatus() == 200))) {
+        if ((!(response.getStatus() == AUTHORIZE || response.getStatus() == OK))) {
             throw new UnAuthorizeException("Failed : HTTP error code : " + response.getStatus());
         }
-
         return response;
     }
 }

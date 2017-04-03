@@ -50,7 +50,7 @@ public class ITAuthorizeHandlerTest {
     @Test
     public void loginGoogle() throws Exception {
 
-        String accessToken = "a29.GlshBN5L7gLqKc_P9frjQPrdExl3nKdpZSiQff-9ZFh6vf9IcPAEDcAMD0jYvCcjKBfG-7cPK-4zjfkjZcE2cor47bIE77MhssQR51gmC3qmJqWRLb1gPGaQxqu5";
+        String accessToken = "ya29.GlwiBPoE-_tx0FgXX7HFIyHoj3eVW0elGeWLNWpDlbC8Vjwd_oKPyTURzCHaJyQwwoGy9uuhO1gRFjM6Az7-jPs2gHGe43LE-fKqC3r5MfHmJjP1gOB3BKhfKtzovA";
 
         Object obj = restTemplate.getForEntity("/login/google?accessToken={accessToken}", Object.class, accessToken);
 

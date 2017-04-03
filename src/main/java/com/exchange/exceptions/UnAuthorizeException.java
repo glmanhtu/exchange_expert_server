@@ -3,7 +3,7 @@ package com.exchange.exceptions;
 /**
  * Created by greenlucky on 4/2/17.
  */
-public class UnAuthorizeException extends RuntimeException{
+public class UnAuthorizeException extends RuntimeException {
 
     private String message;
 

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @ControllerAdvice
 public class GlobalException {
 
+    private static final Integer CODE_302 = 302;
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnAuthorizeException.class)
     public ResponseEntity<Object> unAuthorizeExceptionHandler(UnAuthorizeException e) {
@@ -27,7 +29,7 @@ public class GlobalException {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> exception(Exception e) {
         Message message = new Message();
-        message.setCode(302);
+        message.setCode(CODE_302);
         message.setMessage(e.getMessage());
         return new ResponseEntity<Object>(message, HttpStatus.UNAUTHORIZED);
     }

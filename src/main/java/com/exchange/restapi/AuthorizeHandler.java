@@ -29,7 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Created by greenlucky on 3/21/17.
@@ -135,11 +139,11 @@ public class AuthorizeHandler {
         if (localUser == null) {
             localUser = new com.exchange.backend.persistence.domain.User();
             localUser.setId(userInfo.getEmail());
-            if (userInfo.getGiven_name() != null) {
-                localUser.setFirstName(userInfo.getGiven_name());
+            if (userInfo.getGivenName() != null) {
+                localUser.setFirstName(userInfo.getGivenName());
             }
-            if (userInfo.getFamily_name() != null) {
-                localUser.setLastName(userInfo.getFamily_name());
+            if (userInfo.getFamilyName() != null) {
+                localUser.setLastName(userInfo.getFamilyName());
             }
             localUser.setPassword(defaultPassword);
 
