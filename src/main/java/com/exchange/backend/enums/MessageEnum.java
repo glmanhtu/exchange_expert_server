@@ -12,7 +12,11 @@ public enum MessageEnum {
     GOODS_SLUG_INVALID(400, "The slug {0} is invalid", ""),
 
     BAD_WORD_TITLE(403, "The title can not contain {0}", ""),
-    BAD_WORD_DES(403, "The description can not contain {0}", "");
+    BAD_WORD_DES(403, "The description can not contain {0}", ""),
+
+    ACCESST_TOKEN_NULL(402, "Access token must be not null", ""),
+
+    ACCESST_TOKEN_INVALID(401, "Access token was invalid", "");
 
     private int code;
 

@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: dev
+
 server:
   contextPath: /api
 
@@ -45,4 +46,3 @@ security:
         client-secret: 123456
         scope: read,write,trust
         auto-approve-scopes: '.*'
-
