@@ -75,6 +75,7 @@ public class GoodService implements SearchEverything<Good> {
      * @see Good
      */
     public Good update(Good good) {
+        elasticGoodRepository.save(good);
         return goodRepository.save(good);
     }
 
