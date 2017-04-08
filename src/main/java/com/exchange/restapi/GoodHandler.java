@@ -51,13 +51,13 @@ public class GoodHandler {
         if (badWordTitle != null) {
             LOGGER.info("The title goods can not contain {}", badWordTitle);
             message = new Message(MessageEnum.BAD_WORD_TITLE, badWordTitle);
-            return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         if (badWordDes != null) {
             LOGGER.info("The description goods can not contain {}", badWordDes);
             message = new Message(MessageEnum.BAD_WORD_DES, badWordDes);
-            return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         //create new good

@@ -1,20 +1,18 @@
 package com.exchange.config;
 
 import com.exchange.backend.service.UserAuthenticationService;
-import com.exchange.restapi.GoodHandler;
 import com.exchange.restapi.SearchHandler;
 import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
@@ -69,10 +67,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/resource/**")
-                .antMatchers(HttpMethod.GET, GoodHandler.REST_API_GOODS + "/**")
-                .antMatchers(UserHandler.REST_API_USER)
-                .antMatchers(HttpMethod.GET, UserHandler.REST_API_USER + "/**");
+                .antMatchers("/resource/**");
     }
 
   /*  private Filter ssoFilter() {
@@ -124,6 +119,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers("/login/**").permitAll()
                     .antMatchers(SearchHandler.REST_API_SEARCH + "/**").permitAll()
+                    .antMatchers(UserHandler.REST_API_USER + "/**").permitAll()
                     .anyRequest().authenticated();
         }
     }
