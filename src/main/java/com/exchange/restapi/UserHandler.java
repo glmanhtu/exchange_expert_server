@@ -63,7 +63,7 @@ public class UserHandler {
         return new ResponseEntity<Object>(userDto, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
     public ResponseEntity<?> getUser(Principal principal) {
         User user = userService.getOne(principal.getName());
         //if user is null return message not found
