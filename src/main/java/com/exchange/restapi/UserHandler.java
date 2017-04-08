@@ -64,6 +64,20 @@ public class UserHandler {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> getUser(Principal principal) {
+        User user = userService.getOne(principal.getName());
+        //if user is null return message not found
+        if (user == null) {
+            Message message = new Message(MessageEnum.USER_NOT_FOUND);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+
+        UserDto userDto = new UserDto(user);
+
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> getUser(@RequestParam("email") String email) {
 
         User user = userService.getOne(email);
