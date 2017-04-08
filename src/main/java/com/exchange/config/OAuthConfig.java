@@ -1,6 +1,7 @@
 package com.exchange.config;
 
 import com.exchange.backend.service.UserAuthenticationService;
+import com.exchange.restapi.GoodHandler;
 import com.exchange.restapi.SearchHandler;
 import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +119,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
                     .antMatcher("/**")
                     .authorizeRequests()
                     .antMatchers("/login/**").permitAll()
+                    .antMatchers(GoodHandler.REST_API_GOODS + "/**").permitAll()
                     .antMatchers(SearchHandler.REST_API_SEARCH + "/**").permitAll()
                     .antMatchers(UserHandler.REST_API_USER + "/**").permitAll()
                     .anyRequest().authenticated();
