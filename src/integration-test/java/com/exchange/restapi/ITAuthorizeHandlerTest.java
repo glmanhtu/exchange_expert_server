@@ -1,6 +1,7 @@
 package com.exchange.restapi;
 
 import com.exchange.backend.service.GoogleService;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
+import org.springframework.social.support.URIBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.net.URI;
 
 /**
  * Created by greenlucky on 4/2/17.
@@ -23,10 +27,11 @@ public class ITAuthorizeHandlerTest {
     @Autowired
     private GoogleService googleService;
 
+
     @Test
     public void loginFacebook() throws Exception {
 
-        String accessToken = "EAAH1KKCT2IYBANsVt4ilVgSvYss8RxNm7K6WCnUvCXs93lZBKKTZB8MJoDcWawqOdrN7sWGWjMLIJUBmud4GJZCSyhUxNUJItfZCTaBDUIyMJrt5me6xmGMZAVSbpPfyXHE5oCN9cvmqNmqhBIcncLFvgNA6K03a0o04yZBN6hwYuJaEsuROoZBW3EAuuJxIAIZD";
+        String accessToken = "EAAH1KKCT2IYBAFt3M0OX4ZC7GIosQUPi3MhCj7Yc1Mfmg4y7x7kFdtjz0PDLKcCqHGhH0qtpRGWOfKCP97A5ZCO1oUjIoZAWelL3NK6yrb8Vy4e3phr7xTNUcQqGv66YXyWtb8HcXevhi9Ya1HqZCZAtlaxN7tRjqBLopOLcRKINiHWdciuVZByQbspO0W7x4ZD";
 
         Object obj = restTemplate.getForEntity("/login/facebook?accessToken={accessToken}", Object.class, accessToken);
 
@@ -37,20 +42,24 @@ public class ITAuthorizeHandlerTest {
     @Test
     public void loginFacebookA() throws Exception {
 
-        String accessToken = "EAAH1KKCT2IYBANsVt4ilVgSvYss8RxNm7K6WCnUvCXs93lZBKKTZB8MJoDcWawqOdrN7sWGWjMLIJUBmud4GJZCSyhUxNUJItfZCTaBDUIyMJrt5me6xmGMZAVSbpPfyXHE5oCN9cvmqNmqhBIcncLFvgNA6K03a0o04yZBN6hwYuJaEsuROoZBW3EAuuJxIAIZD";
+        String accessToken = "EAAH1KKCT2IYBAFt3M0OX4ZC7GIosQUPi3MhCj7Yc1Mfmg4y7x7kFdtjz0PDLKcCqHGhH0qtpRGWOfKCP97A5ZCO1oUjIoZAWelL3NK6yrb8Vy4e3phr7xTNUcQqGv66YXyWtb8HcXevhi9Ya1HqZCZAtlaxN7tRjqBLopOLcRKINiHWdciuVZByQbspO0W7x4ZD";
 
         org.springframework.social.facebook.api.User userFacebook = null;
         //try {
         Facebook facebook = new FacebookTemplate(accessToken);
         userFacebook = facebook.userOperations().getUserProfile();
-        System.out.println(userFacebook.getEmail());
+
+        URI uri = URIBuilder.fromUri("http://graph.facebook.com/" + userFacebook.getId() + "/picture?type=large&redirect=false").build();
+        System.out.println(uri);
+        JsonNode response = restTemplate.getForObject(uri, JsonNode.class);
+        System.out.println("User avatar: " + response.get("data").get("url").textValue());
 
     }
 
     @Test
     public void loginGoogle() throws Exception {
 
-        String accessToken = "ya29.GlwiBPoE-_tx0FgXX7HFIyHoj3eVW0elGeWLNWpDlbC8Vjwd_oKPyTURzCHaJyQwwoGy9uuhO1gRFjM6Az7-jPs2gHGe43LE-fKqC3r5MfHmJjP1gOB3BKhfKtzovA";
+        String accessToken = "ya29.GmEnBO2DJ23tj61b0gVuiwi2tU0mlIvQPKL2aAGxXtHfV6GWzerVRhz1dViXMU8liatCZN_7kTPbR1WXAb1iaJA4FD6cfrsT5SH_NyaqmyhL03bA374EuH-mqJ8z9Xd1OTrb";
 
         Object obj = restTemplate.getForEntity("/login/google?accessToken={accessToken}", Object.class, accessToken);
 
