@@ -5,10 +5,12 @@ import com.exchange.backend.persistence.domain.Message;
 import com.exchange.backend.persistence.dto.GoogleUserInfo;
 import com.exchange.backend.service.GoogleService;
 import com.exchange.backend.service.UserService;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,18 +24,21 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
+import org.springframework.social.support.URIBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.security.Principal;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.Date;
 
 /**
  * Created by greenlucky on 3/21/17.
@@ -49,6 +54,9 @@ public class AuthorizeHandler {
 
     @Autowired
     private AuthorizationServerEndpointsConfiguration configuration;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Autowired
     private UserService userService;
@@ -85,7 +93,7 @@ public class AuthorizeHandler {
     public ResponseEntity<Object> loginFacebook(@RequestParam(value = "accessToken", required = false,
             defaultValue = "") String accessToken) {
 
-        System.out.println(accessToken);
+        String avatar = null;
         if (accessToken.isEmpty()) {
             Message message = new Message(MessageEnum.ACCESST_TOKEN_NULL);
             return new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
@@ -94,6 +102,8 @@ public class AuthorizeHandler {
         try {
             Facebook facebook = new FacebookTemplate(accessToken);
             userFacebook = facebook.userOperations().getUserProfile();
+            avatar = getFacebookAvatar(userFacebook.getId());
+            System.out.println(avatar);
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
             Message message = new Message(MessageEnum.ACCESST_TOKEN_INVALID);
@@ -111,8 +121,10 @@ public class AuthorizeHandler {
             if (userFacebook.getLastName() != null) {
                 localUser.setLastName(userFacebook.getLastName());
             }
-            localUser.setPassword(defaultPassword);
 
+            localUser.setPassword(defaultPassword);
+            localUser.setCreateDate(new Date().getTime());
+            localUser.setAvatar(avatar);
             localUser = userService.create(localUser);
         }
 
@@ -146,9 +158,11 @@ public class AuthorizeHandler {
                 localUser.setLastName(userInfo.getFamilyName());
             }
             localUser.setPassword(defaultPassword);
-
+            localUser.setCreateDate(new Date().getTime());
+            localUser.setAvatar(userInfo.getPicture());
             localUser = userService.create(localUser);
         }
+
 
         OAuth2AccessToken token = token(localUser);
 
@@ -187,5 +201,11 @@ public class AuthorizeHandler {
         return token;
     }
 
+
+    private String getFacebookAvatar(String id) {
+        URI uri = URIBuilder.fromUri("http://graph.facebook.com/" + id + "/picture?type=large&redirect=false").build();
+        JsonNode response = restTemplate.getForObject(uri, JsonNode.class);
+        return response.get("data").get("url").textValue();
+    }
 
 }
