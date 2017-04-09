@@ -31,7 +31,7 @@ public class ITAuthorizeHandlerTest {
     @Test
     public void loginFacebook() throws Exception {
 
-        String accessToken = "EAAH1KKCT2IYBAFt3M0OX4ZC7GIosQUPi3MhCj7Yc1Mfmg4y7x7kFdtjz0PDLKcCqHGhH0qtpRGWOfKCP97A5ZCO1oUjIoZAWelL3NK6yrb8Vy4e3phr7xTNUcQqGv66YXyWtb8HcXevhi9Ya1HqZCZAtlaxN7tRjqBLopOLcRKINiHWdciuVZByQbspO0W7x4ZD";
+        String accessToken = "EAAH1KKCT2IYBAJpYlwBVFYtt6qtZAP0R3d9JrToWDiEeiMT1VQR6m3Rpegxp2e7eCVBxRQt3bXyuKZBf8FzDflXFKLEMd16SgswVpSa4Gf5MJzd7upPI3LNKZB43PDD1G6BbOykxnUu989uT3hU9JClshJwf7urBNLkZBhigJDeDGJUqIWZBt0oGpcMplZBt0ZD";
 
         Object obj = restTemplate.getForEntity("/login/facebook?accessToken={accessToken}", Object.class, accessToken);
 
