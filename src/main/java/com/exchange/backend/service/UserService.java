@@ -155,7 +155,7 @@ public class UserService implements SearchEverything<User> {
     }
 
     @Override
-    public List<User> findAll(QueryBuilder queryBuilder, PageRequest pageRequest) {
+    public Page<User> findAll(QueryBuilder queryBuilder, PageRequest pageRequest) {
         return null;
     }
 }

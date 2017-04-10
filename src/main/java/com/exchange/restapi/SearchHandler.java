@@ -3,8 +3,9 @@ package com.exchange.restapi;
 import com.exchange.backend.datatype.search.SearchGood;
 import com.exchange.backend.enums.StatusEnum;
 import com.exchange.backend.persistence.domain.ElasticGood;
+import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.User;
-import com.exchange.backend.persistence.dto.SimpleGoodDto;
+import com.exchange.backend.persistence.dto.GoodDto;
 import com.exchange.backend.service.GoodService;
 import com.exchange.backend.service.UserService;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -13,6 +14,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -93,9 +96,15 @@ public class SearchHandler {
         if (searchGood.getSeller() != null) {
             queryBuilder.must(QueryBuilders.termQuery("postBy.id", searchGood.getSeller()));
         }
-        List<SimpleGoodDto> simpleGoodDtos = new ArrayList<>();
-        goodService.findAll(queryBuilder, pageRequest).forEach(good -> simpleGoodDtos.add(new SimpleGoodDto(good)));
-        return new ResponseEntity<>(simpleGoodDtos, HttpStatus.OK);
+
+        List<GoodDto> goodDtos = new ArrayList<>();
+
+        Page<Good> goods = goodService.findAll(queryBuilder, pageRequest);
+        goods.getContent().forEach(good -> goodDtos.add(new GoodDto(good)));
+
+        Page<GoodDto> response = new PageImpl<GoodDto>(goodDtos, pageRequest, goods.getTotalElements());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
