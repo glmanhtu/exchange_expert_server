@@ -97,9 +97,10 @@ public class AdminHandler {
         List<GoodDto> goodDtos = new ArrayList<>();
 
         Page<Good> goods = goodService.findAll(queryBuilder, pageRequest);
+        System.out.println(goods.getTotalPages());
         goods.getContent().forEach(good -> goodDtos.add(new GoodDto(good)));
 
-        Page<GoodDto> response = new PageImpl<GoodDto>(goodDtos, pageRequest, goods.getTotalElements());
+        Page<GoodDto> response = new PageImpl<GoodDto>(goodDtos, pageRequest, goods.getTotalPages());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

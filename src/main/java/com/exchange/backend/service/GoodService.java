@@ -126,11 +126,14 @@ public class GoodService implements SearchEverything<Good> {
 
     @Override
     public Page<Good> findAll(QueryBuilder queryBuilder, PageRequest pageRequest) {
-        List<ElasticGood> elasticGoods = elasticGoodRepository.search(queryBuilder, pageRequest).getContent();
-        List<String> goodIds = new ArrayList<>(elasticGoods.size());
+
+        Iterable<ElasticGood> elasticGoods = elasticGoodRepository.search(queryBuilder);
+        List<String> goodIds = new ArrayList<>();
+
         for (ElasticGood elasticGood : elasticGoods) {
             goodIds.add(elasticGood.getId());
         }
+
         return goodRepository.findByIdIn(goodIds, pageRequest);
     }
 

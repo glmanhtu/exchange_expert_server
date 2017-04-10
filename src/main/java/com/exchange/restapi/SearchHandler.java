@@ -57,7 +57,7 @@ public class SearchHandler {
     public ResponseEntity<?> searchGood(@RequestBody SearchGood searchGood, Principal principal) {
 
         LOGGER.info("Search good {}", searchGood);
-        System.out.println(principal);
+
         Sort.Direction sort = Sort.Direction.ASC;
         if (!searchGood.getOrder().getASC()) {
             sort = Sort.Direction.DESC;
@@ -67,6 +67,9 @@ public class SearchHandler {
                 searchGood.getPagination().getItemsPerPage(),
                 new Sort(new Sort.Order(sort, searchGood.getOrder().getBy()))
         );
+
+        System.out.println(pageRequest);
+
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         queryBuilder.must(QueryBuilders.matchQuery("status.name", StatusEnum.TRADING.getName()));
         if (principal != null) {
@@ -100,6 +103,7 @@ public class SearchHandler {
         List<GoodDto> goodDtos = new ArrayList<>();
 
         Page<Good> goods = goodService.findAll(queryBuilder, pageRequest);
+
         goods.getContent().forEach(good -> goodDtos.add(new GoodDto(good)));
 
         Page<GoodDto> response = new PageImpl<GoodDto>(goodDtos, pageRequest, goods.getTotalElements());
