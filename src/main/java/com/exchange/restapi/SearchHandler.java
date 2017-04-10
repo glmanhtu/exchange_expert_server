@@ -3,8 +3,9 @@ package com.exchange.restapi;
 import com.exchange.backend.datatype.search.SearchGood;
 import com.exchange.backend.enums.StatusEnum;
 import com.exchange.backend.persistence.domain.ElasticGood;
+import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.User;
-import com.exchange.backend.persistence.dto.SimpleGoodDto;
+import com.exchange.backend.persistence.dto.GoodDto;
 import com.exchange.backend.service.GoodService;
 import com.exchange.backend.service.UserService;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -13,17 +14,22 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by glmanhtu on 2/15/17.
@@ -90,12 +96,13 @@ public class SearchHandler {
         if (searchGood.getSeller() != null) {
             queryBuilder.must(QueryBuilders.termQuery("postBy.id", searchGood.getSeller()));
         }
-        List<SimpleGoodDto> simpleGoodDtos = new ArrayList<>();
-        goodService.findAll(queryBuilder, pageRequest).forEach(good -> simpleGoodDtos.add(new SimpleGoodDto(good)));
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("totalRecord", simpleGoodDtos.size());
-        response.put("content", simpleGoodDtos);
+        List<GoodDto> goodDtos = new ArrayList<>();
+
+        Page<Good> goods = goodService.findAll(queryBuilder, pageRequest);
+        goods.getContent().forEach(good -> goodDtos.add(new GoodDto(good)));
+
+        Page<GoodDto> response = new PageImpl<GoodDto>(goodDtos, pageRequest, goods.getTotalElements());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
