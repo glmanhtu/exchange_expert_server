@@ -1,8 +1,6 @@
 package com.exchange.backend.persistence.repositories.mongodb;
 
 import com.exchange.backend.persistence.domain.Good;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +12,7 @@ import java.util.List;
 @Repository
 public interface GoodRepository extends MongoRepository<Good, String> {
 
-    Page<Good> findByIdIn(List<String> ids, Pageable pageable);
+    List<Good> findByIdIn(List<String> ids);
 
     Good findBySlug(String slug);
 
