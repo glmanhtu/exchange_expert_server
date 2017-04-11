@@ -4,7 +4,6 @@ import com.exchange.backend.enums.StatusEnum;
 import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Status;
-import com.exchange.backend.persistence.dto.DataWrapper;
 import com.exchange.backend.persistence.repositories.elasticsearch.ElasticGoodRepository;
 import com.exchange.backend.persistence.repositories.mongodb.GoodRepository;
 import com.github.slugify.Slugify;
@@ -126,15 +125,16 @@ public class GoodService implements SearchEverything<Good> {
     }
 
     @Override
-    public DataWrapper<Good, ElasticGood> findAll(QueryBuilder queryBuilder, PageRequest pageRequest) {
-        Page<ElasticGood> elasticGoods = elasticGoodRepository.search(queryBuilder, pageRequest);
+    public Page<Good> findAll(QueryBuilder queryBuilder, PageRequest pageRequest) {
 
-        List<String> goodIds = new ArrayList<>(elasticGoods.getContent().size());
+        Iterable<ElasticGood> elasticGoods = elasticGoodRepository.search(queryBuilder);
+        List<String> goodIds = new ArrayList<>();
+
         for (ElasticGood elasticGood : elasticGoods) {
             goodIds.add(elasticGood.getId());
         }
-        List<Good> goods = goodRepository.findByIdIn(goodIds);
-        return new DataWrapper<>(goods, elasticGoods);
+
+        return goodRepository.findByIdIn(goodIds, pageRequest);
     }
 
     /**

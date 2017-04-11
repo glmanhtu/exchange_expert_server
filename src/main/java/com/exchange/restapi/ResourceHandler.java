@@ -50,4 +50,6 @@ public class ResourceHandler {
         headers.add("Content-Type", new MimetypesFileTypeMap().getContentType(image));
         return new ResponseEntity<>(storageService.fileToByte(image), headers, HttpStatus.OK);
     }
+
+
 }
