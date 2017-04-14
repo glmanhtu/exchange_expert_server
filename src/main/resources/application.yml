@@ -8,8 +8,8 @@ server:
 
 google:
     client:
-      clientId: 36340005158-5oskfm6ojt1ak8ifd01uqagbemfrmmpc.apps.googleusercontent.com
-      clientSecret: MRNmz3PtPjrn_18a2VnJs_1a
+      clientId: 472454960459-tmd9n592ddch2lt6mtrs34r1h4gfat5p.apps.googleusercontent.com
+      clientSecret: TfNhlbeVgfLhNWj0RGvNkyRd
       accessTokenUri: https://www.googleapis.com/oauth2/v4/token
       userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
       clientAuthenticationScheme: form

@@ -80,7 +80,7 @@ public class ResourceHandler {
 
     /**
      * Detects illegal image given by file path of image.
-     * 
+     *
      * @param filePath
      * @throws IOException
      * @see MessageEnum
