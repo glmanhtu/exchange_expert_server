@@ -16,7 +16,11 @@ public enum MessageEnum {
 
     ACCESST_TOKEN_NULL(402, "Access token must be not null", ""),
 
-    ACCESST_TOKEN_INVALID(401, "Access token was invalid", "");
+    ACCESST_TOKEN_INVALID(401, "Access token was invalid", ""),
+
+    IMAGE_CONTAINTS_ADULT(303, "Image contains adult content", ""),
+    IMAGE_CONTAINTS_VIOLENCE(303, "Image contains violent content", ""),
+    IMAGE_CONTAINTS_MEDICAL(303, "Image contains medical content", "");
 
     private int code;
 

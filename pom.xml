@@ -164,11 +164,7 @@
             <artifactId>jersey-bundle</artifactId>
             <version>1.19.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-vision</artifactId>
-            <version>0.11.0-beta</version>
-        </dependency>
+
     </dependencies>
 
     <build>
