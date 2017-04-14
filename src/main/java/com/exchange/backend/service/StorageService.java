@@ -5,7 +5,6 @@ import com.exchange.backend.persistence.domain.GoogleRequests;
 import com.exchange.backend.persistence.domain.GoogleResponses;
 import com.exchange.backend.persistence.domain.GoogleImage;
 import com.exchange.backend.persistence.domain.GoogleFeature;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.Base64;
 
 /**
  * Created by glmanhtu on 2/21/17.
@@ -79,7 +79,7 @@ public class StorageService {
         // Reads the image file into memory
         Path path = Paths.get(filePath);
         byte[] data = Files.readAllBytes(path);
-        String base64String = Base64.encode(data);
+        String base64String = Base64.getEncoder().encodeToString(data);
 
         GoogleImage image = new GoogleImage(base64String);
 
