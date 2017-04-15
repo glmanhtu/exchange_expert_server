@@ -5,27 +5,6 @@ spring:
 server:
   contextPath: /api
 
-facebook:
-    client:
-      clientId: 551029818251398
-      clientSecret: 532265375174807e5971510d8f0b363a
-      accessTokenUri: https://graph.facebook.com/oauth/access_token
-      userAuthorizationUri: https://www.facebook.com/dialog/oauth
-      tokenName: oauth_token
-      authenticationScheme: query
-      clientAuthenticationScheme: form
-    resource:
-      userInfoUri: https://graph.facebook.com/me
-
-github:
-  client:
-    clientId: bd1c0a783ccdd1c9b9e4
-    clientSecret: 2f85f2f552050edf02e479a56d86ce756b2d3b07
-    accessTokenUri: https://github.com/login/oauth/access_token
-    userAuthorizationUri: https://github.com/login/oauth/authorize
-    clientAuthenticationScheme: form
-  resource:
-    userInfoUri: https://api.github.com/user
 
 google:
     client:
@@ -38,6 +17,8 @@ google:
     resource:
       userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
       preferTokenInfo: true
+    api:
+      key: AIzaSyBWDjzTHrBqOKiPdYWDX0XtnlcSofjmeNs
 
 security:
    oauth2:
@@ -46,3 +27,4 @@ security:
         client-secret: 123456
         scope: read,write,trust
         auto-approve-scopes: '.*'
+

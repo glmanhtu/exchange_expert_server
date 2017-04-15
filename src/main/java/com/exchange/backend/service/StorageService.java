@@ -1,30 +1,29 @@
 package com.exchange.backend.service;
 
-
-import com.google.cloud.vision.spi.v1.ImageAnnotatorClient;
-import com.google.cloud.vision.v1.AnnotateImageRequest;
-import com.google.cloud.vision.v1.AnnotateImageResponse;
-import com.google.cloud.vision.v1.SafeSearchAnnotation;
-import com.google.cloud.vision.v1.Image;
-import com.google.cloud.vision.v1.Feature;
-import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
-import com.google.protobuf.ByteString;
+import com.exchange.backend.persistence.domain.GoogleRequest;
+import com.exchange.backend.persistence.domain.GoogleRequests;
+import com.exchange.backend.persistence.domain.GoogleResponses;
+import com.exchange.backend.persistence.domain.GoogleImage;
+import com.exchange.backend.persistence.domain.GoogleFeature;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-
-import static java.lang.System.out;
+import java.util.Base64;
 
 /**
  * Created by glmanhtu on 2/21/17.
@@ -37,6 +36,12 @@ public class StorageService {
     private static final String UPLOADED_DIR = "resource";
 
     private static final String IMAGE_DIR = "image";
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${google.api.key}")
+    private String googleApiKey;
 
     public File getImageFile(String fileName) {
         return Paths.get(UPLOADED_DIR, IMAGE_DIR, fileName).toFile();
@@ -69,38 +74,25 @@ public class StorageService {
         }
     }
 
-    public boolean detectInvaliteImage(String filePath) throws IOException {
+    public GoogleResponses detectImage(String filePath) throws IOException {
 
-        List<AnnotateImageRequest> requests = new ArrayList<>();
+        // Reads the image file into memory
+        Path path = Paths.get(filePath);
+        byte[] data = Files.readAllBytes(path);
+        String base64String = Base64.getEncoder().encodeToString(data);
 
-        ByteString imgBytes = ByteString.readFrom(new FileInputStream(filePath));
+        GoogleImage image = new GoogleImage(base64String);
 
-        Image img = Image.newBuilder().setContent(imgBytes).build();
-        Feature feat = Feature.newBuilder().setType(Feature.Type.SAFE_SEARCH_DETECTION).build();
-        AnnotateImageRequest request =
-                AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
-        requests.add(request);
+        GoogleFeature feature = new GoogleFeature("SAFE_SEARCH_DETECTION");
 
-        BatchAnnotateImagesResponse response =
-                ImageAnnotatorClient.create().batchAnnotateImages(requests);
-        List<AnnotateImageResponse> responses = response.getResponsesList();
+        GoogleRequest request = new GoogleRequest(image, feature);
 
-        for (AnnotateImageResponse res : responses) {
-            if (res.hasError()) {
-                out.printf("Error: %s\n", res.getError().getMessage());
-                return false;
-            }
+        GoogleRequests googleRequests = new GoogleRequests(request);
 
-            // For full list of available annotations, see http://g.co/cloud/vision/docs
-            SafeSearchAnnotation annotation = res.getSafeSearchAnnotation();
-            out.printf(
-                    "adult: %s\nmedical: %s\nspoofed: %s\nviolence: %s\n",
-                    annotation.getAdult(),
-                    annotation.getMedical(),
-                    annotation.getSpoof(),
-                    annotation.getViolence());
-        }
+        ResponseEntity<GoogleResponses> response = restTemplate.postForEntity("https://vision.googleapis.com/v1/images:annotate?key={key}",
+                googleRequests, GoogleResponses.class, googleApiKey);
 
-        return false;
+       return response.getBody();
     }
+
 }
