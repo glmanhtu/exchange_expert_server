@@ -26,4 +26,5 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     @Query(value = "{_id: ?0}", fields = "{feedbacks: {$slice: [?1, ?2]}}")
     User findById(String id, int skip, int limit);
+
 }

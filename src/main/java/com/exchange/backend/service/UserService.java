@@ -96,7 +96,6 @@ public class UserService implements SearchEverything<User> {
      * @return A user or null if not exist
      */
     public User getOne(String id) {
-
         return userRepository.findById(id, 0, Constants.DEFAULT_LIMIT_FEEDBACK);
     }
 
