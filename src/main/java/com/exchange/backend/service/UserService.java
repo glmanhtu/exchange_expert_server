@@ -3,7 +3,6 @@ package com.exchange.backend.service;
 import com.exchange.backend.persistence.domain.Feedback;
 import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.persistence.repositories.mongodb.UserRepository;
-import com.exchange.utils.Constants;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -96,8 +95,7 @@ public class UserService implements SearchEverything<User> {
      * @return A user or null if not exist
      */
     public User getOne(String id) {
-
-        return userRepository.findById(id, 0, Constants.DEFAULT_LIMIT_FEEDBACK);
+        return userRepository.findById(id);
     }
 
     /**

@@ -63,6 +63,30 @@ public class UserHandler {
         return new ResponseEntity<Object>(userDto, HttpStatus.OK);
     }
 
+    /**
+     * Updates user given by userid and User entity
+     *
+     * @param email
+     * @param user
+     * @return A userDto after update or Not Found Exception if user was not found
+     */
+    @RequestMapping(value = "/{email:.+}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateUser(@PathVariable String email, @RequestBody User user) {
+
+        if (userService.getOne(email) == null) {
+            Message message = new Message(MessageEnum.USER_NOT_FOUND, email);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+
+        user = userService.update(user);
+
+        //convert to user dto
+        UserDto userDto = new UserDto(user);
+
+        return new ResponseEntity<Object>(userDto, HttpStatus.OK);
+    }
+
+
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public ResponseEntity<?> getUser(Principal principal) {
         User user = userService.getOne(principal.getName());
