@@ -122,7 +122,7 @@ public class GoodHandler {
     }
 
 
-    @GetMapping("/{ofUser}")
+    @GetMapping("/user/{ofUser}")
     public ResponseEntity<Object> getGoodsOfUser(@PathVariable String ofUser, Pageable pageable) {
         Page<Good> goods = goodService.getGoodsOfUser(ofUser, pageable);
         return new ResponseEntity<Object>(goods, HttpStatus.OK);
