@@ -122,6 +122,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(GoodHandler.REST_API_GOODS + "/**").permitAll()
                     .antMatchers(SearchHandler.REST_API_SEARCH + "/**").permitAll()
                     .antMatchers(UserHandler.REST_API_USER + "/**").permitAll()
+                    .antMatchers(GoodHandler.REST_API_GOODS + "/user/**").permitAll()
                     .anyRequest().authenticated();
         }
     }
