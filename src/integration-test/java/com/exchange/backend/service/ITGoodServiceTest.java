@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.regex.Pattern;
@@ -39,19 +41,13 @@ public class ITGoodServiceTest {
         Good good = new Good();
         good.setDescription(goodDescription);
         good.setId(goodId);
-        try {
-            good = goodService.create(good);
-        } catch (Exception e) {
-            Assert.assertTrue("Save good failed, message: " + e.getMessage(), false);
-        }
 
-        try {
-            good = goodService.getOne(goodId);
-            Assert.assertNotNull("Get good success", good);
-            Assert.assertEquals("Verify content of good", good.getDescription(), goodDescription);
-        } catch (Exception e) {
-            Assert.assertTrue("Get good failed" + e.getMessage(), false);
-        }
+        good = goodService.create(good);
+
+        good = goodService.getOne(goodId);
+        Assert.assertNotNull("Get good success", good);
+        Assert.assertEquals("Verify content of good", good.getDescription(), goodDescription);
+
 
         String updatedValue = "abc";
         good.setDescription(updatedValue);
@@ -59,12 +55,10 @@ public class ITGoodServiceTest {
         good = goodService.getOne(goodId);
         Assert.assertEquals("Test update", good.getDescription(), updatedValue);
 
-        try {
-            goodService.delete(goodId);
-            Assert.assertNotNull("Delete good success", good);
-        } catch (Exception e) {
-            Assert.assertTrue("Delete good failed" + e.getMessage(), false);
-        }
+
+        goodService.delete(goodId);
+        Assert.assertNotNull("Delete good success", good);
+
     }
 
     @Test
@@ -100,6 +94,14 @@ public class ITGoodServiceTest {
         } catch (Exception e) {
             Assert.assertTrue("Delete good failed" + e.getMessage(), false);
         }
+    }
+
+    @Test
+    public void getGoodsOfUser() throws Exception {
+        String userId = "mathews@yahoo.com";
+        PageRequest pageRequest = new PageRequest(0, 10);
+        Page<Good> goods = goodService.getGoodsOfUser(userId, pageRequest);
+        System.out.println(goods.getContent());
     }
 
 }

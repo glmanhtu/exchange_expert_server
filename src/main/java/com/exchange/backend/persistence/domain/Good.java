@@ -2,10 +2,13 @@ package com.exchange.backend.persistence.domain;
 
 import com.exchange.backend.persistence.converter.LocalDateTimeConverter;
 import org.joda.time.LocalDateTime;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.EntityListeners;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.List;
  * Created by greenlucky on 1/24/17.
  */
 @Document(collection = "goods")
+@EntityListeners(EntityListeners.class)
 public class Good extends ElasticGood implements Serializable {
 
     /** The Serial Version UID for Serializable classes */
@@ -32,6 +36,12 @@ public class Good extends ElasticGood implements Serializable {
     @Convert(converter = LocalDateTimeConverter.class)
     @Column(name = "publish_date")
     private LocalDateTime publishDate;
+
+    @LastModifiedBy
+    private String modifiedBy;
+
+    @LastModifiedDate
+    private long getModifiedDate;
 
 
     /**
@@ -140,4 +150,19 @@ public class Good extends ElasticGood implements Serializable {
     }
 
 
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public long getGetModifiedDate() {
+        return getModifiedDate;
+    }
+
+    public void setGetModifiedDate(long getModifiedDate) {
+        this.getModifiedDate = getModifiedDate;
+    }
 }

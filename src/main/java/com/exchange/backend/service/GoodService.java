@@ -34,6 +34,7 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * Creates a new good given by good
+     *
      * @param good
      * @return A good after created
      * @see Good
@@ -70,6 +71,7 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * Updates a good given by good
+     *
      * @param good
      * @return A good after updated
      * @see Good
@@ -81,6 +83,7 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * Deletes a good given by goodId
+     *
      * @param goodId
      * @see Good
      */
@@ -90,6 +93,7 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * Retrieves a good given by goodId or null if not found
+     *
      * @param goodId
      * @return A good or null if not found
      * @see Good
@@ -100,6 +104,7 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * Gets Good given by slug
+     *
      * @param slug
      * @return A good or null if not found
      */
@@ -109,6 +114,7 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * Retrieves a list goods or null if not exist
+     *
      * @return A list of good or null if not exist
      */
     public List<Good> getAll() {
@@ -117,6 +123,7 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * Retrieves a page of good or page's content is null if not exist
+     *
      * @param pageable
      * @return A page of good or a page with null content if not exist
      */
@@ -170,6 +177,7 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * creates slug given by title
+     *
      * @param title
      * @return slug
      */
@@ -181,12 +189,13 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * Generates slug given by title
+     *
      * @param title
      * @return A slug
      */
     public String generatedSlug(String title) {
 
-       String slug = createSlug(title);
+        String slug = createSlug(title);
 
         //checking valid slug
         slug = findValidSlug(slug);
@@ -197,6 +206,7 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * Finds valid slug given by slug
+     *
      * @param slug
      * @return A valid slug
      */
@@ -204,12 +214,12 @@ public class GoodService implements SearchEverything<Good> {
         //checking good slug is existed
         if (inValidSlug(slug)) {
             int i = 1;
-           String slugTemp = slug + "-" + i;
-           while (inValidSlug(slugTemp)) {
-               i++;
-               slugTemp = slug + "-" + i;
-           }
-           slug += "-" + i;
+            String slugTemp = slug + "-" + i;
+            while (inValidSlug(slugTemp)) {
+                i++;
+                slugTemp = slug + "-" + i;
+            }
+            slug += "-" + i;
         }
 
         return slug;
@@ -217,11 +227,24 @@ public class GoodService implements SearchEverything<Good> {
 
     /**
      * get Goods given by cagtegory slug (type slug) and slug of goods
+     *
      * @param categorySlug (type slug)
      * @param slug
      * @return A goods or null if not exist
      */
     public Good getByCategorySlugAndSlug(String categorySlug, String slug) {
         return goodRepository.findByCategorySlugAndSlug(categorySlug, slug);
+    }
+
+
+    /**
+     * Gets all goods posting by user; given by userid
+     *
+     * @param ofUser
+     * @param pageable
+     * @return a page of goods
+     */
+    public Page<Good> getGoodsOfUser(String ofUser, Pageable pageable) {
+        return goodRepository.findByPostById(ofUser, pageable);
     }
 }
