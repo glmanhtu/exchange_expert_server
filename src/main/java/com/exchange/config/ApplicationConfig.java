@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableAutoConfiguration
 @EnableMongoRepositories("com.exchange.backend.persistence.repositories")
 @PropertySource("classpath:config/application-common.properties")
+@EnableMongoAuditing
 public class ApplicationConfig {
 
     @Override

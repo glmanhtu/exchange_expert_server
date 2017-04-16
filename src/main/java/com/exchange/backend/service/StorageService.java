@@ -1,17 +1,29 @@
 package com.exchange.backend.service;
 
+import com.exchange.backend.persistence.domain.GoogleRequest;
+import com.exchange.backend.persistence.domain.GoogleRequests;
+import com.exchange.backend.persistence.domain.GoogleResponses;
+import com.exchange.backend.persistence.domain.GoogleImage;
+import com.exchange.backend.persistence.domain.GoogleFeature;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.Base64;
 
 /**
  * Created by glmanhtu on 2/21/17.
@@ -25,12 +37,19 @@ public class StorageService {
 
     private static final String IMAGE_DIR = "image";
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${google.api.key}")
+    private String googleApiKey;
+
     public File getImageFile(String fileName) {
         return Paths.get(UPLOADED_DIR, IMAGE_DIR, fileName).toFile();
     }
 
     /**
      * Convert file to byte
+     *
      * @param file File
      * @return byte of file
      */
@@ -54,4 +73,26 @@ public class StorageService {
             throw new RuntimeException(e);
         }
     }
+
+    public GoogleResponses detectImage(String filePath) throws IOException {
+
+        // Reads the image file into memory
+        Path path = Paths.get(filePath);
+        byte[] data = Files.readAllBytes(path);
+        String base64String = Base64.getEncoder().encodeToString(data);
+
+        GoogleImage image = new GoogleImage(base64String);
+
+        GoogleFeature feature = new GoogleFeature("SAFE_SEARCH_DETECTION");
+
+        GoogleRequest request = new GoogleRequest(image, feature);
+
+        GoogleRequests googleRequests = new GoogleRequests(request);
+
+        ResponseEntity<GoogleResponses> response = restTemplate.postForEntity("https://vision.googleapis.com/v1/images:annotate?key={key}",
+                googleRequests, GoogleResponses.class, googleApiKey);
+
+       return response.getBody();
+    }
+
 }
