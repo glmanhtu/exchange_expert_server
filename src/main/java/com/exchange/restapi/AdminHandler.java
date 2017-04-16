@@ -4,11 +4,9 @@ import com.exchange.backend.Roles;
 import com.exchange.backend.datatype.search.AdminSearchGood;
 import com.exchange.backend.enums.MessageEnum;
 import com.exchange.backend.enums.StatusEnum;
-import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Message;
 import com.exchange.backend.persistence.domain.Status;
-import com.exchange.backend.persistence.dto.DataWrapper;
 import com.exchange.backend.persistence.dto.GoodDto;
 import com.exchange.backend.service.GoodService;
 import com.exchange.restapi.request.GoodStatus;
@@ -98,11 +96,10 @@ public class AdminHandler {
 
         List<GoodDto> goodDtos = new ArrayList<>();
 
-        DataWrapper<Good, ElasticGood> goods = goodService.findAll(queryBuilder, pageRequest);
-
+        Page<Good> goods = goodService.findAll(queryBuilder, pageRequest);
         goods.getContent().forEach(good -> goodDtos.add(new GoodDto(good)));
 
-        Page<GoodDto> response = new PageImpl<>(goodDtos, pageRequest, goods.getTotalElements());
+        Page<GoodDto> response = new PageImpl<GoodDto>(goodDtos, pageRequest, goods.getTotalElements());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
