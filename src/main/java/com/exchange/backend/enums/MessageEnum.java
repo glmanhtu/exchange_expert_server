@@ -20,7 +20,8 @@ public enum MessageEnum {
 
     IMAGE_CONTAINTS_ADULT(303, "Image contains adult content", ""),
     IMAGE_CONTAINTS_VIOLENCE(303, "Image contains violent content", ""),
-    IMAGE_CONTAINTS_MEDICAL(303, "Image contains medical content", "");
+    IMAGE_CONTAINTS_MEDICAL(303, "Image contains medical content", ""),
+    MAIL_POST_NOT_FOUND(404, "Mail post id {0} not found", "");
 
     private int code;
 
