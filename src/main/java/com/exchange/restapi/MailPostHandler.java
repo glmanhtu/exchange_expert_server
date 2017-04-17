@@ -11,11 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -36,6 +32,12 @@ public class MailPostHandler {
 
     @Autowired
     private MailPostService mailPostService;
+
+    @PostMapping()
+    public ResponseEntity<Object> createMailPost(@RequestBody MailPost mailPost) {
+        mailPost = mailPostService.create(mailPost);
+        return new ResponseEntity<Object>(HttpStatus.OK);
+    }
 
     @GetMapping("/detail/{mailPostId}")
     public ResponseEntity<Object> getMailPost(@PathVariable String mailPostId) {
@@ -68,5 +70,13 @@ public class MailPostHandler {
         String userId = principal.getName();
         Page<MailPost> mailPosts = mailPostService.getMailPostofUser(userId, pageable);
         return new ResponseEntity<Object>(mailPosts, HttpStatus.OK);
+    }
+
+    @GetMapping("/unread")
+    public ResponseEntity<Object> getMailPostOfUserUnRead(Principal principal) {
+
+        String userId = principal.getName();
+        int unreadMailPost = mailPostService.getMailPostofUserUnread(userId);
+        return new ResponseEntity<Object>(unreadMailPost, HttpStatus.OK);
     }
 }
