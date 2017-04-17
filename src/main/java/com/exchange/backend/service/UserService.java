@@ -157,4 +157,5 @@ public class UserService implements SearchEverything<User> {
     public Page<User> findAll(QueryBuilder queryBuilder, PageRequest pageRequest) {
         return null;
     }
+
 }

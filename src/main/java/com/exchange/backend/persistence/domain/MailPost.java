@@ -96,6 +96,14 @@ public class MailPost {
         this.forUser = forUser;
     }
 
+    public long getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(long createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @Override
     public String toString() {
         return "MailPost{"

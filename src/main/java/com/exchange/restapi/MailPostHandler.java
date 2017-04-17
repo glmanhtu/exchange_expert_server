@@ -3,7 +3,6 @@ package com.exchange.restapi;
 import com.exchange.backend.enums.MessageEnum;
 import com.exchange.backend.persistence.domain.MailPost;
 import com.exchange.backend.persistence.domain.Message;
-import com.exchange.backend.persistence.domain.User;
 import com.exchange.backend.service.MailPostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -39,11 +33,22 @@ public class MailPostHandler {
     @Autowired
     private MailPostService mailPostService;
 
-    @PutMapping("/{mailPostId}")
-    public ResponseEntity<Object> makeAsRead(@PathVariable String id) {
-        MailPost mailPost = mailPostService.getOne(id);
+    @GetMapping("/detail/{mailPostId}")
+    public ResponseEntity<Object> getMailPost(@PathVariable String mailPostId) {
+        MailPost mailPost = mailPostService.getOne(mailPostId);
         if (mailPost == null) {
-            Message message = new Message(MessageEnum.MAIL_POST_NOT_FOUND, id);
+            Message message = new Message(MessageEnum.MAIL_POST_NOT_FOUND, mailPostId);
+            return new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Object>(mailPost, HttpStatus.OK);
+    }
+
+    @PutMapping("/{mailPostId}")
+    public ResponseEntity<Object> makeAsRead(@PathVariable String mailPostId) {
+        MailPost mailPost = mailPostService.getOne(mailPostId);
+        if (mailPost == null) {
+            Message message = new Message(MessageEnum.MAIL_POST_NOT_FOUND, mailPostId);
             return new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
         }
         mailPost.setRead(true);
@@ -53,10 +58,11 @@ public class MailPostHandler {
     }
 
 
-    @GetMapping("/{userId}")
+    @GetMapping("")
     public ResponseEntity<Object> getMailPostOfUser(Principal principal, Pageable pageable) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication();
-        Page<MailPost> mailPosts = mailPostService.getMailPostofUser(user.getId(), pageable);
+
+        String userId = principal.getName();
+        Page<MailPost> mailPosts = mailPostService.getMailPostofUser(userId, pageable);
         return new ResponseEntity<Object>(mailPosts, HttpStatus.OK);
     }
 }
