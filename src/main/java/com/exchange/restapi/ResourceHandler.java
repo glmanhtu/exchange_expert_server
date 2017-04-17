@@ -74,21 +74,20 @@ public class ResourceHandler {
      */
     private void detectMultiIllegalImages(MultipartFile[] files) throws IOException {
         for (MultipartFile file : files) {
-            detectIllegalImage(file.getOriginalFilename());
+            detectIllegalImage(file);
         }
     }
 
     /**
      * Detects illegal image given by file path of image.
      *
-     * @param filePath
+     * @param file
      * @throws IOException
      * @see MessageEnum
      */
-    private void detectIllegalImage(String filePath) throws IOException {
+    private void detectIllegalImage(MultipartFile file) throws IOException {
 
-        GoogleResponses result = storageService.detectImage(filePath);
-
+        GoogleResponses result = storageService.detectImage(file);
         if (null != result) {
             SafeSearchAnnotation searchAnnotation = result.getResponses().get(0).getSafeSearchAnnotation();
 
@@ -97,7 +96,7 @@ public class ResourceHandler {
                 LOGGER.debug(MessageEnum.IMAGE_CONTAINTS_ADULT.getMessage());
                 throw new IllegalException(new Message(MessageEnum.IMAGE_CONTAINTS_ADULT));
             } else if (searchAnnotation.getMedical().equals("VERY_LIKELY")
-                    || searchAnnotation.getAdult().equals("LIKELY")) {
+                    || searchAnnotation.getMedical().equals("LIKELY")) {
                 LOGGER.debug(MessageEnum.IMAGE_CONTAINTS_MEDICAL.getMessage());
                 throw new IllegalException(new Message(MessageEnum.IMAGE_CONTAINTS_MEDICAL));
             } else if (searchAnnotation.getViolence().equals("VERY_LIKELY")
