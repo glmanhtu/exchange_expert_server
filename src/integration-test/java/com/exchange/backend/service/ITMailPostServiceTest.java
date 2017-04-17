@@ -31,12 +31,12 @@ public class ITMailPostServiceTest {
     @Before
     public void init() throws Exception {
 
-        //mailPostService.deleteAll();
+        mailPostService.deleteAll();
 
         Assert.assertNotNull(mailPostService);
-        user = "sophiabuchanan@mail.com";
+        user = "zachary.salas@mail.com";
 
-       /* for(int i = 0; i < 10; i++) {
+       for(int i = 0; i < 10; i++) {
             String title = testName.getMethodName() + i;
             String content = "This is content of test mail post" + i;
             System.out.println(title);
@@ -45,7 +45,7 @@ public class ITMailPostServiceTest {
             } else {
                 mailPostService.create(title, content, user, false);
             }
-        }*/
+        }
     }
 
     @Test
