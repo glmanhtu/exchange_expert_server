@@ -19,11 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 import java.util.Base64;
+import java.util.UUID;
 
 /**
  * Created by glmanhtu on 2/21/17.
@@ -74,11 +72,10 @@ public class StorageService {
         }
     }
 
-    public GoogleResponses detectImage(String filePath) throws IOException {
+    public GoogleResponses detectImage(MultipartFile file) throws IOException {
 
         // Reads the image file into memory
-        Path path = Paths.get(filePath);
-        byte[] data = Files.readAllBytes(path);
+        byte[] data = file.getBytes();
         String base64String = Base64.getEncoder().encodeToString(data);
 
         GoogleImage image = new GoogleImage(base64String);
