@@ -156,7 +156,7 @@ public class UserHandler {
     }
 
     @PutMapping("/change-password/{userId:.+}")
-    public ResponseEntity<Object> changePassword(@PathVariable String userId, UserPassword userPassword) {
+    public ResponseEntity<Object> changePassword(@PathVariable String userId, @RequestBody UserPassword userPassword) {
         User localUser = userService.getOne(userId);
         if (localUser == null) {
             Message message = new Message(MessageEnum.USER_NOT_FOUND, userId);
