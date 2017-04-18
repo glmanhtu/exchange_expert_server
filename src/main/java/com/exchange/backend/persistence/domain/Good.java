@@ -165,4 +165,24 @@ public class Good extends ElasticGood implements Serializable {
     public void setGetModifiedDate(long getModifiedDate) {
         this.getModifiedDate = getModifiedDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Good)) {
+            return false;
+        }
+
+        Good that = (Good) o;
+
+        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
+    }
+
 }
