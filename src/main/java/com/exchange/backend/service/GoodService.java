@@ -58,6 +58,7 @@ public class GoodService implements SearchEverything<Good> {
         ElasticGood elasticGood = new ElasticGood();
         elasticGood.setDescription(good.getDescription());
         elasticGood.setId(good.getId());
+        elasticGood.setStatus(good.getStatus());
         elasticGood.setLocation(good.getLocation());
         elasticGood.setPostBy(good.getPostBy());
         elasticGood.setPostDate(good.getPostDate());
