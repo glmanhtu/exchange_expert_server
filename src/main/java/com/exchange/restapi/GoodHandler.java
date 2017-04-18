@@ -83,7 +83,7 @@ public class GoodHandler {
      * @param good
      * @return GoodDto after update
      */
-    @RequestMapping(value = "/{goodId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{goodId:.+}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateGoods(@PathVariable String goodId, @RequestBody Good good) {
 
         Good localGood = goodService.getOne(goodId);
@@ -94,7 +94,7 @@ public class GoodHandler {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
 
-        LOGGER.info("Creating goods {}", good);
+        LOGGER.info("Updating goods {}", good);
         String badWordTitle = BadWordFilterService.filterText(good.getTitle());
         String badWordDes = BadWordFilterService.filterText(good.getDescription());
 
@@ -111,12 +111,12 @@ public class GoodHandler {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
-        //create new good
+        //update new good
         good = goodService.update(good);
 
         SimpleGoodDto simpleGoodDto = new SimpleGoodDto(good);
 
-        LOGGER.info("Created goods {}", good);
+        LOGGER.info("Updated goods {}", good);
 
         return new ResponseEntity<>(simpleGoodDto, HttpStatus.OK);
     }
