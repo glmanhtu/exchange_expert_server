@@ -1,5 +1,6 @@
 package com.exchange.backend.persistence.domain;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -31,6 +32,9 @@ public class MailPost {
     private boolean read = false;
 
     private String forUser;
+
+    @CreatedBy
+    private String fromUser;
 
     @CreatedDate
     private long createdDate;
@@ -102,6 +106,14 @@ public class MailPost {
 
     public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
     }
 
     @Override

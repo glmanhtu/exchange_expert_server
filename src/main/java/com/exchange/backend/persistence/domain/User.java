@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public class User implements Serializable, UserDetails {
     /**
      * Password
      */
-    @Column(updatable = false)
     private String password;
 
     private String firstName;

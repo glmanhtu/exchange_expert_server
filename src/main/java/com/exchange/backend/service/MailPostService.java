@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 /**
  * Created by greenlucky on 4/16/17.
@@ -22,7 +24,12 @@ public class MailPostService {
     @Transactional
     public MailPost create(String title, String content, String forUser, boolean read) {
         MailPost mailPost = new MailPost(title, content, forUser, read);
-        System.out.println(mailPost.toString());
+        mailPost = mailPostRepository.save(mailPost);
+        return mailPost;
+    }
+
+    @Transactional
+    public MailPost create(MailPost mailPost) {
         mailPost = mailPostRepository.save(mailPost);
         return mailPost;
     }
@@ -43,5 +50,10 @@ public class MailPostService {
     @Transactional
     public void deleteAll() {
         mailPostRepository.deleteAll();
+    }
+
+    public int getMailPostofUserUnread(String userId) {
+        List<MailPost> mailPosts = mailPostRepository.findByForUserAndRead(userId, false);
+        return mailPosts.size();
     }
 }
