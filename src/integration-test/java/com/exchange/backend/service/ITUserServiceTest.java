@@ -20,7 +20,10 @@ public class ITUserServiceTest {
     @Test
     public void getOne() throws Exception {
         User user = userService.getOne("mathews@yahoo.com");
-        System.out.println(user);
+        System.out.println(user.toString());
+        user.setPassword("123456");
+        user = userService.update(user);
+        System.out.println(user.toString());
     }
 
 }

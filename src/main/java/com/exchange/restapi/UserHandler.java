@@ -3,6 +3,7 @@ package com.exchange.restapi;
 import com.exchange.backend.enums.MessageEnum;
 import com.exchange.backend.persistence.domain.Message;
 import com.exchange.backend.persistence.domain.User;
+import com.exchange.backend.persistence.domain.UserPassword;
 import com.exchange.backend.persistence.dto.UserDto;
 import com.exchange.backend.service.UserService;
 import org.slf4j.Logger;
@@ -10,12 +11,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
@@ -39,6 +42,9 @@ public class UserHandler {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     /**
      * Creates new user given by user.
@@ -72,12 +78,18 @@ public class UserHandler {
      */
     @RequestMapping(value = "/{email:.+}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateUser(@PathVariable String email, @RequestBody User user) {
+        User localUser = userService.getOne(email);
 
-        if (userService.getOne(email) == null) {
+        if (localUser == null) {
             Message message = new Message(MessageEnum.USER_NOT_FOUND, email);
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
-
+        if (user.getPassword() == null) {
+            user.setPassword(localUser.getPassword());
+        } else {
+            String encryptPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encryptPassword);
+        }
         user = userService.update(user);
 
         //convert to user dto
@@ -141,5 +153,25 @@ public class UserHandler {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/change-password/{userId:.+}")
+    public ResponseEntity<Object> changePassword(@PathVariable String userId, UserPassword userPassword) {
+        User localUser = userService.getOne(userId);
+        if (localUser == null) {
+            Message message = new Message(MessageEnum.USER_NOT_FOUND, userId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+
+        if (!passwordEncoder.matches(userPassword.getPassword(), localUser.getPassword())) {
+            Message message = new Message(MessageEnum.USER_PASSWOR_NOT_MATCH, userId);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+
+        //encode new password
+        localUser.setPassword(passwordEncoder.encode(userPassword.getNewPassword()));
+
+        userService.update(localUser);
+        return new ResponseEntity<Object>(HttpStatus.OK);
     }
 }
