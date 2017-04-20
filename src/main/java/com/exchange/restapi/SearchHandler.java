@@ -56,7 +56,7 @@ public class SearchHandler {
     @RequestMapping(value = "/good", method = RequestMethod.POST)
     public ResponseEntity<?> searchGood(@RequestBody SearchGood searchGood, Principal principal) {
 
-        LOGGER.info("Search good {}", searchGood);
+        LOGGER.info("Search good {}", searchGood.toString());
 
         Sort.Direction sort = Sort.Direction.ASC;
 
@@ -80,11 +80,11 @@ public class SearchHandler {
         }
 
         if (searchGood.getTitle() != null) {
-            queryBuilder.must(QueryBuilders.matchQuery("title", searchGood.getTitle()));
+            queryBuilder.must(QueryBuilders.matchQuery("title", searchGood.getTitle().toLowerCase()));
         }
 
         if (searchGood.getCategory() != null) {
-            queryBuilder.must(QueryBuilders.termQuery("type.name", searchGood.getCategory()));
+            queryBuilder.must(QueryBuilders.termQuery("category.name", searchGood.getCategory().toLowerCase().trim()));
         }
 
         if (searchGood.getDistance() != null) {
