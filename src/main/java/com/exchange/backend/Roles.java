@@ -5,5 +5,6 @@ package com.exchange.backend;
  */
 public interface Roles {
     String USER = "USER";
+    String ADMIN = "ROLE_ADMIN";
     String ANONYMOUS = "ROLE_ANONYMOUS";
 }
