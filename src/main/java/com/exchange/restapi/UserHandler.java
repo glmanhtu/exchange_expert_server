@@ -90,6 +90,7 @@ public class UserHandler {
             String encryptPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encryptPassword);
         }
+        user.setCreateDate(localUser.getCreateDate());
         user = userService.update(user);
 
         //convert to user dto

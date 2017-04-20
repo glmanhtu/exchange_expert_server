@@ -1,6 +1,7 @@
 package com.exchange.backend.service;
 
 import com.exchange.backend.persistence.domain.User;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,27 @@ public class ITUserServiceTest {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Before
+    public void init() throws Exception{
+        userService.delete("nguyenlamit86@gmail.com");
+    }
+
     @Test
     public void getOne() throws Exception {
-        User user = userService.getOne("xuanthanh4286@gmail.com");
+        User user = userService.getOne("nguyenlamit86@gmail.com");
         System.out.println(user.toString());
-        user.setPassword(passwordEncoder.encode("123456"));
-        user = userService.update(user);
+
+    }
+
+    @Test
+    public void createOne() throws Exception {
+        User user = new User();
+        user.setId("nguyenlamit86@gmail.com");
+        user.setFirstName("Lam");
+        user.setLastName("Nguyen");
+        user.setPassword("123456");
+
+        user = userService.create(user);
         System.out.println(user.toString());
     }
 

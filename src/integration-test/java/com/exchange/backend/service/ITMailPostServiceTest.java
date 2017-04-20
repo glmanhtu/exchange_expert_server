@@ -34,9 +34,9 @@ public class ITMailPostServiceTest {
         //mailPostService.deleteAll();
 
         Assert.assertNotNull(mailPostService);
-        user = "mathews@yahoo.com";
+        user = "nguyenlamit86@gmail.com";
 
-       /*for(int i = 0; i < 10; i++) {
+       for(int i = 0; i < 10; i++) {
             String title = testName.getMethodName() + i;
             String content = "This is content of test mail post" + i;
             System.out.println(title);
@@ -45,7 +45,7 @@ public class ITMailPostServiceTest {
             } else {
                 mailPostService.create(title, content, user, false);
             }
-        }*/
+        }
     }
 
     @Test

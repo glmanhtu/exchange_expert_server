@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -22,8 +23,9 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * Created by greenlucky on 1/24/17.
- * @since 1.0
+ *
  * @version %I%D%
+ * @since 1.0
  */
 @Service
 public class UserService implements SearchEverything<User> {
@@ -48,6 +50,8 @@ public class UserService implements SearchEverything<User> {
      * @see User
      */
     public User create(User user) {
+
+        user.setCreateDate(new Date().getTime());
         String encryptPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptPassword);
         return userRepository.save(user);
@@ -114,6 +118,7 @@ public class UserService implements SearchEverything<User> {
 
     /**
      * Save new feedback to user
+     *
      * @param userId
      * @param feedback
      */
@@ -125,6 +130,7 @@ public class UserService implements SearchEverything<User> {
 
     /**
      * Enables user given by userId
+     *
      * @param userId
      * @return A user after enabled
      */
@@ -134,6 +140,7 @@ public class UserService implements SearchEverything<User> {
 
     /**
      * Disabled user
+     *
      * @param userId
      * @return A user after disabled
      */
@@ -143,8 +150,9 @@ public class UserService implements SearchEverything<User> {
 
     /**
      * Changes status user given by userId and st
+     *
      * @param userId
-     * @param st true and false
+     * @param st     true and false
      * @return A user after changed
      */
     private User changeStatus(String userId, boolean st) {
@@ -158,4 +166,7 @@ public class UserService implements SearchEverything<User> {
         return null;
     }
 
+    public void delete(String s) {
+        userRepository.delete(s);
+    }
 }
