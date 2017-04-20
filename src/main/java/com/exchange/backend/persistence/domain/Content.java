@@ -58,4 +58,18 @@ public class Content {
                 + '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Content content = (Content) o;
+
+        return by != null ? by.equals(content.by) : content.by == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return by != null ? by.hashCode() : 0;
+    }
 }

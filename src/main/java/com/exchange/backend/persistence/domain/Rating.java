@@ -39,4 +39,6 @@ public class Rating {
                 + ", contents=" + contents
                 + '}';
     }
+
+
 }
