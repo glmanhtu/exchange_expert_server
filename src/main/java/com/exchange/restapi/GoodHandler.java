@@ -111,8 +111,11 @@ public class GoodHandler {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
+        good.setPostDate(localGood.getPostDate());
+        good.setPostBy(localGood.getPostBy());
         //update new good
         good = goodService.update(good);
+
 
         SimpleGoodDto simpleGoodDto = new SimpleGoodDto(good);
 

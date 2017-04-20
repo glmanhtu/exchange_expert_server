@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.EntityListeners;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.List;
  * Created by greenlucky on 1/24/17.
  */
 @Document(collection = "goods")
-@EntityListeners(EntityListeners.class)
 public class Good extends ElasticGood implements Serializable {
 
     /**
@@ -176,6 +174,11 @@ public class Good extends ElasticGood implements Serializable {
 
     public void setGetModifiedDate(long getModifiedDate) {
         this.getModifiedDate = getModifiedDate;
+    }
+
+    @Override
+    public void setPostDate(final Long postDate) {
+        super.setPostDate(postDate);
     }
 
     @Override

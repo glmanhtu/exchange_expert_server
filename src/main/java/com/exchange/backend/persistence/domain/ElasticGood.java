@@ -5,8 +5,9 @@ import org.springframework.data.elasticsearch.annotations.GeoPointField;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * Created by optimize on 2/7/17.
  */
 @Document(indexName = "good", type = "good", shards = 1)
+@EntityListeners(EntityListeners.class)
 public class ElasticGood implements Serializable {
 
     @Id
@@ -111,7 +113,7 @@ public class ElasticGood implements Serializable {
         return postDate;
     }
 
-    public final void setPostDate(final Long postDate) {
+    public void setPostDate(final Long postDate) {
         this.postDate = postDate;
     }
 
