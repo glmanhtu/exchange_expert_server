@@ -14,10 +14,13 @@ import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +33,8 @@ public class ITGoodHandlerTest {
     @Autowired
     private GoodService goodService;
 
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Rule
     public TestName testName = new TestName();
@@ -54,8 +59,15 @@ public class ITGoodHandlerTest {
 
     @Test
     public void getAllGoogle() throws Exception{
-        List<Good> goods = goodService.getAll();
-        System.out.println(goods);
+        String userId = "xuanthanh4286@gmail.com";
+        PageRequest pageRequest = new PageRequest(0, 50);
+        Page<Good> goods = goodService.getGoodsOfUser(userId, pageRequest);
+        System.out.println(goods.getContent());
+        for (Good good: goods.getContent()) {
+            good.setPostDate(new Date().getTime());
+            good = goodService.update(good);
+            System.out.println(good.getId());
+        }
     }
 
     @Test
@@ -74,5 +86,18 @@ public class ITGoodHandlerTest {
         for (ElasticGood item : elasticGoods){
             System.out.println(item);
         }
+    }
+
+    @Test
+    public void updateGoods() throws Exception {
+        String goodsId = "xuanthanh4286@gmail.com-aaaaaaaaaaaa";
+        Good good = goodService.getOne(goodsId);
+        System.out.println(good.getPostDate());
+        restTemplate.put("http://localhost:8080/api/goods/{goodsId}", good, goodsId);
+        good = goodService.getOne(goodsId);
+        System.out.println(good.getPostDate());
+        System.out.println(good.getPostBy());
+        System.out.println(good.getModifiedBy());
+        System.out.println(good.getGetModifiedDate());
     }
 }

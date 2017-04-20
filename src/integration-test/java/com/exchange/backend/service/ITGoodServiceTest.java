@@ -3,11 +3,13 @@ package com.exchange.backend.service;
 import com.exchange.backend.persistence.domain.ElasticGood;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.repositories.elasticsearch.ElasticGoodRepository;
+import com.exchange.backend.persistence.repositories.mongodb.GoodRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -29,10 +31,16 @@ public class ITGoodServiceTest {
     private GoodService goodService;
 
     @Autowired
+    private GoodRepository goodRepository;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private ElasticGoodRepository elasticGoodRepository;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
     public void testGoodService() throws Exception {
@@ -98,10 +106,16 @@ public class ITGoodServiceTest {
 
     @Test
     public void getGoodsOfUser() throws Exception {
-        String userId = "mathews@yahoo.com";
+        String userId = "xuanthanh4286@gmail.com";
         PageRequest pageRequest = new PageRequest(0, 10);
         Page<Good> goods = goodService.getGoodsOfUser(userId, pageRequest);
         System.out.println(goods.getContent());
+    }
+
+    @Test
+    public void getGoods() throws Exception {
+
+
     }
 
 }

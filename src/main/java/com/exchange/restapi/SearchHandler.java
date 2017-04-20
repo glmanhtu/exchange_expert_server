@@ -59,16 +59,16 @@ public class SearchHandler {
         LOGGER.info("Search good {}", searchGood);
 
         Sort.Direction sort = Sort.Direction.ASC;
+
         if (!searchGood.getOrder().getASC()) {
             sort = Sort.Direction.DESC;
         }
+
         PageRequest pageRequest = new PageRequest(
                 searchGood.getPagination().getCurrentPage(),
                 searchGood.getPagination().getItemsPerPage(),
                 new Sort(new Sort.Order(sort, searchGood.getOrder().getBy()))
         );
-
-        System.out.println(pageRequest);
 
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         queryBuilder.must(QueryBuilders.matchQuery("status.name", StatusEnum.TRADING.getName()));
@@ -78,24 +78,29 @@ public class SearchHandler {
                 queryBuilder.mustNot(QueryBuilders.termsQuery("post_by.id", user.getExcluded()));
             }
         }
+
         if (searchGood.getTitle() != null) {
             queryBuilder.must(QueryBuilders.matchQuery("title", searchGood.getTitle()));
         }
+
         if (searchGood.getCategory() != null) {
             queryBuilder.must(QueryBuilders.termQuery("type.name", searchGood.getCategory()));
         }
+
         if (searchGood.getDistance() != null) {
             queryBuilder.must(QueryBuilders.geoDistanceQuery("location")
                     .point(searchGood.getLocation().getLat(), searchGood.getLocation().getLng())
                     .distance(searchGood.getDistance(), DistanceUnit.METERS)
             );
         }
+
         if (searchGood.getPrice() != null) {
             queryBuilder.must(QueryBuilders.rangeQuery("price")
                     .from(searchGood.getPrice().getFrom())
                     .to(searchGood.getPrice().getTo())
             );
         }
+
         if (searchGood.getSeller() != null) {
             queryBuilder.must(QueryBuilders.termQuery("postBy.id", searchGood.getSeller()));
         }
