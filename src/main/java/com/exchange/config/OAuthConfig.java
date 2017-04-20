@@ -6,6 +6,7 @@ import com.exchange.restapi.SearchHandler;
 import com.exchange.restapi.UserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -139,6 +140,7 @@ public class OAuthConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Configuration
+    @EnableGlobalMethodSecurity(securedEnabled = true)
     @EnableAuthorizationServer
     protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 

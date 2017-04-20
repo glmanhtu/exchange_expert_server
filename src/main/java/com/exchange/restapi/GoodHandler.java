@@ -3,6 +3,7 @@ package com.exchange.restapi;
 import com.exchange.backend.enums.MessageEnum;
 import com.exchange.backend.persistence.domain.Good;
 import com.exchange.backend.persistence.domain.Message;
+import com.exchange.backend.persistence.domain.Status;
 import com.exchange.backend.persistence.dto.GoodDto;
 import com.exchange.backend.persistence.dto.SimpleGoodDto;
 import com.exchange.backend.service.BadWordFilterService;
@@ -112,6 +113,7 @@ public class GoodHandler {
         }
 
         good.setPostDate(localGood.getPostDate());
+        good.setStatus(new Status("Pending", ""));
         good.setPostBy(localGood.getPostBy());
 
         //update new good

@@ -38,7 +38,7 @@ import static com.exchange.restapi.AdminHandler.REST_API_ADMIN;
 @RestController
 @RequestMapping(REST_API_ADMIN)
 @EnableResourceServer
-@Secured(Roles.USER)
+@Secured(Roles.ADMIN)
 public class AdminHandler {
     public static final String REST_API_ADMIN = "/admin";
 
